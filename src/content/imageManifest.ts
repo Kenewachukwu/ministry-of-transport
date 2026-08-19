@@ -112,4 +112,28 @@ export const imageManifest: ImageManifestEntry[] = [
     sourceUrl: "https://transportation.gov.ng/wp-content/uploads/2025/10/PHOTO-NEWS-IMAGE-4-1-560x374.jpeg",
     attribution: "Federal Ministry of Transportation (official site asset)",
   },
+  {
+    path: "/images/stock/hero-lagos-highway.jpg",
+    usage: "Direction A hero — 'Our Vision' slide background",
+    source: "stock",
+    sourceUrl: "https://unsplash.com/photos/an-aerial-view-of-a-highway-in-a-city-W7tLS5vmmCM",
+    license: "Unsplash License (free for commercial use, no attribution required)",
+    attribution: "Photo by Vitalis Nwenyi — Highway in Lagos, Nigeria (aerial view)",
+  },
+  {
+    path: "/images/stock/hero-abuja-conference.jpg",
+    usage: "Direction A hero — 'National Council on Transportation' slide background",
+    source: "stock",
+    sourceUrl: "https://unsplash.com/photos/a-group-of-people-sitting-around-a-table-wearing-masks-Gr4sWgB7SIo",
+    license: "Unsplash License (free for commercial use, no attribution required)",
+    attribution: "Photo by Emmanuel Damola — Conference room, Abuja, Nigeria",
+  },
+  {
+    path: "/images/stock/hero-abuja-metro-rail.jpg",
+    usage: "Direction A hero — 'Rail Transport Services' slide background",
+    source: "stock",
+    sourceUrl: "https://unsplash.com/photos/a-green-and-white-train-pulling-into-a-train-station-KiAjiO-wR88",
+    license: "Unsplash License (free for commercial use, no attribution required)",
+    attribution: "Photo by Baqeer Gashua — Abuja Metro Station (Airport Station), Nigeria",
+  },
 ];

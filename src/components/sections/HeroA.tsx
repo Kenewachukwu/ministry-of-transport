@@ -1,10 +1,10 @@
 "use client";
 
 import { useState } from "react";
+import Image from "next/image";
 import { motion, AnimatePresence } from "motion/react";
 import { ChevronLeft, ChevronRight } from "lucide-react";
 import { DarkHeroFlag } from "@/design-system/themes/HeroModeContext";
-import { PlaceholderPhoto } from "./PlaceholderPhoto";
 import { Container } from "@/design-system/primitives/Container";
 import { InlineLink } from "@/design-system/primitives/Link";
 import { cn } from "@/lib/utils";
@@ -15,7 +15,8 @@ interface Slide {
   body: string;
   linkLabel: string;
   linkHref: string;
-  imageQuery: string;
+  imageAlt: string;
+  imageSrc: string;
 }
 
 const slides: Slide[] = [
@@ -25,7 +26,8 @@ const slides: Slide[] = [
     body: "Building the road and rail infrastructure that connects every part of Nigeria.",
     linkLabel: "Our mandate and vision",
     linkHref: "/about",
-    imageQuery: "Nigerian highway aerial view",
+    imageAlt: "Aerial view of a highway in Lagos, Nigeria",
+    imageSrc: "/images/stock/hero-lagos-highway.jpg",
   },
   {
     eyebrow: "National Council on Transportation",
@@ -33,7 +35,8 @@ const slides: Slide[] = [
     body: "The 18th NCT brought federal and state stakeholders together to tackle the sector's energy and connectivity challenges.",
     linkLabel: "Read the communique",
     linkHref: "/resources/nct-communique",
-    imageQuery: "government conference delegates Nigeria",
+    imageAlt: "Conference delegates seated around a table in Abuja, Nigeria",
+    imageSrc: "/images/stock/hero-abuja-conference.jpg",
   },
   {
     eyebrow: "Rail Transport Services",
@@ -41,7 +44,8 @@ const slides: Slide[] = [
     body: "Expanding rail capacity and intermodal terminals to support Nigeria's economic development.",
     linkLabel: "Explore our departments",
     linkHref: "/about/departments",
-    imageQuery: "railway locomotive Nigeria",
+    imageAlt: "A train arriving at Abuja Metro Station, Nigeria",
+    imageSrc: "/images/stock/hero-abuja-metro-rail.jpg",
   },
 ];
 
@@ -62,7 +66,14 @@ export function HeroA({ basePath }: { basePath: string }) {
           exit={{ opacity: 0 }}
           transition={{ duration: 0.7, ease: "easeInOut" }}
         >
-          <PlaceholderPhoto label={slide.imageQuery} tone="dark" className="h-full w-full" />
+          <Image
+            src={slide.imageSrc}
+            alt={slide.imageAlt}
+            fill
+            priority={index === 0}
+            sizes="100vw"
+            className="object-cover"
+          />
           <div className="absolute inset-0 bg-gradient-to-t from-black via-black/70 to-black/30" />
         </motion.div>
       </AnimatePresence>

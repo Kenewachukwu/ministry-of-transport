@@ -4,7 +4,7 @@ import { motion } from "motion/react";
 import { ChevronDown } from "lucide-react";
 import { Container } from "@/design-system/primitives/Container";
 import { ButtonLink } from "@/design-system/primitives/Button";
-import { TransportSkylineStrip } from "@/components/illustrations/TransportSkylineStrip";
+import { WaveDivider } from "@/components/illustrations/WaveDivider";
 import { useReducedMotion } from "@/design-system/motion/useReducedMotion";
 
 export function HeroB({ basePath }: { basePath: string }) {
@@ -70,8 +70,8 @@ export function HeroB({ basePath }: { basePath: string }) {
         </motion.div>
       </Container>
 
-      <div className="relative h-32 text-brand-600 sm:h-40">
-        <TransportSkylineStrip className="h-full w-full" />
+      <div className="relative h-24 text-surface-inverse sm:h-32">
+        <WaveDivider className="h-full w-full" />
       </div>
     </section>
   );
