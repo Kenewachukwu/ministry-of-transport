@@ -18,7 +18,7 @@ const directions = [
     name: "Direction B — Modern Civic",
     inspiration: "Inspired by Lagos State",
     description:
-      "The ministry's green used broadly, paired with a brighter secondary palette. Illustrated transport-iconography hero strip, a stat-counter band, bright card grids, and an on-page services directory.",
+      "The ministry's green used broadly, paired with a brighter secondary palette. Full-height gradient hero, a stat-counter band, bright card grids, and an on-page services directory.",
     swatch: ["#007d53", "#0ea5e9", "#fdb022", "#fafaf7"],
   },
 ];
@@ -29,7 +29,7 @@ export default function DirectionChooserPage() {
       <Container size="wide">
         <div className="mx-auto max-w-2xl text-center">
           <p className="text-sm font-semibold uppercase tracking-[0.2em] text-[#67c79f]">
-            Federal Ministry of Transportation — Redesign Prototype
+            Federal Ministry of Transportation
           </p>
           <Heading as="h1" size="display" className="mt-4 text-white">
             Choose a visual direction
@@ -68,10 +68,6 @@ export default function DirectionChooserPage() {
             </a>
           ))}
         </div>
-
-        <p className="mt-12 text-center text-xs text-white/40">
-          Internal comparison view — not part of the final site.
-        </p>
       </Container>
     </main>
   );

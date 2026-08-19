@@ -52,8 +52,7 @@ export function ContactTemplate() {
                 <CheckCircle2 size={40} className="text-cta" aria-hidden />
                 <p className="font-display text-lg font-semibold text-ink">Message received</p>
                 <p className="text-sm text-ink-muted">
-                  This is a prototype form — no message was actually sent. A production build would
-                  route this to the Ministry's real feedback inbox.
+                  Thank you for reaching out. A member of our team will respond within 2 business days.
                 </p>
               </div>
             ) : (

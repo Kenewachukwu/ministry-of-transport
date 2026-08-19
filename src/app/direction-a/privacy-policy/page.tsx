@@ -6,7 +6,7 @@ export const metadata: Metadata = { title: "Privacy Policy" };
 
 export default function Page() {
   return (
-    <StaticContentTemplate eyebrow="Legal" title="Privacy Policy" pendingNotice>
+    <StaticContentTemplate eyebrow="Legal" title="Privacy Policy">
       <p>
         The Federal Ministry of Transportation is committed to protecting the privacy of
         visitors to this website. This page will set out what information we collect, how it

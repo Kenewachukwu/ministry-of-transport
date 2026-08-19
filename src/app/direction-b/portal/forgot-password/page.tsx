@@ -17,7 +17,7 @@ export default function Page() {
           <Mail size={28} className="mx-auto text-cta" aria-hidden />
           <h1 className="mt-4 font-display text-xl font-semibold text-ink">Reset your password</h1>
           <p className="mt-1 text-sm text-ink-muted">
-            Enter your staff email and we&rsquo;ll send a reset link (prototype only — no email is sent).
+            Enter your staff email and we&rsquo;ll send a reset link.
           </p>
           <form className="mt-6 flex flex-col gap-4 text-left">
             <FormField id="email" type="email" label="Staff email" required />

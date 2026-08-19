@@ -6,7 +6,7 @@ export const metadata: Metadata = { title: "Freedom of Information" };
 
 export default function Page() {
   return (
-    <StaticContentTemplate eyebrow="Legal" title="Freedom of Information (FOI)" pendingNotice>
+    <StaticContentTemplate eyebrow="Legal" title="Freedom of Information (FOI)">
       <p>
         Under the Freedom of Information Act 2011, members of the public may request access
         to records held by the Federal Ministry of Transportation.

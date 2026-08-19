@@ -5,7 +5,7 @@ export const metadata: Metadata = { title: "Accessibility Statement" };
 
 export default function Page() {
   return (
-    <StaticContentTemplate eyebrow="Legal" title="Accessibility Statement" pendingNotice>
+    <StaticContentTemplate eyebrow="Legal" title="Accessibility Statement">
       <p>
         The Federal Ministry of Transportation is committed to ensuring this website is
         accessible to all users, including people with disabilities, in line with WCAG 2.1 AA

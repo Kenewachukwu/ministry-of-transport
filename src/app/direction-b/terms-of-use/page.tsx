@@ -5,7 +5,7 @@ export const metadata: Metadata = { title: "Terms of Use" };
 
 export default function Page() {
   return (
-    <StaticContentTemplate eyebrow="Legal" title="Terms of Use" pendingNotice>
+    <StaticContentTemplate eyebrow="Legal" title="Terms of Use">
       <p>
         By accessing this website, you agree to use it only for lawful purposes and in a
         manner that does not infringe the rights of, or restrict, or inhibit the use and
