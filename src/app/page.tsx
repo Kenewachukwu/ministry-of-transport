@@ -1,69 +1,78 @@
-import Image from "next/image";
+import { Container } from "@/design-system/primitives/Container";
+import { Heading } from "@/design-system/primitives/Heading";
+import { Text } from "@/design-system/primitives/Text";
 
-export default function Home() {
+const directions = [
+  {
+    id: "a",
+    href: "/direction-a",
+    name: "Direction A — Institutional",
+    inspiration: "Inspired by CIA.gov",
+    description:
+      "Navy and slate register with the ministry's green reserved for calls to action only. Serif display headlines, full-bleed photographic hero with a header that condenses on scroll, and restrained editorial two-column modules.",
+    swatch: ["#0b1524", "#45566b", "#007d53", "#f5f3ee"],
+  },
+  {
+    id: "b",
+    href: "/direction-b",
+    name: "Direction B — Modern Civic",
+    inspiration: "Inspired by Lagos State",
+    description:
+      "The ministry's green used broadly, paired with a brighter secondary palette. Illustrated transport-iconography hero strip, a stat-counter band, bright card grids, and an on-page services directory.",
+    swatch: ["#007d53", "#0ea5e9", "#fdb022", "#fafaf7"],
+  },
+];
+
+export default function DirectionChooserPage() {
   return (
-    <div className="flex flex-col flex-1 items-center justify-center bg-zinc-50 font-sans dark:bg-black">
-      <main className="flex flex-1 w-full max-w-3xl flex-col items-center justify-between py-32 px-16 bg-white dark:bg-black sm:items-start">
-        <Image
-          className="dark:invert h-5 w-[100px]"
-          src="/next.svg"
-          alt="Next.js logo"
-          width={100}
-          height={20}
-          priority
-        />
-        <div className="flex flex-col items-center gap-6 text-center sm:items-start sm:text-left">
-          <h1 className="max-w-xs text-3xl font-semibold leading-10 tracking-tight text-black dark:text-zinc-50">
-            To get started, edit the{" "}
-            <code className="rounded bg-black/[.06] px-1.5 py-0.5 font-mono text-[0.9em] dark:bg-white/[.08]">
-              page.tsx
-            </code>{" "}
-            file.
-          </h1>
-          <p className="max-w-md text-lg leading-8 text-zinc-600 dark:text-zinc-400">
-            Looking for a starting point or more instructions? Head over to{" "}
-            <a
-              href="https://vercel.com/templates?framework=next.js&utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-              className="font-medium text-zinc-950 dark:text-zinc-50"
-            >
-              Templates
-            </a>{" "}
-            or the{" "}
-            <a
-              href="https://nextjs.org/learn?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-              className="font-medium text-zinc-950 dark:text-zinc-50"
-            >
-              Learning
-            </a>{" "}
-            center.
+    <main className="flex min-h-screen flex-col items-center justify-center bg-[#0b1524] px-4 py-16 text-white">
+      <Container size="wide">
+        <div className="mx-auto max-w-2xl text-center">
+          <p className="text-sm font-semibold uppercase tracking-[0.2em] text-[#67c79f]">
+            Federal Ministry of Transportation — Redesign Prototype
           </p>
+          <Heading as="h1" size="display" className="mt-4 text-white">
+            Choose a visual direction
+          </Heading>
+          <Text size="lg" className="mt-4 text-white/70">
+            Both directions share the ministry&rsquo;s green branding, full
+            navigation, and content. They differ in typography, layout
+            rhythm, and imagery treatment.
+          </Text>
         </div>
-        <div className="flex flex-col gap-4 text-base font-medium sm:flex-row">
-          <a
-            className="flex h-12 w-full items-center justify-center gap-2 rounded-full bg-foreground px-5 text-background transition-colors hover:bg-[#383838] dark:hover:bg-[#ccc] md:w-[158px]"
-            href="https://vercel.com/new?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            <Image
-              className="dark:invert h-[14px] w-4"
-              src="/vercel.svg"
-              alt="Vercel logomark"
-              width={16}
-              height={14}
-            />
-            Deploy Now
-          </a>
-          <a
-            className="flex h-12 w-full items-center justify-center rounded-full border border-solid border-black/[.08] px-5 transition-colors hover:border-transparent hover:bg-black/[.04] dark:border-white/[.145] dark:hover:bg-[#1a1a1a] md:w-[158px]"
-            href="https://nextjs.org/docs?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            Documentation
-          </a>
+
+        <div className="mt-14 grid gap-8 lg:grid-cols-2">
+          {directions.map((d) => (
+            <a
+              key={d.id}
+              href={d.href}
+              className="group flex flex-col rounded-2xl border border-white/10 bg-white/[0.03] p-8 transition-colors duration-200 hover:border-[#007d53] hover:bg-white/[0.06]"
+            >
+              <div className="flex gap-2">
+                {d.swatch.map((c) => (
+                  <span
+                    key={c}
+                    className="h-8 w-8 rounded-full border border-white/10"
+                    style={{ backgroundColor: c }}
+                  />
+                ))}
+              </div>
+              <p className="mt-6 text-xs font-semibold uppercase tracking-[0.16em] text-white/50">
+                {d.inspiration}
+              </p>
+              <h2 className="mt-2 text-2xl font-semibold text-white">{d.name}</h2>
+              <p className="mt-3 text-white/70">{d.description}</p>
+              <span className="mt-6 inline-flex items-center gap-2 text-sm font-semibold text-[#67c79f] transition-transform duration-200 group-hover:translate-x-1">
+                View this direction →
+              </span>
+            </a>
+          ))}
         </div>
-      </main>
-    </div>
+
+        <p className="mt-12 text-center text-xs text-white/40">
+          Internal comparison view — not part of the final site.
+        </p>
+      </Container>
+    </main>
   );
 }

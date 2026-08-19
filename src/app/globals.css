@@ -1,26 +1,166 @@
 @import "tailwindcss";
 
+/* ---------------------------------------------------------------------- */
+/* Shared brand tokens — identical in both directions.                    */
+/* Anchored on the ministry's confirmed brand green, #007d53.             */
+/* ---------------------------------------------------------------------- */
 :root {
-  --background: #ffffff;
-  --foreground: #171717;
+  --color-brand-50: #e6f5ef;
+  --color-brand-100: #c0e8d8;
+  --color-brand-200: #96d9be;
+  --color-brand-300: #67c79f;
+  --color-brand-400: #3aae83;
+  --color-brand-500: #007d53;
+  --color-brand-600: #026b47;
+  --color-brand-700: #04573a;
+  --color-brand-800: #06432d;
+  --color-brand-900: #073321;
+
+  --ease-standard: cubic-bezier(0.16, 1, 0.3, 1);
+  --motion-micro: 150ms;
+  --motion-standard: 300ms;
+  --motion-emphasis: 500ms;
+
+  /* Sane defaults so anything rendered outside a direction scope
+     (the root "choose a direction" landing) still looks intentional. */
+  --color-surface: #ffffff;
+  --color-surface-raised: #ffffff;
+  --color-surface-inverse: #0b1524;
+  --color-ink: #111827;
+  --color-ink-muted: #45566b;
+  --color-ink-inverse: #f5f3ee;
+  --color-border: #e5e1d8;
+  --color-cta: var(--color-brand-500);
+  --color-cta-ink: #ffffff;
+  --color-link: var(--color-brand-700);
+  --color-secondary: #0ea5e9;
+  --color-accent-amber: #fdb022;
+  --color-accent-coral: #f2703c;
+  --font-display: var(--font-sora), ui-sans-serif, system-ui, sans-serif;
+  --font-body: var(--font-inter), ui-sans-serif, system-ui, sans-serif;
+  --radius-card: 0.75rem;
+  --radius-control: 9999px;
+  --shadow-card: 0 8px 24px rgb(0 125 83 / 0.08);
+}
+
+/* ---------------------------------------------------------------------- */
+/* Direction A — "Institutional" (CIA.gov-inspired)                       */
+/* Navy/slate register; ministry green reserved for CTAs only.            */
+/* ---------------------------------------------------------------------- */
+[data-direction="a"] {
+  --color-surface: #f5f3ee;
+  --color-surface-raised: #ffffff;
+  --color-surface-inverse: #0b1524;
+  --color-ink: #0b1524;
+  --color-ink-muted: #45566b;
+  --color-ink-inverse: #f5f3ee;
+  --color-border: #d8d3c6;
+  --color-cta: var(--color-brand-500);
+  --color-cta-ink: #ffffff;
+  --color-link: var(--color-brand-700);
+  --color-secondary: #45566b;
+  --color-accent-amber: #b08d57;
+  --color-accent-coral: #8a3b2b;
+  --font-display: var(--font-source-serif), Georgia, serif;
+  --font-body: var(--font-public-sans), ui-sans-serif, system-ui, sans-serif;
+  --radius-card: 0.125rem;
+  --radius-control: 0.25rem;
+  --shadow-card: 0 1px 2px rgb(0 0 0 / 0.08);
+}
+
+/* ---------------------------------------------------------------------- */
+/* Direction B — "Modern Civic" (Lagos State-inspired)                    */
+/* Ministry green used broadly; brighter secondary palette + illustration.*/
+/* ---------------------------------------------------------------------- */
+[data-direction="b"] {
+  --color-surface: #fafaf7;
+  --color-surface-raised: #ffffff;
+  --color-surface-inverse: #073321;
+  --color-ink: #111827;
+  --color-ink-muted: #4b5563;
+  --color-ink-inverse: #fafaf7;
+  --color-border: #e5e1d8;
+  --color-cta: var(--color-brand-500);
+  --color-cta-ink: #ffffff;
+  --color-link: var(--color-brand-600);
+  --color-secondary: #0ea5e9;
+  --color-accent-amber: #fdb022;
+  --color-accent-coral: #f2703c;
+  --font-display: var(--font-sora), ui-sans-serif, system-ui, sans-serif;
+  --font-body: var(--font-inter), ui-sans-serif, system-ui, sans-serif;
+  --radius-card: 0.75rem;
+  --radius-control: 9999px;
+  --shadow-card: 0 8px 24px rgb(0 125 83 / 0.08);
 }
 
 @theme inline {
-  --color-background: var(--background);
-  --color-foreground: var(--foreground);
-  --font-sans: var(--font-geist-sans);
-  --font-mono: var(--font-geist-mono);
+  --color-brand-50: var(--color-brand-50);
+  --color-brand-100: var(--color-brand-100);
+  --color-brand-200: var(--color-brand-200);
+  --color-brand-300: var(--color-brand-300);
+  --color-brand-400: var(--color-brand-400);
+  --color-brand-500: var(--color-brand-500);
+  --color-brand-600: var(--color-brand-600);
+  --color-brand-700: var(--color-brand-700);
+  --color-brand-800: var(--color-brand-800);
+  --color-brand-900: var(--color-brand-900);
+
+  --color-surface: var(--color-surface);
+  --color-surface-raised: var(--color-surface-raised);
+  --color-surface-inverse: var(--color-surface-inverse);
+  --color-ink: var(--color-ink);
+  --color-ink-muted: var(--color-ink-muted);
+  --color-ink-inverse: var(--color-ink-inverse);
+  --color-border: var(--color-border);
+  --color-cta: var(--color-cta);
+  --color-cta-ink: var(--color-cta-ink);
+  --color-link: var(--color-link);
+  --color-secondary: var(--color-secondary);
+  --color-accent-amber: var(--color-accent-amber);
+  --color-accent-coral: var(--color-accent-coral);
+
+  --font-display: var(--font-display);
+  --font-body: var(--font-body);
+
+  --radius-card: var(--radius-card);
+  --radius-control: var(--radius-control);
+
+  --shadow-card: var(--shadow-card);
+
+  --animate-count-fade: fade-up 0.4s var(--ease-standard);
 }
 
-@media (prefers-color-scheme: dark) {
-  :root {
-    --background: #0a0a0a;
-    --foreground: #ededed;
+@keyframes fade-up {
+  from {
+    opacity: 0;
+    transform: translateY(12px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+html {
+  scroll-behavior: smooth;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  html {
+    scroll-behavior: auto;
+  }
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.001ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.001ms !important;
+    scroll-behavior: auto !important;
   }
 }
 
 body {
-  background: var(--background);
-  color: var(--foreground);
-  font-family: Arial, Helvetica, sans-serif;
+  background: var(--color-surface);
+  color: var(--color-ink);
+  font-family: var(--font-body);
 }
