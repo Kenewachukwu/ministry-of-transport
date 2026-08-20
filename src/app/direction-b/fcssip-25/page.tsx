@@ -31,8 +31,8 @@ export default function Page() {
       </figure>
       <ul>
         <li>
-          <InlineLink href="#" external chevron>
-            View the FCSSIP 2021–2025 strategy document
+          <InlineLink href="https://ohcsf.gov.ng/downloads/" external chevron>
+            FCSSIP 2021&ndash;2025 in the OHCSF downloads library
           </InlineLink>
         </li>
         <li className="mt-2">
