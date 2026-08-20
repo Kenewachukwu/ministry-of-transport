@@ -113,6 +113,13 @@ export const imageManifest: ImageManifestEntry[] = [
     attribution: "Federal Ministry of Transportation (official site asset)",
   },
   {
+    path: "/images/sourced/fcssip-25-plan.png",
+    usage: "FCSSIP 25 page — strategy plan cover graphic, both directions",
+    source: "official",
+    sourceUrl: "https://transportation.gov.ng/wp-content/uploads/2022/12/FCSSIP.png",
+    attribution: "Federal Ministry of Transportation (official site asset)",
+  },
+  {
     path: "/images/stock/hero-lagos-highway.jpg",
     usage: "Direction A hero — 'Our Vision' slide background",
     source: "stock",
