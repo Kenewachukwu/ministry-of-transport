@@ -1,6 +1,7 @@
 import { Container } from "@/design-system/primitives/Container";
 import { Heading } from "@/design-system/primitives/Heading";
 import { InlineLink } from "@/design-system/primitives/Link";
+import { WavyGreenBg } from "@/design-system/primitives/WavyGreenBg";
 import { HeroA } from "@/components/sections/HeroA";
 import { StatCounterBand } from "@/components/sections/StatCounterBand";
 import { WelcomeMessageBlock } from "@/components/sections/WelcomeMessageBlock";
@@ -54,8 +55,9 @@ export default function DirectionAHomePage() {
         </Container>
       </section>
 
-      <section className="py-20">
-        <Container>
+      <section className="relative overflow-hidden py-20">
+        <WavyGreenBg intensity="medium" />
+        <Container className="relative z-10">
           <Heading as="h2" size="h2">The Road Ahead</Heading>
           <p className="mt-2 max-w-2xl text-ink-muted">
             Our key goals, translated into measurable targets across the sector.
@@ -66,8 +68,9 @@ export default function DirectionAHomePage() {
         </Container>
       </section>
 
-      <section className="border-t border-border bg-surface-raised py-20">
-        <Container>
+      <section className="relative overflow-hidden border-t border-border bg-surface-raised py-20">
+        <WavyGreenBg intensity="bold" />
+        <Container className="relative z-10">
           <div className="flex flex-wrap items-end justify-between gap-4">
             <div>
               <Heading as="h2" size="h2">Latest News &amp; Events</Heading>
@@ -85,8 +88,9 @@ export default function DirectionAHomePage() {
         </Container>
       </section>
 
-      <section className="py-20">
-        <Container>
+      <section className="relative overflow-hidden py-20">
+        <WavyGreenBg intensity="medium" />
+        <Container className="relative z-10">
           <div className="flex flex-wrap items-end justify-between gap-4">
             <Heading as="h2" size="h2">Our Departments</Heading>
             <InlineLink href={`${basePath}/about/departments`} chevron>
@@ -101,8 +105,9 @@ export default function DirectionAHomePage() {
         </Container>
       </section>
 
-      <section className="border-t border-border bg-surface-raised py-20">
-        <Container>
+      <section className="relative overflow-hidden border-t border-border bg-surface-raised py-20">
+        <WavyGreenBg intensity="bold" />
+        <Container className="relative z-10">
           <Heading as="h2" size="h2">Agencies Under the Ministry</Heading>
           <div className="mt-10">
             <CardGrid

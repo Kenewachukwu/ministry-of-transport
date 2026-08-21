@@ -5,6 +5,7 @@ import Link from "next/link";
 import { cn } from "@/lib/utils";
 import { navConfig, portalNav } from "@/content/nav.config";
 import { useHeroMode } from "@/design-system/themes/HeroModeContext";
+import { WavyGreenBg } from "@/design-system/primitives/WavyGreenBg";
 import { Logo } from "./Logo";
 import { NavDropdown } from "./NavDropdown";
 import { MobileNav } from "./MobileNav";
@@ -37,6 +38,11 @@ export function HeaderA({ basePath }: { basePath: string }) {
 
   return (
     <header className={cn("fixed top-0 z-50 w-full transition-colors duration-300", solid ? "border-b border-border bg-surface-raised" : "bg-transparent")}>
+      {solid && (
+        <div className="pointer-events-none absolute inset-0 overflow-hidden" aria-hidden>
+          <WavyGreenBg intensity="subtle" />
+        </div>
+      )}
       <div className={cn("hidden h-8 items-center justify-end gap-6 px-4 text-xs sm:px-6 lg:flex lg:px-8", solid ? "border-b border-border text-ink-muted" : "text-white/70")}>
         <Link href={`${basePath}/contact`} className="py-2 hover:text-cta">Contact</Link>
         <Link href={`${basePath}${portalNav.href}`} className="py-2 hover:text-cta">Staff Portal</Link>

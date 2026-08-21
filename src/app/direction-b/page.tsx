@@ -4,7 +4,6 @@ import { Heading } from "@/design-system/primitives/Heading";
 import { InlineLink } from "@/design-system/primitives/Link";
 import { HeroB } from "@/components/sections/HeroB";
 import { StatCounterBand } from "@/components/sections/StatCounterBand";
-import { GreetingBanner } from "@/components/sections/GreetingBanner";
 import { WelcomeMessageBlock } from "@/components/sections/WelcomeMessageBlock";
 import { PillarCards } from "@/components/sections/PillarCards";
 import { FeaturedNews } from "@/components/sections/FeaturedNews";
@@ -32,10 +31,6 @@ export default function DirectionBHomePage() {
   return (
     <>
       <HeroB basePath={basePath} />
-
-      <section className="bg-surface-inverse py-3 text-center">
-        <GreetingBanner />
-      </section>
 
       <section className="py-20">
         <Container>
