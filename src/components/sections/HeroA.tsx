@@ -2,12 +2,97 @@
 
 import { useState } from "react";
 import Image from "next/image";
-import { motion, AnimatePresence } from "motion/react";
+import { motion, AnimatePresence, useReducedMotion } from "motion/react";
 import { ChevronLeft, ChevronRight } from "lucide-react";
 import { DarkHeroFlag } from "@/design-system/themes/HeroModeContext";
 import { Container } from "@/design-system/primitives/Container";
 import { InlineLink } from "@/design-system/primitives/Link";
 import { cn } from "@/lib/utils";
+
+const SHAPES = [
+  {
+    d: "M 1440 0 C 1180 80 900 240 760 460 C 640 660 720 820 940 900 L 1440 900 Z",
+    fill: "#04573a",
+    opacity: 0.62,
+    delay: 0,
+    fx: 6,
+    fy: 4,
+    fd: 7,
+  },
+  {
+    d: "M 1440 120 C 1220 180 980 340 840 540 C 760 670 800 810 960 870 L 1160 900 L 1440 720 Z",
+    fill: "#007d53",
+    opacity: 0.42,
+    delay: 0.1,
+    fx: -5,
+    fy: 6,
+    fd: 8,
+  },
+  {
+    d: "M 1440 350 C 1300 390 1100 480 940 600 C 840 680 800 800 900 880 L 1180 900 L 1440 820 Z",
+    fill: "#3aae83",
+    opacity: 0.28,
+    delay: 0.2,
+    fx: 8,
+    fy: -4,
+    fd: 9,
+  },
+  {
+    d: "M 820 900 C 900 820 1060 740 1240 680 L 1440 620 L 1440 900 Z",
+    fill: "#96d9be",
+    opacity: 0.18,
+    delay: 0.3,
+    fx: -4,
+    fy: 5,
+    fd: 6,
+  },
+];
+
+function AngularShapes() {
+  const reduced = useReducedMotion();
+
+  return (
+    <div className="pointer-events-none absolute inset-0 overflow-hidden" aria-hidden>
+      <svg
+        viewBox="0 0 1440 900"
+        preserveAspectRatio="xMidYMid slice"
+        className="absolute inset-0 h-full w-full"
+        xmlns="http://www.w3.org/2000/svg"
+      >
+        {SHAPES.map((s, i) => (
+          /* motion.g handles entry slide-in; motion.path handles continuous float */
+          <motion.g
+            key={i}
+            initial={{ opacity: 0, x: 80 }}
+            animate={{ opacity: 1, x: 0 }}
+            transition={{ duration: 0.9, delay: s.delay, ease: [0.16, 1, 0.3, 1] }}
+          >
+            <motion.path
+              d={s.d}
+              fill={s.fill}
+              fillOpacity={s.opacity}
+              animate={
+                reduced
+                  ? undefined
+                  : { x: [0, s.fx, 0], y: [0, s.fy, 0] }
+              }
+              transition={
+                reduced
+                  ? undefined
+                  : {
+                      duration: s.fd,
+                      delay: s.delay + 1,
+                      repeat: Infinity,
+                      ease: "easeInOut",
+                    }
+              }
+            />
+          </motion.g>
+        ))}
+      </svg>
+    </div>
+  );
+}
 
 interface Slide {
   eyebrow: string;
@@ -74,9 +159,15 @@ export function HeroA({ basePath }: { basePath: string }) {
             sizes="100vw"
             className="object-cover"
           />
-          <div className="absolute inset-0 bg-gradient-to-t from-black via-black/70 to-black/30" />
+          {/* Deep green gradient — replaces the old black overlay */}
+          <div className="absolute inset-0 bg-gradient-to-t from-[#031a0c] via-[#052e15]/80 to-[#073321]/25" />
+          {/* Left-side text backing */}
+          <div className="absolute inset-0 bg-gradient-to-r from-[#031a0c]/70 via-[#031a0c]/30 to-transparent" />
         </motion.div>
       </AnimatePresence>
+
+      {/* Angular green shapes overlay */}
+      <AngularShapes />
 
       <Container className="relative z-10 pt-40 pb-32 lg:pt-48">
         <div className="max-w-2xl">
