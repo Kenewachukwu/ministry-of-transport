@@ -17,7 +17,7 @@ export const directionATokens = {
     cta: "#007d53",
   },
   fonts: {
-    display: "Source Serif 4",
+    display: "Inter",
     body: "Public Sans",
   },
   radius: {

@@ -5,7 +5,6 @@ import { WavyGreenBg } from "@/design-system/primitives/WavyGreenBg";
 import { HeroA } from "@/components/sections/HeroA";
 import { StatCounterBand } from "@/components/sections/StatCounterBand";
 import { WelcomeMessageBlock } from "@/components/sections/WelcomeMessageBlock";
-import { EditorialModule } from "@/components/sections/EditorialModule";
 import { PillarCards } from "@/components/sections/PillarCards";
 import { FeaturedNews } from "@/components/sections/FeaturedNews";
 import { CardGrid } from "@/components/sections/CardGrid";
@@ -43,15 +42,43 @@ export default function DirectionAHomePage() {
         </Container>
       </section>
 
-      <section className="py-4">
-        <Container className="flex flex-col gap-16">
-          <EditorialModule eyebrow="Our Mandate" heading="Why we exist">
-            <p>{mandate}</p>
-          </EditorialModule>
-          <EditorialModule eyebrow="Vision &amp; Mission" heading="Where we are headed" reversed>
-            <p>{vision}</p>
-            <p className="mt-3">{mission}</p>
-          </EditorialModule>
+      <section className="relative overflow-hidden border-t border-border bg-surface-raised py-20">
+        <WavyGreenBg intensity="subtle" />
+        <Container className="relative z-10">
+
+          {/* ── Mandate ── */}
+          <div className="pb-12">
+            <p className="text-xs font-bold uppercase tracking-[0.2em] text-cta">Our Mandate</p>
+            <div className="mt-2 h-0.5 w-10 bg-cta" />
+            <h2 className="mt-5 font-display text-3xl font-bold tracking-tight text-ink sm:text-4xl">
+              Why we exist
+            </h2>
+            <p className="mt-5 max-w-3xl text-base leading-relaxed text-ink-muted">
+              {mandate}
+            </p>
+          </div>
+
+          {/* ── Vision + Mission ── */}
+          <div className="grid gap-10 border-t border-border pt-10 sm:grid-cols-2 lg:gap-16">
+            <div>
+              <p className="text-xs font-bold uppercase tracking-[0.2em] text-cta">Our Vision</p>
+              <div className="mt-2 h-0.5 w-10 bg-cta" />
+              <h3 className="mt-5 font-display text-2xl font-bold tracking-tight text-ink sm:text-3xl">
+                Where we are headed
+              </h3>
+              <p className="mt-4 text-base leading-relaxed text-ink-muted">{vision}</p>
+            </div>
+
+            <div className="sm:border-l sm:border-border sm:pl-10 lg:pl-16">
+              <p className="text-xs font-bold uppercase tracking-[0.2em] text-cta">Our Mission</p>
+              <div className="mt-2 h-0.5 w-10 bg-cta" />
+              <h3 className="mt-5 font-display text-2xl font-bold tracking-tight text-ink sm:text-3xl">
+                How we get there
+              </h3>
+              <p className="mt-4 text-base leading-relaxed text-ink-muted">{mission}</p>
+            </div>
+          </div>
+
         </Container>
       </section>
 

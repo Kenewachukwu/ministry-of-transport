@@ -61,7 +61,7 @@
   --color-secondary: #45566b;
   --color-accent-amber: #b08d57;
   --color-accent-coral: #8a3b2b;
-  --font-display: var(--font-source-serif), Georgia, serif;
+  --font-display: var(--font-inter), ui-sans-serif, system-ui, sans-serif;
   --font-body: var(--font-public-sans), ui-sans-serif, system-ui, sans-serif;
   --radius-card: 0.125rem;
   --radius-control: 0.25rem;
