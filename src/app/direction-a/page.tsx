@@ -6,10 +6,10 @@ import { HeroA } from "@/components/sections/HeroA";
 import { StatCounterBand } from "@/components/sections/StatCounterBand";
 import { WelcomeMessageBlock } from "@/components/sections/WelcomeMessageBlock";
 import { PillarCards } from "@/components/sections/PillarCards";
-import { FeaturedNews } from "@/components/sections/FeaturedNews";
+import { TabbedNewsSection } from "@/components/sections/TabbedNewsSection";
 import { CardGrid } from "@/components/sections/CardGrid";
 import { mandate, vision, mission } from "@/content/mandate";
-import { getWelcomeMessage, getPillars, getDepartments, getAgencies, getFeaturedNews } from "@/lib/cms";
+import { getWelcomeMessage, getPillars, getDepartments, getAgencies, getNews, getEvents } from "@/lib/cms";
 import { stats } from "@/content/stats";
 
 const basePath = "/direction-a";
@@ -19,7 +19,8 @@ export default function DirectionAHomePage() {
   const pillars = getPillars();
   const departments = getDepartments().slice(0, 6);
   const agencies = getAgencies();
-  const news = getFeaturedNews(3);
+  const news = getNews();
+  const events = getEvents();
 
   return (
     <>
@@ -98,20 +99,13 @@ export default function DirectionAHomePage() {
       <section className="relative overflow-hidden border-t border-border bg-surface-raised py-20">
         <WavyGreenBg intensity="bold" />
         <Container className="relative z-10">
-          <div className="flex flex-wrap items-end justify-between gap-4">
-            <div>
-              <Heading as="h2" size="h2">Latest News &amp; Events</Heading>
-              <p className="mt-2 max-w-2xl text-ink-muted">
-                Press releases, online news reports, and photo news from across the Ministry.
-              </p>
-            </div>
+          <div className="mb-8 flex flex-wrap items-end justify-between gap-4">
+            <Heading as="h2" size="h2">Latest News &amp; Events</Heading>
             <InlineLink href={`${basePath}/news`} chevron>
               View all news
             </InlineLink>
           </div>
-          <div className="mt-10">
-            <FeaturedNews items={news} basePath={basePath} />
-          </div>
+          <TabbedNewsSection news={news} events={events} basePath={basePath} />
         </Container>
       </section>
 
