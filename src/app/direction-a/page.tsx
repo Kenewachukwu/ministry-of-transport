@@ -7,6 +7,7 @@ import { StatCounterBand } from "@/components/sections/StatCounterBand";
 import { WelcomeMessageBlock } from "@/components/sections/WelcomeMessageBlock";
 import { PillarCards } from "@/components/sections/PillarCards";
 import { TabbedNewsSection } from "@/components/sections/TabbedNewsSection";
+import { TopicDirectory } from "@/components/sections/TopicDirectory";
 import { CardGrid } from "@/components/sections/CardGrid";
 import { mandate, vision, mission } from "@/content/mandate";
 import { getWelcomeMessage, getPillars, getDepartments, getAgencies, getNews, getEvents } from "@/lib/cms";
@@ -106,6 +107,18 @@ export default function DirectionAHomePage() {
             </InlineLink>
           </div>
           <TabbedNewsSection news={news} events={events} basePath={basePath} />
+        </Container>
+      </section>
+
+      <section className="border-t border-border py-20">
+        <Container>
+          <div className="mb-10 text-center">
+            <Heading as="h2" size="h2">Explore by Topic</Heading>
+            <p className="mx-auto mt-2 max-w-xl text-ink-muted">
+              Find what you need — from departments and agencies to e-services and key documents.
+            </p>
+          </div>
+          <TopicDirectory basePath={basePath} />
         </Container>
       </section>
 
