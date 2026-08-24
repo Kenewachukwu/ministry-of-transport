@@ -120,8 +120,8 @@ const slides: Slide[] = [
     body: "The 18th NCT brought federal and state stakeholders together to tackle the sector's energy and connectivity challenges.",
     linkLabel: "Read the communique",
     linkHref: "/resources/nct-communique",
-    imageAlt: "Conference delegates seated around a table in Abuja, Nigeria",
-    imageSrc: "/images/stock/hero-abuja-conference.jpg",
+    imageAlt: "Engineers reviewing infrastructure blueprints on site",
+    imageSrc: "/images/stock/hero-engineering-team.jpg",
   },
   {
     eyebrow: "Rail Transport Services",
@@ -142,7 +142,11 @@ export function HeroA({ basePath }: { basePath: string }) {
     <section className="relative -mt-20 flex min-h-dvh items-center overflow-hidden bg-surface-inverse text-white lg:-mt-28">
       <DarkHeroFlag />
 
-      <AnimatePresence mode="wait">
+      {/* initial={false}: skip the mount animation on first render (incl. every
+          route navigation back to this page, since HeroA remounts fresh) so
+          the very first slide never depends on a transition completing to
+          become visible. Only subsequent user-triggered slide changes animate. */}
+      <AnimatePresence mode="wait" initial={false}>
         <motion.div
           key={index}
           className="absolute inset-0"
@@ -171,33 +175,36 @@ export function HeroA({ basePath }: { basePath: string }) {
 
       <Container className="relative z-10 pt-40 pb-32 lg:pt-48">
         <div className="max-w-2xl">
-          <motion.p
+          {/*
+            Plain elements + CSS `animate-count-fade` instead of Framer Motion
+            initial/animate here: on the live site, this exact mount-triggered
+            JS animation pattern was observed getting permanently stuck at its
+            `initial` (invisible) state after a client-side route change,
+            taking the hero text down with it. A CSS animation runs on the
+            style engine as soon as the element exists — no React effect or
+            rAF callback has to fire first — so it can't get stuck hidden the
+            same way, and prefers-reduced-motion already neutralizes it globally.
+          */}
+          <p
             key={`eyebrow-${index}`}
-            initial={{ opacity: 0, y: 8 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ delay: 0.15 }}
-            className="text-sm font-semibold uppercase tracking-[0.2em] text-brand-300"
+            className="animate-count-fade text-sm font-semibold uppercase tracking-[0.2em] text-brand-300"
           >
             {slide.eyebrow}
-          </motion.p>
-          <motion.h1
+          </p>
+          <h1
             key={`headline-${index}`}
-            initial={{ opacity: 0, y: 12 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ delay: 0.22 }}
-            className="mt-4 font-display text-4xl font-bold uppercase leading-[1.1] tracking-tight sm:text-5xl"
+            className="animate-count-fade mt-4 font-display text-4xl font-bold uppercase leading-[1.1] tracking-tight sm:text-5xl"
+            style={{ animationDelay: "70ms" }}
           >
             {slide.headline}
-          </motion.h1>
-          <motion.p
+          </h1>
+          <p
             key={`body-${index}`}
-            initial={{ opacity: 0, y: 12 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ delay: 0.3 }}
-            className="mt-5 max-w-lg text-base text-white/75"
+            className="animate-count-fade mt-5 max-w-lg text-base text-white/75"
+            style={{ animationDelay: "140ms" }}
           >
             {slide.body}
-          </motion.p>
+          </p>
           <div className="mt-7">
             <InlineLink href={`${basePath}${slide.linkHref}`} chevron className="text-white">
               {slide.linkLabel}

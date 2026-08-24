@@ -14,7 +14,7 @@ export const departments: Department[] = [
     id: "rail-transport-services",
     name: "Rail Transport Services",
     summary: "Oversees policy and regulatory matters relating to rail transport across Nigeria.",
-    photoUrl: px(6485843),
+    photoUrl: "/images/stock/dept-rail-transport.jpg",
   },
   {
     id: "road-transport-mass-transit",
@@ -26,19 +26,19 @@ export const departments: Department[] = [
     id: "engineering-services",
     name: "Engineering Services",
     summary: "Provides engineering oversight for transport infrastructure projects.",
-    photoUrl: px(9485447),
+    photoUrl: "/images/stock/dept-engineering-services.jpg",
   },
   {
     id: "transport-planning-coordination",
     name: "Transport Planning & Coordination",
     summary: "Leads strategic planning and inter-agency coordination for the transport sector.",
-    photoUrl: px(31729409),
+    photoUrl: "/images/stock/dept-transport-planning.jpg",
   },
   {
     id: "special-duties",
     name: "Special Duties",
     summary: "Handles special assignments and cross-cutting initiatives for the Ministry.",
-    photoUrl: "https://images.unsplash.com/photo-1645383353618-b0fe61d7ed86?auto=format&fit=crop&w=600&h=375&q=80",
+    photoUrl: "/images/stock/dept-special-duties.jpg",
   },
   {
     id: "human-resources-management",

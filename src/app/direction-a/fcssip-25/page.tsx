@@ -5,6 +5,33 @@ import { InlineLink } from "@/design-system/primitives/Link";
 
 export const metadata: Metadata = { title: "FCSSIP 25" };
 
+const resources = [
+  {
+    label: "View and download FCSSIP 2021–2025",
+    href: "https://drive.google.com/file/d/1cyxIvt0FBgsyDX5YtbFgUdYczm62bnJn/view?usp=share_link",
+  },
+  {
+    label: "IPPIS Self-Service",
+    href: "https://service.ippis.gov.ng:4443/",
+  },
+  {
+    label: "The Federal Civil Service Culture Change video",
+    href: "https://youtu.be/siRjPvkX2PQ",
+  },
+  {
+    label: "PEBEC ReportGov Portal",
+    href: "https://www.pebec.gov.ng/reportgov-ng",
+  },
+  {
+    label: "GovMail Portal",
+    href: "https://webmail.transportation.gov.ng/",
+  },
+  {
+    label: "eCMS Portal",
+    href: "https://federalministryoftransportation-ecms.schulltech.com/",
+  },
+];
+
 export default function Page() {
   return (
     <StaticContentTemplate
@@ -15,7 +42,10 @@ export default function Page() {
       <p>
         FCSSIP 25 sets out the Ministry&rsquo;s priorities for reforming service delivery,
         strengthening institutional capacity, and improving the ease of doing business across
-        the transport sector.
+        the transport sector. It sits alongside the Federal Civil Service Culture Change
+        programme and the Presidential Enabling Business Environment Council&rsquo;s (PEBEC)
+        ReportGov initiative as part of a wider push to modernise how the civil service
+        operates and serves the public.
       </p>
       <figure className="overflow-hidden rounded-card border border-border bg-surface-raised shadow-card">
         <Image
@@ -29,17 +59,15 @@ export default function Page() {
           Federal Civil Service Strategy and Implementation Plan, 2021&ndash;2025.
         </figcaption>
       </figure>
+      <h2>Staff resources &amp; portals</h2>
       <ul>
-        <li>
-          <InlineLink href="https://ohcsf.gov.ng/downloads/" external chevron>
-            FCSSIP 2021&ndash;2025 in the OHCSF downloads library
-          </InlineLink>
-        </li>
-        <li className="mt-2">
-          <InlineLink href="https://www.pebec.gov.ng/reportgov-ng" external chevron>
-            PEBEC ReportGov Portal
-          </InlineLink>
-        </li>
+        {resources.map((r) => (
+          <li key={r.href}>
+            <InlineLink href={r.href} external chevron>
+              {r.label}
+            </InlineLink>
+          </li>
+        ))}
       </ul>
     </StaticContentTemplate>
   );
