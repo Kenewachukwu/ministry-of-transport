@@ -5,7 +5,6 @@ import { agencies } from "@/content/agencies";
 import { siteMeta } from "@/content/siteMeta";
 import { Container } from "@/design-system/primitives/Container";
 import { SocialLinks } from "./SocialLinks";
-import { VisitCounter } from "./VisitCounter";
 import { ComplianceBar } from "./ComplianceBar";
 
 export function Footer({ basePath }: { basePath: string }) {
@@ -73,8 +72,7 @@ export function Footer({ basePath }: { basePath: string }) {
         </div>
       </Container>
 
-      <Container className="flex flex-wrap items-center justify-between gap-4 py-2">
-        <VisitCounter />
+      <Container className="py-2">
         <p className="text-xs text-white/40">
           © {new Date().getFullYear()} {siteMeta.name}. All rights reserved.
         </p>
