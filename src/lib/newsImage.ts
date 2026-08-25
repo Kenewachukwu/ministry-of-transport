@@ -12,5 +12,5 @@ const categoryImage: Record<NewsItem["category"], string> = {
 };
 
 export function getNewsImage(item: NewsItem): string {
-  return categoryImage[item.category];
+  return item.imageUrl ?? categoryImage[item.category];
 }

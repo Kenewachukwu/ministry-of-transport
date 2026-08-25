@@ -10,6 +10,23 @@ import type { NewsItem } from "./types";
  */
 export const news: NewsItem[] = [
   {
+    id: "nct-19-preview",
+    slug: "19th-national-council-on-transportation-abuja-2026",
+    title: "Ministry Welcomes Stakeholders to the 19th National Council on Transportation",
+    category: "Press Release",
+    excerpt:
+      "The 19th NCT will unveil the National Land Transport Policy, with Vice President Kashim Shettima, GCON, as Special Guest of Honour.",
+    body: [
+      "The Federal Ministry of Transportation is set to welcome stakeholders of all transport modes to the 19th National Council on Transportation (NCT) and the unveiling of the National Land Transport Policy (NLTP) in Abuja, holding 31st August – 3rd September 2026 at the National Judicial Institute Auditorium, Off Airport Bypass, Abuja-FCT.",
+      "This year's edition runs under the theme 'Developing Effective Transport System for Nigeria: The Role of Integrated Transportation', with His Excellency, Vice President Kashim Shettima, GCON, attending as Special Guest of Honour.",
+    ],
+    date: "2026-08-24",
+    imageQuery: "19th National Council on Transportation Abuja 2026 flyer",
+    imageUrl: "/images/sourced/news-19th-nct.jpeg",
+    readTimeMinutes: 2,
+    featured: true,
+  },
+  {
     id: "nct-18-communique",
     slug: "18th-national-council-on-transportation-communique",
     title: "18th National Council on Transportation Concludes in Abeokuta",
@@ -44,15 +61,16 @@ export const news: NewsItem[] = [
   {
     id: "rail-rehabilitation-inspection",
     slug: "minister-inspects-rail-rehabilitation-works",
-    title: "Minister Inspects Ongoing Rail Rehabilitation Works",
+    title: "Minister Inspects Kubwa Rail Station in Abuja",
     category: "Online News Report",
     excerpt:
-      "A site visit to assess progress on track rehabilitation and station upgrades along an active rail corridor.",
+      "A site visit to assess station facilities and platform readiness along the Abuja rail corridor.",
     body: [
-      "The Honourable Minister led a delegation to inspect ongoing rehabilitation works, reviewing contractor progress against the project timeline and engaging with site engineers on outstanding milestones.",
+      "The Honourable Minister led a delegation, including security detail and ministry officials, on a site visit to the Kubwa rail station in Abuja, reviewing platform facilities and engaging with staff on outstanding works.",
     ],
     date: "2025-11-04",
-    imageQuery: "railway track maintenance workers Nigeria",
+    imageQuery: "Minister inspects Kubwa rail station Abuja",
+    imageUrl: "/images/sourced/news-whatsapp-2024.jpeg",
     readTimeMinutes: 2,
   },
   {

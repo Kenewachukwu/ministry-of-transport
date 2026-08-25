@@ -66,6 +66,8 @@ export interface NewsItem {
   body: string[];
   date: string;
   imageQuery: string;
+  /** Real photo for this specific item; falls back to a per-category default when absent. */
+  imageUrl?: string;
   readTimeMinutes: number;
   featured?: boolean;
 }

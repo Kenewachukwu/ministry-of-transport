@@ -2,6 +2,14 @@ import type { EventItem } from "./types";
 
 export const events: EventItem[] = [
   {
+    id: "nct-19",
+    title: "19th National Council on Transportation & Unveiling of the National Land Transport Policy",
+    date: "2026-08-31",
+    location: "National Judicial Institute Auditorium, Abuja-FCT",
+    summary:
+      "Themed 'Developing Effective Transport System for Nigeria: The Role of Integrated Transportation'. Special Guest of Honour: Vice President Kashim Shettima, GCON. Holds daily, 9:00am, through 3rd September 2026.",
+  },
+  {
     id: "nct-18",
     title: "18th National Council on Transportation",
     date: "2024-02-27",

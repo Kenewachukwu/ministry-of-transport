@@ -69,6 +69,25 @@ export default function Page() {
           </li>
         ))}
       </ul>
+
+      <h2>FCSSIP 25 at a glance</h2>
+      <p>
+        The plan&rsquo;s vision, mission, and six pillars — Capability Building &amp; Talent,
+        Performance Management, IPPIS-Human Resource, Innovation, Digitalisation &amp; Content
+        Services, and Staff Welfare — sit on the enablers and core values below.
+      </p>
+      <figure className="mx-auto max-w-xl overflow-hidden rounded-card border border-border bg-surface-raised shadow-card">
+        <Image
+          src="/images/sourced/fcssip-pillars.jpg"
+          alt="FCSSIP 25 vision, mission, pillars, enablers, and core values overview"
+          width={895}
+          height={497}
+          className="h-auto w-full"
+        />
+        <figcaption className="border-t border-border px-5 py-3 text-sm text-ink-muted">
+          Source image is low resolution — shown at reduced size intentionally.
+        </figcaption>
+      </figure>
     </StaticContentTemplate>
   );
 }

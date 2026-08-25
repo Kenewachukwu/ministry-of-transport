@@ -44,11 +44,12 @@ export const leadership: LeadershipPerson[] = [
   {
     id: "permanent-secretary",
     role: "permanent-secretary",
-    name: "Engr. Funsho Adebiyi",
+    name: "Engr. Olufunso Adebiyi, FNSE",
     title: "Permanent Secretary",
     isPlaceholder: false,
-    lastVerifiedDate: "2026-08-18",
-    sourceNote: "Per the live site's Leadership Team page; bio page itself is marked under construction.",
+    lastVerifiedDate: "2026-08-24",
+    sourceNote:
+      "Per the live site's Leadership Team page as of Aug 2026. No photo exists anywhere on the live site (his dedicated bio page is marked \"Under Construction\") — do not substitute a stock photo for a specific named individual; leave as a placeholder-safe portrait until the ministry supplies one.",
   },
   {
     id: "dir-road-transport",

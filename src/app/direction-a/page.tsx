@@ -5,12 +5,14 @@ import { WavyGreenBg } from "@/design-system/primitives/WavyGreenBg";
 import { HeroA } from "@/components/sections/HeroA";
 import { StatCounterBand } from "@/components/sections/StatCounterBand";
 import { WelcomeMessageBlock } from "@/components/sections/WelcomeMessageBlock";
+import { LeadershipPreviewCard } from "@/components/sections/LeadershipCard";
+import { ScrollRevealGroup } from "@/design-system/motion/ScrollReveal";
 import { PillarCards } from "@/components/sections/PillarCards";
 import { TabbedNewsSection } from "@/components/sections/TabbedNewsSection";
 import { TopicDirectory } from "@/components/sections/TopicDirectory";
 import { CardGrid } from "@/components/sections/CardGrid";
 import { mandate, vision, mission } from "@/content/mandate";
-import { getWelcomeMessage, getPillars, getDepartments, getAgencies, getNews, getEvents } from "@/lib/cms";
+import { getWelcomeMessage, getPillars, getDepartments, getAgencies, getNews, getEvents, getLeadership } from "@/lib/cms";
 import { stats } from "@/content/stats";
 
 const basePath = "/direction-a";
@@ -22,6 +24,7 @@ export default function DirectionAHomePage() {
   const agencies = getAgencies();
   const news = getNews();
   const events = getEvents();
+  const topLeadership = getLeadership().filter((p) => p.role === "minister" || p.role === "permanent-secretary");
 
   return (
     <>
@@ -41,6 +44,27 @@ export default function DirectionAHomePage() {
             body={welcome.body}
             photoUrl={welcome.photoUrl}
           />
+        </Container>
+      </section>
+
+      <section className="border-t border-border bg-surface-raised py-20">
+        <Container>
+          <div className="flex flex-wrap items-end justify-between gap-4">
+            <div>
+              <Heading as="h2" size="h2">Meet the Leadership</Heading>
+              <p className="mt-2 max-w-2xl text-ink-muted">
+                The Federal Ministry of Transportation has able and experienced professionals in the leadership.
+              </p>
+            </div>
+            <InlineLink href={`${basePath}/about/leadership`} chevron>
+              Full leadership team
+            </InlineLink>
+          </div>
+          <ScrollRevealGroup className="mt-10 grid gap-6 sm:grid-cols-2 lg:max-w-2xl">
+            {topLeadership.map((person) => (
+              <LeadershipPreviewCard key={person.id} person={person} />
+            ))}
+          </ScrollRevealGroup>
         </Container>
       </section>
 

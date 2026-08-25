@@ -52,6 +52,45 @@ export function FeaturedLeadershipCard({ person }: { person: LeadershipPerson })
   );
 }
 
+/**
+ * Compact photo + name + title card for the Minister/Permanent Secretary,
+ * used on the homepage's "Meet the Leadership" section (mirrors the live
+ * site's own homepage pattern) — no bio dump, just enough to link through
+ * to the full Leadership page.
+ */
+export function LeadershipPreviewCard({ person }: { person: LeadershipPerson }) {
+  return (
+    <ScrollRevealItem>
+      <div className="flex h-full flex-col overflow-hidden rounded-card border border-border bg-surface-raised shadow-card">
+        <div className="aspect-square w-full overflow-hidden">
+          {person.photoUrl ? (
+            <Image
+              src={person.photoUrl}
+              alt={person.name ?? person.title}
+              width={320}
+              height={320}
+              className="h-full w-full object-cover"
+            />
+          ) : person.name ? (
+            <PlaceholderPhoto label={`${person.title} portrait`} tone="brand" className="h-full w-full" />
+          ) : (
+            <div className="flex h-full w-full flex-col items-center justify-center gap-2 border-2 border-dashed border-border bg-surface text-ink-muted">
+              <UserRound size={28} aria-hidden />
+              <span className="text-xs">Photo pending</span>
+            </div>
+          )}
+        </div>
+        <div className="p-6 text-center">
+          <p className="text-xs font-semibold uppercase tracking-[0.14em] text-cta">{person.title}</p>
+          <h3 className="mt-2 font-display text-lg font-semibold text-ink">
+            {person.name ?? "Name pending confirmation"}
+          </h3>
+        </div>
+      </div>
+    </ScrollRevealItem>
+  );
+}
+
 /** Compact grid card for directors — honest about placeholder entries. */
 export function LeadershipGridCard({ person }: { person: LeadershipPerson }) {
   return (
