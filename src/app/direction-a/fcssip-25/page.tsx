@@ -84,9 +84,6 @@ export default function Page() {
           height={497}
           className="h-auto w-full"
         />
-        <figcaption className="border-t border-border px-5 py-3 text-sm text-ink-muted">
-          Source image is low resolution — shown at reduced size intentionally.
-        </figcaption>
       </figure>
     </StaticContentTemplate>
   );
