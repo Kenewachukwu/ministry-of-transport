@@ -46,10 +46,11 @@ export const leadership: LeadershipPerson[] = [
     role: "permanent-secretary",
     name: "Engr. Olufunso Adebiyi, FNSE",
     title: "Permanent Secretary",
+    photoUrl: "/images/sourced/permanent-secretary-adebiyi.jpg",
     isPlaceholder: false,
-    lastVerifiedDate: "2026-08-24",
+    lastVerifiedDate: "2026-08-26",
     sourceNote:
-      "Per the live site's Leadership Team page as of Aug 2026. No photo exists anywhere on the live site (his dedicated bio page is marked \"Under Construction\") — do not substitute a stock photo for a specific named individual; leave as a placeholder-safe portrait until the ministry supplies one.",
+      "Name per the live site's Leadership Team page as of Aug 2026 (his dedicated bio page there is marked \"Under Construction\" and has never carried a photo). Portrait supplied directly by the client on 2026-08-26.",
   },
   {
     id: "dir-road-transport",
