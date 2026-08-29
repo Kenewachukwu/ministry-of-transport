@@ -148,12 +148,6 @@ export const imageManifest: ImageManifestEntry[] = [
     attribution: "Supplied directly by client",
   },
   {
-    path: "/images/sourced/permanent-secretary-adebiyi.jpg",
-    usage: "Permanent Secretary portrait — Leadership page, homepage leadership preview",
-    source: "stock",
-    attribution: "Supplied directly by client",
-  },
-  {
     path: "/images/sourced/fcssip-25-plan.png",
     usage: "FCSSIP 25 page — plan cover graphic",
     source: "official",

@@ -17,19 +17,9 @@ export const leadership: LeadershipPerson[] = [
     title: "Honourable Minister of Transportation",
     photoUrl: "/images/sourced/minister-alkali.jpeg",
     isPlaceholder: false,
-    lastVerifiedDate: "2026-08-18",
+    lastVerifiedDate: "2026-08-29",
     sourceNote:
-      "Per the live site's Leadership Team page as of Aug 2026. Note: the site's own /about/ page currently shows a blank minister field, and unresolved April 2026 press reports state a resignation to contest the Gombe State governorship. Confirm with the ministry before this goes live.",
-    bio: [
-      { label: "Born", value: "February 12, 1969 — Gombe State" },
-      {
-        label: "Prior roles",
-        value:
-          "Secretary, Muslim Pilgrims Welfare Board; Commissioner of Information, Gombe State; Senator for Gombe North (2011, re-elected 2019)",
-      },
-      { label: "Honorary title", value: "Sarkin Gabas Dukku" },
-      { label: "Appointed", value: "August 16, 2023" },
-    ],
+      "Bio details (born, prior roles, honorary title, appointment date) removed at KO's request, 2026-08-29 — name, title, and photo remain. Note: the live site's own /about/ page currently shows a blank minister field, and unresolved April 2026 press reports state a resignation to contest the Gombe State governorship.",
   },
   {
     id: "minister-of-state",
@@ -46,11 +36,10 @@ export const leadership: LeadershipPerson[] = [
     role: "permanent-secretary",
     name: "Engr. Olufunso Adebiyi, FNSE",
     title: "Permanent Secretary",
-    photoUrl: "/images/sourced/permanent-secretary-adebiyi.jpg",
     isPlaceholder: false,
-    lastVerifiedDate: "2026-08-26",
+    lastVerifiedDate: "2026-08-29",
     sourceNote:
-      "Name per the live site's Leadership Team page as of Aug 2026 (his dedicated bio page there is marked \"Under Construction\" and has never carried a photo). Portrait supplied directly by the client on 2026-08-26.",
+      "Name per the live site's Leadership Team page as of Aug 2026 (his dedicated bio page there is marked \"Under Construction\" and has never carried a photo). A portrait was supplied by the client on 2026-08-26, but the Permanent Secretary has since asked not to have his photo shown — reverted to a placeholder-safe portrait at his request, 2026-08-29.",
   },
   {
     id: "dir-road-transport",
