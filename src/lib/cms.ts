@@ -3,7 +3,7 @@
  * calls through here rather than importing content files directly, so a
  * future swap to a real headless CMS only touches this file.
  */
-import { leadership, welcomeMessage } from "@/content/leadership";
+import { leadership } from "@/content/leadership";
 import { departments } from "@/content/departments";
 import { agencies } from "@/content/agencies";
 import { stakeholders } from "@/content/stakeholders";
@@ -16,10 +16,6 @@ import { eServices } from "@/content/eServices";
 
 export function getLeadership() {
   return leadership;
-}
-
-export function getWelcomeMessage() {
-  return welcomeMessage;
 }
 
 export function getDepartments() {

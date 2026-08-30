@@ -15,11 +15,10 @@ export const leadership: LeadershipPerson[] = [
     role: "minister",
     name: "Sen. Sa'idu Ahmed Alkali",
     title: "Honourable Minister of Transportation",
-    photoUrl: "/images/sourced/minister-alkali.jpeg",
     isPlaceholder: false,
     lastVerifiedDate: "2026-08-29",
     sourceNote:
-      "Bio details (born, prior roles, honorary title, appointment date) removed at KO's request, 2026-08-29 — name, title, and photo remain. Note: the live site's own /about/ page currently shows a blank minister field, and unresolved April 2026 press reports state a resignation to contest the Gombe State governorship.",
+      "Bio details and photo removed at KO's request, 2026-08-29 — name and title remain, shown with a placeholder-safe portrait like the Permanent Secretary. Note: the live site's own /about/ page currently shows a blank minister field, and unresolved April 2026 press reports state a resignation to contest the Gombe State governorship.",
   },
   {
     id: "minister-of-state",
@@ -145,13 +144,3 @@ export const leadership: LeadershipPerson[] = [
     isPlaceholder: false,
   },
 ];
-
-export const welcomeMessage = {
-  signOff: "Sen. Sa'idu Ahmed Alkali",
-  title: "Honourable Minister of Transportation",
-  photoUrl: "/images/sourced/minister-alkali.jpeg",
-  body: [
-    "Welcome to the Federal Ministry of Transportation. Our mandate is to build a transport system Nigerians can rely on — safe, efficient, and connected across road and rail.",
-    "We are committed to modernising the sector's infrastructure, strengthening the institutions under our purview, and working closely with our stakeholders across all 36 states to deliver a transport network that supports the nation's economic growth.",
-  ],
-};
