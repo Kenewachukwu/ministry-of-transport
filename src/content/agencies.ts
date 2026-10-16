@@ -21,7 +21,7 @@ export const agencies: Agency[] = [
     shortName: "NITT",
     description:
       "Nigeria's foremost institute for training and research in transport technology and management.",
-    href: "https://nitt.edu.ng",
+    href: "https://nitt.gov.ng",
     photoUrl: "/images/sourced/agency-nitt-campus.jpg",
   },
 ];

@@ -2,11 +2,11 @@
 
 import { useState } from "react";
 import { motion, AnimatePresence } from "motion/react";
-import Image from "next/image";
 import Link from "next/link";
-import { Calendar, MapPin, Clock } from "lucide-react";
+import { MapPin, Clock } from "lucide-react";
 import type { NewsItem, EventItem } from "@/content/types";
 import { getNewsImage } from "@/lib/newsImage";
+import { NewsImageFrame } from "./NewsImageFrame";
 import { cn } from "@/lib/utils";
 
 const TABS = ["News", "Press Releases", "Events"] as const;
@@ -24,15 +24,7 @@ function NewsCard({ item, basePath }: { item: NewsItem; basePath: string }) {
       href={`${basePath}/news/${item.slug}`}
       className="group flex h-full flex-col overflow-hidden rounded-card border border-border bg-surface-raised shadow-card transition-all duration-200 hover:-translate-y-1"
     >
-      <div className="aspect-[16/10] overflow-hidden">
-        <Image
-          src={getNewsImage(item)}
-          alt=""
-          width={506}
-          height={316}
-          className="h-full w-full object-cover transition-transform duration-500 group-hover:scale-105"
-        />
-      </div>
+      <NewsImageFrame src={getNewsImage(item)} />
       <div className="flex flex-1 flex-col p-5">
         <span className="text-xs font-semibold uppercase tracking-[0.08em] text-cta">
           {item.category}

@@ -1,8 +1,8 @@
-import Image from "next/image";
 import Link from "next/link";
 import { Clock } from "lucide-react";
 import type { NewsItem } from "@/content/types";
 import { getNewsImage } from "@/lib/newsImage";
+import { NewsImageFrame } from "./NewsImageFrame";
 import { ScrollRevealGroup, ScrollRevealItem } from "@/design-system/motion/ScrollReveal";
 
 const dateFormatter = new Intl.DateTimeFormat("en-GB", {
@@ -16,30 +16,14 @@ const dateFormatter = new Intl.DateTimeFormat("en-GB", {
  * fmmbe.gov.ng's "Featured News" section — the pattern the client
  * specifically flagged as one to carry over.
  */
-export function FeaturedNews({
-  items,
-  basePath,
-  heading = "Featured News",
-}: {
-  items: NewsItem[];
-  basePath: string;
-  heading?: string;
-}) {
+export function FeaturedNews({ items, basePath }: { items: NewsItem[]; basePath: string }) {
   return (
     <div>
       <ScrollRevealGroup className="grid gap-6 lg:grid-cols-3">
         {items.map((item) => (
           <ScrollRevealItem key={item.id}>
             <Link href={`${basePath}/news/${item.slug}`} className="group flex h-full flex-col overflow-hidden rounded-card border border-border bg-surface-raised shadow-card transition-all duration-200 hover:-translate-y-1">
-              <div className="aspect-[16/10] overflow-hidden">
-                <Image
-                  src={getNewsImage(item)}
-                  alt=""
-                  width={506}
-                  height={316}
-                  className="h-full w-full object-cover transition-transform duration-500 group-hover:scale-105"
-                />
-              </div>
+              <NewsImageFrame src={getNewsImage(item)} />
               <div className="flex flex-1 flex-col p-5">
                 <span className="text-xs font-semibold uppercase tracking-[0.08em] text-cta">
                   {item.category}
