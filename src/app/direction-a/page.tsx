@@ -2,7 +2,7 @@ import { Container } from "@/design-system/primitives/Container";
 import { Heading } from "@/design-system/primitives/Heading";
 import { InlineLink } from "@/design-system/primitives/Link";
 import { WavyGreenBg } from "@/design-system/primitives/WavyGreenBg";
-import { HeroA } from "@/components/sections/HeroA";
+import { HeroSection } from "@/components/sections/HeroSection";
 import { StatCounterBand } from "@/components/sections/StatCounterBand";
 import { LeadershipPreviewCard } from "@/components/sections/LeadershipCard";
 import { ScrollRevealGroup } from "@/design-system/motion/ScrollReveal";
@@ -26,7 +26,7 @@ export default function DirectionAHomePage() {
 
   return (
     <>
-      <HeroA basePath={basePath} />
+      <HeroSection basePath={basePath} />
 
       <section className="border-b border-border bg-surface-raised py-10">
         <Container>

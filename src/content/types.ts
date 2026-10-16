@@ -103,6 +103,18 @@ export interface EService {
   href: string;
 }
 
+/** One slide of the home-page hero carousel. */
+export interface HeroSlide {
+  eyebrow: string;
+  headline: string;
+  body: string;
+  /** Call-to-action label and target (site-relative path or absolute URL). */
+  linkLabel: string;
+  linkHref: string;
+  imageAlt: string;
+  imageSrc: string;
+}
+
 export interface FooterLinkColumn {
   heading: string;
   links: { label: string; href: string; external?: boolean }[];

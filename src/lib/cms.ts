@@ -13,6 +13,11 @@ import { news } from "@/content/news";
 import { events } from "@/content/events";
 import { documents, nctCommuniques } from "@/content/documents";
 import { eServices } from "@/content/eServices";
+import { heroSlides } from "@/content/hero";
+
+export function getHeroSlides() {
+  return heroSlides;
+}
 
 export function getLeadership() {
   return leadership;

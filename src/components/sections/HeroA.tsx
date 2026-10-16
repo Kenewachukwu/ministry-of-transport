@@ -1,19 +1,26 @@
 "use client";
 
-import { useState } from "react";
+import { useEffect, useState, type FocusEvent } from "react";
 import Image from "next/image";
-import { motion, AnimatePresence, useReducedMotion } from "motion/react";
-import { ChevronLeft, ChevronRight } from "lucide-react";
+import { motion, useReducedMotion } from "motion/react";
+import { ChevronLeft, ChevronRight, Pause, Play } from "lucide-react";
 import { DarkHeroFlag } from "@/design-system/themes/HeroModeContext";
 import { Container } from "@/design-system/primitives/Container";
 import { InlineLink } from "@/design-system/primitives/Link";
+import type { HeroSlide } from "@/content/types";
+import { resolveHref } from "@/lib/links";
 import { cn } from "@/lib/utils";
 
+/** How long each slide stays before the carousel advances on its own. */
+const SLIDE_INTERVAL_MS = 6000;
+
+// Fill opacities were roughly halved in Oct 2026 (Ministry review: "the hero
+// background should be brighter") so the photograph reads through the shapes.
 const SHAPES = [
   {
     d: "M 1440 0 C 1180 80 900 240 760 460 C 640 660 720 820 940 900 L 1440 900 Z",
     fill: "#04573a",
-    opacity: 0.62,
+    opacity: 0.34,
     delay: 0,
     fx: 6,
     fy: 4,
@@ -22,7 +29,7 @@ const SHAPES = [
   {
     d: "M 1440 120 C 1220 180 980 340 840 540 C 760 670 800 810 960 870 L 1160 900 L 1440 720 Z",
     fill: "#007d53",
-    opacity: 0.42,
+    opacity: 0.22,
     delay: 0.1,
     fx: -5,
     fy: 6,
@@ -31,7 +38,7 @@ const SHAPES = [
   {
     d: "M 1440 350 C 1300 390 1100 480 940 600 C 840 680 800 800 900 880 L 1180 900 L 1440 820 Z",
     fill: "#3aae83",
-    opacity: 0.28,
+    opacity: 0.15,
     delay: 0.2,
     fx: 8,
     fy: -4,
@@ -40,7 +47,7 @@ const SHAPES = [
   {
     d: "M 820 900 C 900 820 1060 740 1240 680 L 1440 620 L 1440 900 Z",
     fill: "#96d9be",
-    opacity: 0.18,
+    opacity: 0.1,
     delay: 0.3,
     fx: -4,
     fy: 5,
@@ -94,87 +101,94 @@ function AngularShapes() {
   );
 }
 
-interface Slide {
-  eyebrow: string;
-  headline: string;
-  body: string;
-  linkLabel: string;
-  linkHref: string;
-  imageAlt: string;
-  imageSrc: string;
-}
-
-const slides: Slide[] = [
-  {
-    eyebrow: "Our Vision",
-    headline: "A secure, world-class transportation system.",
-    body: "Building the road and rail infrastructure that connects every part of Nigeria.",
-    linkLabel: "Our mandate and vision",
-    linkHref: "/about",
-    imageAlt: "Aerial view of a highway in Lagos, Nigeria",
-    imageSrc: "/images/stock/hero-lagos-highway.jpg",
-  },
-  {
-    eyebrow: "National Council on Transportation",
-    headline: "Embracing innovation for sustainable transportation.",
-    body: "The 18th NCT brought federal and state stakeholders together to tackle the sector's energy and connectivity challenges.",
-    linkLabel: "Read the communique",
-    linkHref: "/resources/nct-communique",
-    imageAlt: "Engineers reviewing infrastructure blueprints on site",
-    imageSrc: "/images/stock/hero-engineering-team.jpg",
-  },
-  {
-    eyebrow: "Rail Transport Services",
-    headline: "An intermodal network built for growth.",
-    body: "Expanding rail capacity and intermodal terminals to support Nigeria's economic development.",
-    linkLabel: "Explore our departments",
-    linkHref: "/about/departments",
-    imageAlt: "A train arriving at Abuja Metro Station, Nigeria",
-    imageSrc: "/images/stock/hero-abuja-metro-rail.jpg",
-  },
-];
-
-export function HeroA({ basePath }: { basePath: string }) {
+export function HeroA({ slides, basePath }: { slides: HeroSlide[]; basePath: string }) {
   const [index, setIndex] = useState(0);
-  const slide = slides[index];
+  const [userPaused, setUserPaused] = useState(false);
+  // Pointer over the text/controls, or keyboard focus inside them, holds the
+  // slide still so it can't change under someone who is about to click.
+  const [interacting, setInteracting] = useState(false);
+  const [tabHidden, setTabHidden] = useState(false);
+  const reducedMotion = useReducedMotion(); // motion's hook: boolean | null (null = not yet known)
+
+  const count = slides.length;
+  const canAutoplay = count > 1 && reducedMotion !== true;
+  const autoplaying = canAutoplay && !userPaused && !interacting && !tabHidden;
+
+  useEffect(() => {
+    const onVisibility = () => setTabHidden(document.hidden);
+    onVisibility();
+    document.addEventListener("visibilitychange", onVisibility);
+    return () => document.removeEventListener("visibilitychange", onVisibility);
+  }, []);
+
+  // A fresh timeout per slide (note `index` in the deps): clicking a dot or
+  // arrow restarts the full interval instead of advancing again a moment later.
+  useEffect(() => {
+    if (!autoplaying) return;
+    const id = window.setTimeout(() => setIndex((i) => (i + 1) % count), SLIDE_INTERVAL_MS);
+    return () => window.clearTimeout(id);
+  }, [autoplaying, index, count]);
+
+  if (count === 0) return null;
+  const slide = slides[index] ?? slides[0];
+  const cta = resolveHref(basePath, slide.linkHref);
+
+  const holdHandlers = {
+    onMouseEnter: () => setInteracting(true),
+    onMouseLeave: () => setInteracting(false),
+    onFocus: () => setInteracting(true),
+    onBlur: (e: FocusEvent<HTMLElement>) => {
+      if (!e.currentTarget.contains(e.relatedTarget)) setInteracting(false);
+    },
+  };
 
   return (
-    <section className="relative -mt-20 flex min-h-dvh items-center overflow-hidden bg-surface-inverse text-white lg:-mt-28">
+    <section
+      aria-roledescription="carousel"
+      aria-label="Featured"
+      className="relative -mt-20 flex min-h-dvh items-center overflow-hidden bg-surface-inverse text-white lg:-mt-28"
+    >
       <DarkHeroFlag />
 
-      {/* initial={false}: skip the mount animation on first render (incl. every
-          route navigation back to this page, since HeroA remounts fresh) so
-          the very first slide never depends on a transition completing to
-          become visible. Only subsequent user-triggered slide changes animate. */}
-      <AnimatePresence mode="wait" initial={false}>
-        <motion.div
-          key={index}
-          className="absolute inset-0"
-          initial={{ opacity: 0 }}
-          animate={{ opacity: 1 }}
-          exit={{ opacity: 0 }}
-          transition={{ duration: 0.7, ease: "easeInOut" }}
-        >
+      {/*
+        All slide photographs are stacked and cross-faded with a CSS opacity
+        transition: no dark dip between slides, and the first slide is visible
+        in the server-rendered HTML without any JS having to run first (an
+        earlier mount-triggered JS animation got stuck invisible after client
+        route changes on the live site).
+      */}
+      <div className="absolute inset-0">
+        {slides.map((s, i) => (
           <Image
-            src={slide.imageSrc}
-            alt={slide.imageAlt}
+            key={s.imageSrc}
+            src={s.imageSrc}
+            alt={i === index ? s.imageAlt : ""}
             fill
-            priority={index === 0}
+            priority={i === 0}
             sizes="100vw"
-            className="object-cover"
+            className={cn(
+              "object-cover transition-opacity duration-1000 ease-in-out",
+              i === index ? "opacity-100" : "opacity-0"
+            )}
           />
-          {/* Deep green gradient — replaces the old black overlay */}
-          <div className="absolute inset-0 bg-gradient-to-t from-[#031a0c] via-[#052e15]/80 to-[#073321]/25" />
-          {/* Left-side text backing */}
-          <div className="absolute inset-0 bg-gradient-to-r from-[#031a0c]/70 via-[#031a0c]/30 to-transparent" />
-        </motion.div>
-      </AnimatePresence>
+        ))}
+        {/* Light green tint, deepest at the foot (where the controls sit) and
+            fading out toward the top; plus a left-hand backing for the copy. */}
+        <div className="absolute inset-0 bg-gradient-to-t from-[#031a0c]/70 via-[#052e15]/20 to-transparent" />
+        <div className="absolute inset-0 bg-gradient-to-r from-[#031a0c]/70 via-[#031a0c]/42 to-transparent" />
+        {/* Keeps the white header text readable over bright sky/road. */}
+        <div className="absolute inset-x-0 top-0 h-44 bg-gradient-to-b from-[#031a0c]/55 to-transparent" />
+      </div>
 
       {/* Angular green shapes overlay */}
       <AngularShapes />
 
       <Container className="relative z-10 pt-40 pb-32 lg:pt-48">
-        <div className="max-w-2xl">
+        <div
+          className="max-w-2xl [text-shadow:0_1px_14px_rgba(3,26,12,0.55)]"
+          {...holdHandlers}
+          aria-live={autoplaying ? "off" : "polite"}
+        >
           {/*
             Plain elements + CSS `animate-count-fade` instead of Framer Motion
             initial/animate here: on the live site, this exact mount-triggered
@@ -187,7 +201,7 @@ export function HeroA({ basePath }: { basePath: string }) {
           */}
           <p
             key={`eyebrow-${index}`}
-            className="animate-count-fade text-sm font-semibold uppercase tracking-[0.2em] text-brand-300"
+            className="animate-count-fade text-sm font-semibold uppercase tracking-[0.2em] text-brand-200"
           >
             {slide.eyebrow}
           </p>
@@ -200,13 +214,13 @@ export function HeroA({ basePath }: { basePath: string }) {
           </h1>
           <p
             key={`body-${index}`}
-            className="animate-count-fade mt-5 max-w-lg text-base text-white/75"
+            className="animate-count-fade mt-5 max-w-lg text-base text-white/90"
             style={{ animationDelay: "140ms" }}
           >
             {slide.body}
           </p>
           <div className="mt-7">
-            <InlineLink href={`${basePath}${slide.linkHref}`} chevron className="text-white">
+            <InlineLink href={cta.href} external={cta.external} chevron className="text-white hover:text-white focus-visible:text-white">
               {slide.linkLabel}
             </InlineLink>
           </div>
@@ -215,33 +229,44 @@ export function HeroA({ basePath }: { basePath: string }) {
 
       <div className="absolute bottom-8 left-0 right-0 z-10">
         <Container className="flex items-center justify-between">
-          <div className="flex gap-2">
+          <div className="flex items-center gap-2" {...holdHandlers}>
             {slides.map((s, i) => (
               <button
-                key={s.headline}
+                key={s.imageSrc}
                 aria-label={`Go to slide ${i + 1}`}
+                aria-current={i === index ? "true" : undefined}
                 onClick={() => setIndex(i)}
                 className={cn(
-                  "h-1.5 rounded-full transition-all",
-                  i === index ? "w-8 bg-brand-400" : "w-4 bg-white/30 hover:bg-white/50"
+                  "h-1.5 rounded-full transition-all focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-white",
+                  i === index ? "w-8 bg-brand-300" : "w-4 bg-white/40 hover:bg-white/70"
                 )}
               />
             ))}
+            {canAutoplay && (
+              <button
+                type="button"
+                aria-label={userPaused ? "Play slideshow" : "Pause slideshow"}
+                onClick={() => setUserPaused((p) => !p)}
+                className="ml-2 flex h-7 w-7 items-center justify-center rounded-full border border-white/40 text-white transition-colors hover:border-white hover:bg-white/15 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-white"
+              >
+                {userPaused ? <Play size={12} aria-hidden /> : <Pause size={12} aria-hidden />}
+              </button>
+            )}
           </div>
-          <div className="flex gap-2">
+          <div className="flex gap-2" {...holdHandlers}>
             <button
               aria-label="Previous slide"
-              onClick={() => setIndex((i) => (i - 1 + slides.length) % slides.length)}
-              className="flex h-9 w-9 items-center justify-center rounded-full border border-white/25 text-white transition-colors hover:border-white"
+              onClick={() => setIndex((i) => (i - 1 + count) % count)}
+              className="flex h-9 w-9 items-center justify-center rounded-full border border-white/40 text-white transition-colors hover:border-white hover:bg-white/15 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-white"
             >
-              <ChevronLeft size={16} />
+              <ChevronLeft size={16} aria-hidden />
             </button>
             <button
               aria-label="Next slide"
-              onClick={() => setIndex((i) => (i + 1) % slides.length)}
-              className="flex h-9 w-9 items-center justify-center rounded-full border border-white/25 text-white transition-colors hover:border-white"
+              onClick={() => setIndex((i) => (i + 1) % count)}
+              className="flex h-9 w-9 items-center justify-center rounded-full border border-white/40 text-white transition-colors hover:border-white hover:bg-white/15 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-white"
             >
-              <ChevronRight size={16} />
+              <ChevronRight size={16} aria-hidden />
             </button>
           </div>
         </Container>
