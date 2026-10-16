@@ -30,6 +30,11 @@ export function __setTestDb(db: Db | undefined) {
   g.__motDb = db ? Promise.resolve(db) : undefined;
 }
 
+/** Test hook: make getDb() behave as if the database is still being created. */
+export function __setPendingDb() {
+  g.__motDb = new Promise<Db>(() => {});
+}
+
 async function createDb(): Promise<Db> {
   const kind = contentSource();
 
@@ -45,6 +50,8 @@ async function createDb(): Promise<Db> {
     const { seedIfEmpty } = await import("./seed");
     await migrateDb(db, "pglite");
     await seedIfEmpty(db);
+    const { bootstrapLocalAdminIfEmpty } = await import("@/lib/auth/bootstrap");
+    await bootstrapLocalAdminIfEmpty(db);
     return db;
   }
 
