@@ -44,15 +44,23 @@ async function createDb(): Promise<Db> {
   }
 
   if (kind === "pglite") {
-    const { createPgliteDb } = await import("./drivers/pglite");
-    const db = (await createPgliteDb(".data/pglite")) as unknown as Db;
-    const { migrateDb } = await import("./migrate");
-    const { seedIfEmpty } = await import("./seed");
-    await migrateDb(db, "pglite");
-    await seedIfEmpty(db);
-    const { bootstrapLocalAdminIfEmpty } = await import("@/lib/auth/bootstrap");
-    await bootstrapLocalAdminIfEmpty(db);
-    return db;
+    try {
+      const { createPgliteDb } = await import("./drivers/pglite");
+      const db = (await createPgliteDb(".data/pglite")) as unknown as Db;
+      const { migrateDb } = await import("./migrate");
+      const { seedIfEmpty } = await import("./seed");
+      await migrateDb(db, "pglite");
+      await seedIfEmpty(db);
+      const { bootstrapLocalAdminIfEmpty } = await import("@/lib/auth/bootstrap");
+      await bootstrapLocalAdminIfEmpty(db);
+      return db;
+    } catch (error) {
+      throw new Error(
+        "The local development database could not be opened. If it was interrupted, or opened by two processes at once, it can be left damaged. " +
+          "Stop the dev server, run `npm run db:reset-local`, and start again (local test data is lost; nothing else is affected).",
+        { cause: error }
+      );
+    }
   }
 
   throw new NoDatabaseError();

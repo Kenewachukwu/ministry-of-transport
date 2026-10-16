@@ -1,5 +1,14 @@
 This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
 
+## Website admin
+
+The site has an admin area at `/admin` for managing content (hero, news, departments, leadership, and more). It is optional: with no database configured the website serves `src/content/*` exactly as before. See **[ADMIN-GUIDE.md](./ADMIN-GUIDE.md)** for how editors use it and how to provision and deploy it (Neon, Vercel Blob, Resend).
+
+```bash
+npm run dev:db   # site + admin on an embedded local database, no cloud accounts needed
+npm test         # unit tests
+```
+
 ## Getting Started
 
 First, run the development server:

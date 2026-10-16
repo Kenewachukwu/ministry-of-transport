@@ -68,24 +68,26 @@ export function ReorderList({
           const item = byId.get(id);
           if (!item) return null;
           return (
-            <li key={id} className="flex flex-wrap items-center gap-3 rounded-control border border-border bg-surface-raised px-3 py-2.5">
-              <GripVertical size={16} aria-hidden className="shrink-0 text-ink-muted/50" />
-              <span className="w-6 shrink-0 text-center text-xs font-semibold text-ink-muted">{i + 1}</span>
-              <div className="min-w-0 flex-1">
-                <Link href={item.editHref} className="block truncate text-sm font-semibold text-ink hover:text-cta focus-visible:text-cta">
-                  {item.title}
-                </Link>
-                {item.subtitle && <p className="truncate text-xs text-ink-muted">{item.subtitle}</p>}
+            <li key={id} className="flex flex-col gap-2.5 rounded-control border border-border bg-surface-raised px-3 py-2.5 sm:flex-row sm:items-center sm:gap-3">
+              <div className="flex min-w-0 flex-1 items-center gap-3">
+                <GripVertical size={16} aria-hidden className="shrink-0 text-ink-muted/50" />
+                <span className="w-6 shrink-0 text-center text-xs font-semibold text-ink-muted">{i + 1}</span>
+                <div className="min-w-0 flex-1">
+                  <Link href={item.editHref} className="block truncate text-sm font-semibold text-ink hover:text-cta focus-visible:text-cta">
+                    {item.title}
+                  </Link>
+                  {item.subtitle && <p className="truncate text-xs text-ink-muted">{item.subtitle}</p>}
+                </div>
               </div>
-              <div className="flex items-center gap-1.5">
-                <button type="button" className={arrow} onClick={() => move(i, i - 1)} disabled={i === 0} aria-label={`Move “${item.title}” up`}>
-                  <ArrowUp size={15} aria-hidden />
-                </button>
-                <button type="button" className={arrow} onClick={() => move(i, i + 1)} disabled={i === order.length - 1} aria-label={`Move “${item.title}” down`}>
-                  <ArrowDown size={15} aria-hidden />
-                </button>
-              </div>
-              <div className="flex items-center gap-2">
+              <div className="flex flex-wrap items-center gap-2 pl-9 sm:pl-0">
+                <div className="flex items-center gap-1.5">
+                  <button type="button" className={arrow} onClick={() => move(i, i - 1)} disabled={i === 0} aria-label={`Move “${item.title}” up`}>
+                    <ArrowUp size={15} aria-hidden />
+                  </button>
+                  <button type="button" className={arrow} onClick={() => move(i, i + 1)} disabled={i === order.length - 1} aria-label={`Move “${item.title}” down`}>
+                    <ArrowDown size={15} aria-hidden />
+                  </button>
+                </div>
                 <Link href={item.editHref} className="rounded-control border border-border px-2.5 py-1.5 text-xs font-semibold text-ink hover:border-cta hover:text-cta focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-cta">
                   Edit
                 </Link>
