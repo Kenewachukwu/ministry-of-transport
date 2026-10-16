@@ -31,6 +31,10 @@ export function getDepartments() {
   return departments;
 }
 
+export function getDepartmentBySlug(slug: string) {
+  return departments.find((department) => department.id === slug);
+}
+
 export function getAgencies() {
   return agencies;
 }

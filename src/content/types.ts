@@ -22,10 +22,25 @@ export interface LeadershipPerson {
   sourceNote?: string;
 }
 
+/** A titled block on a department page ("Structure", "Functions", "Mandate"…). */
+export interface DepartmentSection {
+  heading: string;
+  /** Optional lead-in sentence shown above the list. */
+  note?: string;
+  items: string[];
+}
+
 export interface Department {
+  /** Stable id, also used as the page slug (`/about/departments/[id]`). */
   id: string;
   name: string;
+  /** One-line blurb for cards and listings. */
   summary: string;
+  /** Intro paragraphs for the department page (falls back to `summary`). */
+  description: string[];
+  /** Structure / functions / mandate, in display order. */
+  sections: DepartmentSection[];
+  /** Card and page-banner image (decorative: the page heading names the department). */
   photoUrl?: string;
 }
 

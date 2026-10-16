@@ -144,7 +144,13 @@ export default function DirectionAHomePage() {
           </div>
           <div className="mt-10">
             <CardGrid
-              items={departments.map((d) => ({ id: d.id, title: d.name, description: d.summary, imageUrl: d.photoUrl }))}
+              items={departments.map((d) => ({
+                id: d.id,
+                title: d.name,
+                description: d.summary,
+                imageUrl: d.photoUrl,
+                href: `${basePath}/about/departments/${d.id}`,
+              }))}
             />
           </div>
         </Container>
