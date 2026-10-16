@@ -49,7 +49,7 @@ export default function DirectionAHomePage() {
           </div>
           <ScrollRevealGroup className="mt-10 grid gap-6 sm:grid-cols-2 lg:max-w-2xl">
             {topLeadership.map((person) => (
-              <LeadershipPreviewCard key={person.id} person={person} />
+              <LeadershipPreviewCard key={person.id} person={person} basePath={basePath} />
             ))}
           </ScrollRevealGroup>
         </Container>

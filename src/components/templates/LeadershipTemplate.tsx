@@ -5,10 +5,10 @@ import { FeaturedLeadershipCard, LeadershipGrid } from "@/components/sections/Le
 import { getLeadership } from "@/lib/cms";
 
 /**
- * Shared across both directions — proves the placeholder-safe leadership
- * pattern (LeadershipPerson.name: null renders honestly, never invented).
+ * Leadership hub. Entries with `name: null` render as honest placeholders
+ * (never an invented name); every card links to that person's profile page.
  */
-export function LeadershipTemplate() {
+export function LeadershipTemplate({ basePath }: { basePath: string }) {
   const people = getLeadership();
   const minister = people.find((p) => p.role === "minister");
   const permSec = people.find((p) => p.role === "permanent-secretary");
@@ -23,19 +23,19 @@ export function LeadershipTemplate() {
       />
       <section className="py-16">
         <Container className="flex flex-col gap-8">
-          {minister && <FeaturedLeadershipCard person={minister} />}
-          {permSec && <FeaturedLeadershipCard person={permSec} />}
+          {minister && <FeaturedLeadershipCard person={minister} basePath={basePath} />}
+          {permSec && <FeaturedLeadershipCard person={permSec} basePath={basePath} />}
         </Container>
       </section>
       <section className="border-t border-border bg-surface-raised py-16">
         <Container>
           <Heading as="h2" size="h2">Directors</Heading>
           <p className="mt-2 max-w-2xl text-ink-muted">
-            A small number of entries are shown as pending because the live site does not
-            yet list a confirmed name for that role.
+            Some entries are shown as pending until the Ministry confirms the name of the
+            office-holder.
           </p>
           <div className="mt-10">
-            <LeadershipGrid people={directors} />
+            <LeadershipGrid people={directors} basePath={basePath} />
           </div>
         </Container>
       </section>

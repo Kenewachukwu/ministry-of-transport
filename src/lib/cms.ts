@@ -23,6 +23,10 @@ export function getLeadership() {
   return leadership;
 }
 
+export function getLeadershipById(id: string) {
+  return leadership.find((person) => person.id === id);
+}
+
 export function getDepartments() {
   return departments;
 }

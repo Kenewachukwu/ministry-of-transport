@@ -4,5 +4,5 @@ import { LeadershipTemplate } from "@/components/templates/LeadershipTemplate";
 export const metadata: Metadata = { title: "Leadership" };
 
 export default function Page() {
-  return <LeadershipTemplate />;
+  return <LeadershipTemplate basePath="/direction-a" />;
 }

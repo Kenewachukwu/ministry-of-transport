@@ -1,34 +1,22 @@
 import type { LeadershipPerson } from "./types";
 
 /**
- * CMS-shaped, not hardcoded prose — per the client's decision, kept as-is
- * from the live site with a governance trail (`sourceNote`,
- * `lastVerifiedDate`) rather than baked into JSX, because public reports of
- * a possible 2026 resignation are unresolved and the ministry's own site is
- * currently self-inconsistent about this. Incomplete director entries on
- * the live site ("DLS", "DFA") are kept as honest placeholders — never
- * invent a name.
+ * CMS-shaped, not hardcoded prose, with a governance trail (`sourceNote`,
+ * `lastVerifiedDate`) rather than facts baked into JSX. `sourceNote` is an
+ * INTERNAL note and is never rendered publicly. Entries with `name: null`
+ * render as honest placeholders — never invent a name. Incomplete director
+ * entries on the live site ("DLS", "DFA") are kept as placeholders too.
  */
 export const leadership: LeadershipPerson[] = [
   {
     id: "minister",
     role: "minister",
-    name: "Sen. Sa'idu Ahmed Alkali",
-    title: "Honourable Minister of Transportation",
-    isPlaceholder: false,
-    lastVerifiedDate: "2026-08-29",
-    sourceNote:
-      "Bio details and photo removed at KO's request, 2026-08-29 — name and title remain, shown with a placeholder-safe portrait like the Permanent Secretary. Note: the live site's own /about/ page currently shows a blank minister field, and unresolved April 2026 press reports state a resignation to contest the Gombe State governorship.",
-  },
-  {
-    id: "minister-of-state",
-    role: "director",
     name: null,
-    placeholderLabel: "Minister of State",
-    title: "Honourable Minister of State for Transportation",
+    title: "Honourable Minister of Transportation",
     isPlaceholder: true,
-    lastVerifiedDate: "2026-08-18",
-    sourceNote: "Live site shows this bio page as under construction — no name populated.",
+    lastVerifiedDate: "2026-10-16",
+    sourceNote:
+      "Name removed from public display at the Ministry's request (ICT website review, 15 Oct 2026). FMoT will supply the new leadership names.",
   },
   {
     id: "permanent-secretary",
