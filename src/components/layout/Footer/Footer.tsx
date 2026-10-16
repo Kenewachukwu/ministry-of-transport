@@ -7,6 +7,11 @@ import { Container } from "@/design-system/primitives/Container";
 import { SocialLinks } from "./SocialLinks";
 import { ComplianceBar } from "./ComplianceBar";
 
+// Footer links: colour change + underline on hover and keyboard focus (the
+// footer is dark, so focus uses a white ring).
+const footerLinkClasses =
+  "text-sm text-white/75 underline-offset-4 transition-colors hover:text-white hover:underline focus-visible:text-white focus-visible:underline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-white";
+
 export function Footer({ basePath }: { basePath: string }) {
   return (
     <footer className="bg-surface-inverse text-white">
@@ -35,9 +40,15 @@ export function Footer({ basePath }: { basePath: string }) {
               <ul className="mt-4 flex flex-col gap-2.5">
                 {col.links.map((link) => (
                   <li key={link.href}>
-                    <Link href={`${basePath}${link.href}`} className="text-sm text-white/75 hover:text-white">
-                      {link.label}
-                    </Link>
+                    {link.external ? (
+                      <a href={link.href} target="_blank" rel="noopener noreferrer" className={footerLinkClasses}>
+                        {link.label}
+                      </a>
+                    ) : (
+                      <Link href={`${basePath}${link.href}`} className={footerLinkClasses}>
+                        {link.label}
+                      </Link>
+                    )}
                   </li>
                 ))}
               </ul>
@@ -49,7 +60,7 @@ export function Footer({ basePath }: { basePath: string }) {
             <ul className="mt-4 flex flex-col gap-2.5">
               {agencies.map((agency) => (
                 <li key={agency.id}>
-                  <a href={agency.href} target="_blank" rel="noopener noreferrer" className="text-sm text-white/75 hover:text-white">
+                  <a href={agency.href} target="_blank" rel="noopener noreferrer" className={footerLinkClasses}>
                     {agency.shortName}
                   </a>
                 </li>
@@ -61,13 +72,24 @@ export function Footer({ basePath }: { basePath: string }) {
         <div className="mt-10 border-t border-white/10 pt-8">
           <p className="text-sm font-semibold uppercase tracking-[0.1em] text-white/50">E-Services</p>
           <ul className="mt-4 flex flex-wrap gap-x-6 gap-y-2">
-            {eServices.map((service) => (
-              <li key={service.id}>
-                <a href={service.href} target="_blank" rel="noopener noreferrer" className="text-sm text-white/70 hover:text-white">
-                  {service.name}
-                </a>
-              </li>
-            ))}
+            {eServices.map((service) => {
+              // Some e-services point at pages on this site ("/e-services"); only
+              // true external URLs open in a new tab and skip the basePath prefix.
+              const isExternal = !service.href.startsWith("/");
+              return (
+                <li key={service.id}>
+                  {isExternal ? (
+                    <a href={service.href} target="_blank" rel="noopener noreferrer" className={footerLinkClasses}>
+                      {service.name}
+                    </a>
+                  ) : (
+                    <Link href={`${basePath}${service.href}`} className={footerLinkClasses}>
+                      {service.name}
+                    </Link>
+                  )}
+                </li>
+              );
+            })}
           </ul>
         </div>
       </Container>

@@ -3,9 +3,10 @@
 import { useEffect, useState } from "react";
 import Link from "next/link";
 import { cn } from "@/lib/utils";
-import { navConfig, portalNav } from "@/content/nav.config";
+import { navConfig, extCorresNav, pebecNav, staffPortalNav } from "@/content/nav.config";
 import { useHeroMode } from "@/design-system/themes/HeroModeContext";
 import { WavyGreenBg } from "@/design-system/primitives/WavyGreenBg";
+import { ButtonLink } from "@/design-system/primitives/Button";
 import { Logo } from "./Logo";
 import { NavDropdown } from "./NavDropdown";
 import { MobileNav } from "./MobileNav";
@@ -36,6 +37,14 @@ export function HeaderA({ basePath }: { basePath: string }) {
   const solid = scrolled || !transparentOverHero;
   const inverse = transparentOverHero && !scrolled;
 
+  // Utility-bar links: colour shift + sliding underline on hover AND keyboard
+  // focus. Over the dark hero the hover colour is white (brand green on a dark
+  // photo would lose contrast); on the solid bar it is the brand green.
+  const utilityLink = cn(
+    "relative py-2 transition-colors after:absolute after:inset-x-0 after:bottom-1.5 after:h-px after:origin-left after:scale-x-0 after:bg-current after:transition-transform after:duration-200 hover:after:scale-x-100 focus-visible:after:scale-x-100 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-current",
+    solid ? "hover:text-cta focus-visible:text-cta" : "hover:text-white focus-visible:text-white"
+  );
+
   return (
     <header className={cn("fixed top-0 z-50 w-full transition-colors duration-300", solid ? "border-b border-border bg-surface-raised" : "bg-transparent")}>
       {solid && (
@@ -44,26 +53,35 @@ export function HeaderA({ basePath }: { basePath: string }) {
         </div>
       )}
       <div className={cn("hidden h-8 items-center justify-end gap-6 px-4 text-xs sm:px-6 lg:flex lg:px-8", solid ? "border-b border-border text-ink-muted" : "text-white/70")}>
-        <Link href={`${basePath}/contact`} className="py-2 hover:text-cta">Contact</Link>
-        <Link href={`${basePath}${portalNav.href}`} className="py-2 hover:text-cta">Staff Portal</Link>
+        <Link href={`${basePath}/contact`} className={utilityLink}>Contact</Link>
+        <Link href={`${basePath}${staffPortalNav.href}`} className={utilityLink}>{staffPortalNav.label}</Link>
       </div>
 
-      <div className="flex h-20 items-center justify-between px-4 sm:px-6 lg:px-8">
+      <div className="flex h-20 items-center justify-between gap-4 px-4 sm:px-6 lg:px-8">
         <Logo basePath={basePath} inverse={inverse} />
 
-        <nav className="hidden items-center gap-7 lg:flex">
+        <nav className="hidden items-center gap-6 xl:flex">
           {navConfig.map((item) => (
             <NavDropdown key={item.label} item={item} basePath={basePath} variant="flat" inverse={inverse} />
           ))}
         </nav>
 
-        <div className="hidden lg:block">
-          <Link
-            href={`${basePath}${portalNav.href}`}
-            className="rounded-control bg-cta px-4 py-2 text-sm font-semibold text-cta-ink transition-opacity hover:opacity-90"
+        {/* The full nav + two buttons need ~1,150px, so the drawer stays in use
+            until the xl breakpoint. External links are absolute URLs: never
+            prefixed with basePath. */}
+        <div className="hidden items-center gap-2 xl:flex">
+          <ButtonLink href={extCorresNav.href} external size="sm" className="border border-transparent px-3.5 py-2">
+            {extCorresNav.label}
+          </ButtonLink>
+          <ButtonLink
+            href={pebecNav.href}
+            external
+            variant="outline-brand"
+            size="sm"
+            className={cn("px-3.5 py-2", inverse && "border-white/70 text-white hover:border-white hover:bg-white hover:text-ink active:bg-white/90 active:text-ink")}
           >
-            {portalNav.label}
-          </Link>
+            {pebecNav.label}
+          </ButtonLink>
         </div>
 
         <MobileNav items={navConfig} basePath={basePath} inverse={inverse} />

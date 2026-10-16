@@ -1,4 +1,5 @@
 import type { FooterLinkColumn } from "./types";
+import { ECMS_URL, pebecNav } from "./nav.config";
 
 export const footerColumns: FooterLinkColumn[] = [
   {
@@ -15,7 +16,9 @@ export const footerColumns: FooterLinkColumn[] = [
     heading: "Support",
     links: [
       { label: "Contact Us", href: "/contact" },
-      { label: "eCMS Portal", href: "/portal/login" },
+      { label: "Staff Portal", href: "/portal/login" },
+      { label: "Ext. Corres.", href: ECMS_URL, external: true },
+      { label: pebecNav.label, href: pebecNav.href, external: true },
       { label: "FCSSIP 25", href: "/fcssip-25" },
     ],
   },

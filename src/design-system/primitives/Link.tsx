@@ -21,7 +21,7 @@ export function InlineLink({
   external?: boolean;
 }) {
   const classes = cn(
-    "group relative inline-flex items-center gap-1 font-semibold text-link",
+    "group relative inline-flex items-center gap-1 rounded-sm font-semibold text-link transition-colors duration-150 hover:text-cta focus-visible:text-cta focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-cta",
     className
   );
 
@@ -29,10 +29,13 @@ export function InlineLink({
     <>
       <span className="relative">
         {children}
-        <span className="absolute left-0 -bottom-0.5 h-px w-full origin-left scale-x-0 bg-current transition-transform duration-200 ease-out group-hover:scale-x-100" />
+        <span className="absolute left-0 -bottom-0.5 h-0.5 w-full origin-left scale-x-0 bg-current transition-transform duration-200 ease-out group-hover:scale-x-100 group-focus-visible:scale-x-100" />
       </span>
       {chevron && (
-        <span aria-hidden className="transition-transform duration-200 group-hover:translate-x-1">
+        <span
+          aria-hidden
+          className="transition-transform duration-200 group-hover:translate-x-1 group-focus-visible:translate-x-1"
+        >
           →
         </span>
       )}

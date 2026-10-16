@@ -1,9 +1,10 @@
 import type { NavItem } from "./types";
 
 /**
- * Single source of nav truth, consumed by both HeaderA and HeaderB (and the
- * footer's Quick Links column). Paths are relative to a direction root —
- * the Header component prefixes them with `/direction-a` or `/direction-b`.
+ * Single source of nav truth, consumed by the header, mobile drawer, sitemap
+ * and the home page's topic directory. Internal paths are relative to the
+ * site root (`/direction-a`) — consumers prefix them; `external: true` links
+ * are absolute URLs and must NOT be prefixed.
  * Mirrors the current site's full nav 1:1 so nothing is silently dropped.
  */
 export const navConfig: NavItem[] = [
@@ -44,7 +45,28 @@ export const navConfig: NavItem[] = [
   { label: "Contact", href: "/contact" },
 ];
 
-export const portalNav: NavItem = {
-  label: "eCMS Portal",
+/**
+ * External correspondence system (formerly labelled "eCMS Portal"). One
+ * constant so the URL can change in a single place — as of Oct 2026 this host
+ * does not yet resolve in DNS; the Ministry asked for it to be wired anyway.
+ */
+export const ECMS_URL = "https://federalministryoftransportation-ecms.schulltech.com/";
+
+/** Header call-to-action, beside the PEBEC link. */
+export const extCorresNav: NavItem = {
+  label: "Ext. Corres.",
+  href: ECMS_URL,
+  external: true,
+};
+
+export const pebecNav: NavItem = {
+  label: "PEBEC",
+  href: "https://www.pebec.gov.ng/reportgov-ng",
+  external: true,
+};
+
+/** Top-bar "Staff Portal" link (internal sign-in page). */
+export const staffPortalNav: NavItem = {
+  label: "Staff Portal",
   href: "/portal/login",
 };

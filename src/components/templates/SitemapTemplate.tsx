@@ -1,7 +1,7 @@
 import Link from "next/link";
 import { Container } from "@/design-system/primitives/Container";
 import { PageHeader } from "./PageHeader";
-import { navConfig, portalNav } from "@/content/nav.config";
+import { navConfig, extCorresNav, pebecNav, staffPortalNav } from "@/content/nav.config";
 import { complianceLinks } from "@/content/footerLinks";
 
 export function SitemapTemplate({ basePath }: { basePath: string }) {
@@ -35,10 +35,17 @@ export function SitemapTemplate({ basePath }: { basePath: string }) {
               <p className="font-display font-semibold text-ink">More</p>
               <ul className="mt-3 flex flex-col gap-2">
                 <li>
-                  <Link href={`${basePath}${portalNav.href}`} className="text-sm text-ink-muted hover:text-cta">
-                    {portalNav.label}
+                  <Link href={`${basePath}${staffPortalNav.href}`} className="text-sm text-ink-muted hover:text-cta">
+                    {staffPortalNav.label}
                   </Link>
                 </li>
+                {[extCorresNav, pebecNav].map((link) => (
+                  <li key={link.href}>
+                    <a href={link.href} target="_blank" rel="noopener noreferrer" className="text-sm text-ink-muted hover:text-cta">
+                      {link.label}
+                    </a>
+                  </li>
+                ))}
                 {complianceLinks.map((link) => (
                   <li key={link.href}>
                     <Link href={`${basePath}${link.href}`} className="text-sm text-ink-muted hover:text-cta">

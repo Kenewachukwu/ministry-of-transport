@@ -2,17 +2,24 @@ import type { ButtonHTMLAttributes, ReactNode } from "react";
 import NextLink from "next/link";
 import { cn } from "@/lib/utils";
 
-type Variant = "primary" | "secondary" | "ghost" | "outline";
+type Variant = "primary" | "secondary" | "ghost" | "outline" | "outline-brand";
 type Size = "sm" | "md" | "lg";
 
+/**
+ * Every variant has distinct hover and pressed (`active:`) states. The lift is
+ * `motion-safe:` so reduced-motion users get the colour change without movement.
+ * `outline` is for dark backgrounds (white border); `outline-brand` for light ones.
+ */
 const variantClasses: Record<Variant, string> = {
   primary:
-    "bg-cta text-cta-ink hover:opacity-90 shadow-card",
+    "bg-cta text-cta-ink shadow-card hover:bg-brand-600 hover:shadow-lg motion-safe:hover:-translate-y-0.5 active:translate-y-0 active:bg-brand-700 active:shadow-card",
   secondary:
-    "bg-surface-raised text-ink border border-border hover:border-cta hover:text-cta",
-  ghost: "text-ink hover:text-cta",
+    "bg-surface-raised text-ink border border-border hover:border-cta hover:text-cta hover:shadow-card motion-safe:hover:-translate-y-0.5 active:translate-y-0 active:bg-brand-50",
+  ghost: "text-ink hover:text-cta hover:bg-brand-50 active:bg-brand-100",
   outline:
-    "bg-transparent text-cta-ink border border-current hover:bg-white/10",
+    "bg-transparent text-cta-ink border border-current hover:bg-white/15 motion-safe:hover:-translate-y-0.5 active:translate-y-0 active:bg-white/25",
+  "outline-brand":
+    "bg-transparent text-cta border border-cta hover:bg-cta hover:text-cta-ink hover:shadow-card motion-safe:hover:-translate-y-0.5 active:translate-y-0 active:bg-brand-700 active:text-cta-ink",
 };
 
 const sizeClasses: Record<Size, string> = {

@@ -27,8 +27,8 @@ export function LoginTemplate({ basePath }: { basePath: string }) {
           <div className="flex justify-center">
             <Logo basePath={basePath} />
           </div>
-          <h1 className="mt-6 text-center font-display text-xl font-semibold text-ink">eCMS Portal</h1>
-          <p className="mt-1 text-center text-sm text-ink-muted">Staff and CMS sign-in</p>
+          <h1 className="mt-6 text-center font-display text-xl font-semibold text-ink">Staff Portal</h1>
+          <p className="mt-1 text-center text-sm text-ink-muted">Staff sign-in</p>
 
           {submitted ? (
             <div className="mt-8 flex flex-col items-center gap-2 text-center">

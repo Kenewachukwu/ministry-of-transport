@@ -6,7 +6,11 @@ import { Menu, X, ChevronDown } from "lucide-react";
 import { motion, AnimatePresence } from "motion/react";
 import { cn } from "@/lib/utils";
 import type { NavItem } from "@/content/types";
-import { portalNav } from "@/content/nav.config";
+import { extCorresNav, pebecNav } from "@/content/nav.config";
+import { ButtonLink } from "@/design-system/primitives/Button";
+
+const childLinkClasses =
+  "block py-2.5 text-sm text-ink-muted transition-colors hover:text-cta focus-visible:text-cta focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-cta";
 
 export function MobileNav({
   items,
@@ -21,7 +25,7 @@ export function MobileNav({
   const [expanded, setExpanded] = useState<string | null>(null);
 
   return (
-    <div className="lg:hidden">
+    <div className="xl:hidden">
       <button
         type="button"
         aria-label={open ? "Close menu" : "Open menu"}
@@ -69,7 +73,7 @@ export function MobileNav({
                     {item.children?.length ? (
                       <>
                         <button
-                          className="flex w-full items-center justify-between py-3 text-left text-base font-semibold text-ink"
+                          className="flex w-full items-center justify-between py-3 text-left text-base font-semibold text-ink transition-colors hover:text-cta focus-visible:text-cta focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-cta"
                           onClick={() =>
                             setExpanded((e) => (e === item.label ? null : item.label))
                           }
@@ -94,13 +98,25 @@ export function MobileNav({
                             >
                               {item.children.map((child) => (
                                 <li key={child.href}>
-                                  <Link
-                                    href={`${basePath}${child.href}`}
-                                    onClick={() => setOpen(false)}
-                                    className="block py-2.5 text-sm text-ink-muted hover:text-cta"
-                                  >
-                                    {child.label}
-                                  </Link>
+                                  {child.external ? (
+                                    <a
+                                      href={child.href}
+                                      target="_blank"
+                                      rel="noopener noreferrer"
+                                      onClick={() => setOpen(false)}
+                                      className={childLinkClasses}
+                                    >
+                                      {child.label}
+                                    </a>
+                                  ) : (
+                                    <Link
+                                      href={`${basePath}${child.href}`}
+                                      onClick={() => setOpen(false)}
+                                      className={childLinkClasses}
+                                    >
+                                      {child.label}
+                                    </Link>
+                                  )}
                                 </li>
                               ))}
                             </motion.ul>
@@ -111,7 +127,7 @@ export function MobileNav({
                       <Link
                         href={`${basePath}${item.href}`}
                         onClick={() => setOpen(false)}
-                        className="block py-3 text-base font-semibold text-ink"
+                        className="block py-3 text-base font-semibold text-ink transition-colors hover:text-cta focus-visible:text-cta focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-cta"
                       >
                         {item.label}
                       </Link>
@@ -119,13 +135,25 @@ export function MobileNav({
                   </div>
                 ))}
               </nav>
-              <Link
-                href={`${basePath}${portalNav.href}`}
-                onClick={() => setOpen(false)}
-                className="mt-6 flex items-center justify-center rounded-control bg-cta px-5 py-3 text-sm font-semibold text-cta-ink"
-              >
-                {portalNav.label}
-              </Link>
+              <div className="mt-6 flex flex-col gap-3">
+                <ButtonLink
+                  href={extCorresNav.href}
+                  external
+                  size="lg"
+                  className="w-full text-sm"
+                >
+                  {extCorresNav.label}
+                </ButtonLink>
+                <ButtonLink
+                  href={pebecNav.href}
+                  external
+                  variant="outline-brand"
+                  size="lg"
+                  className="w-full text-sm"
+                >
+                  {pebecNav.label}
+                </ButtonLink>
+              </div>
             </motion.div>
           </>
         )}

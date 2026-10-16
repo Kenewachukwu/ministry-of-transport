@@ -2,6 +2,7 @@ import type { Metadata } from "next";
 import Image from "next/image";
 import { StaticContentTemplate } from "@/components/templates/StaticContentTemplate";
 import { InlineLink } from "@/design-system/primitives/Link";
+import { ECMS_URL } from "@/content/nav.config";
 
 export const metadata: Metadata = { title: "FCSSIP 25" };
 
@@ -12,7 +13,7 @@ const resources = [
   },
   {
     label: "IPPIS Self-Service",
-    href: "https://service.ippis.gov.ng:4443/",
+    href: "https://servicesoft.ippis.gov.ng/softsuite/",
   },
   {
     label: "The Federal Civil Service Culture Change video",
@@ -27,8 +28,8 @@ const resources = [
     href: "https://webmail.transportation.gov.ng/",
   },
   {
-    label: "eCMS Portal",
-    href: "https://federalministryoftransportation-ecms.schulltech.com/",
+    label: "Ext. Corres.",
+    href: ECMS_URL,
   },
 ];
 
