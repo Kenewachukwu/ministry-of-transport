@@ -4,6 +4,6 @@ import { getDocuments } from "@/lib/cms";
 
 export const metadata: Metadata = { title: "Resources" };
 
-export default function Page() {
-  return <DocumentLibraryTemplate documents={getDocuments()} />;
+export default async function Page() {
+  return <DocumentLibraryTemplate documents={await getDocuments()} />;
 }

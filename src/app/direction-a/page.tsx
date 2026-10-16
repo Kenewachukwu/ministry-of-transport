@@ -10,19 +10,23 @@ import { PillarCards } from "@/components/sections/PillarCards";
 import { TabbedNewsSection } from "@/components/sections/TabbedNewsSection";
 import { TopicDirectory } from "@/components/sections/TopicDirectory";
 import { CardGrid } from "@/components/sections/CardGrid";
-import { mandate, vision, mission } from "@/content/mandate";
-import { getPillars, getDepartments, getAgencies, getNews, getEvents, getLeadership } from "@/lib/cms";
-import { stats } from "@/content/stats";
+import { getPillars, getDepartments, getAgencies, getNewsSummaries, getEvents, getLeadership, getSiteText, getStats } from "@/lib/cms";
 
 const basePath = "/direction-a";
 
-export default function DirectionAHomePage() {
-  const pillars = getPillars();
-  const departments = getDepartments().slice(0, 6);
-  const agencies = getAgencies();
-  const news = getNews();
-  const events = getEvents();
-  const topLeadership = getLeadership().filter((p) => p.role === "minister" || p.role === "permanent-secretary");
+export default async function DirectionAHomePage() {
+  const [pillars, allDepartments, agencies, news, events, leadership, { mandate, vision, mission }, stats] = await Promise.all([
+    getPillars(),
+    getDepartments(),
+    getAgencies(),
+    getNewsSummaries("all"),
+    getEvents(),
+    getLeadership(),
+    getSiteText(),
+    getStats(),
+  ]);
+  const departments = allDepartments.slice(0, 6);
+  const topLeadership = leadership.filter((p) => p.role === "minister" || p.role === "permanent-secretary");
 
   return (
     <>

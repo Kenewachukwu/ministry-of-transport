@@ -4,6 +4,6 @@ import { getEvents } from "@/lib/cms";
 
 export const metadata: Metadata = { title: "Events" };
 
-export default function Page() {
-  return <EventsListTemplate events={getEvents()} />;
+export default async function Page() {
+  return <EventsListTemplate events={await getEvents()} />;
 }

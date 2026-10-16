@@ -7,6 +7,6 @@ import { getHeroSlides } from "@/lib/cms";
  * on the server means swapping the source — static file today, an admin-edited
  * store later — never touches the client bundle.
  */
-export function HeroSection({ basePath }: { basePath: string }) {
-  return <HeroA slides={getHeroSlides()} basePath={basePath} />;
+export async function HeroSection({ basePath }: { basePath: string }) {
+  return <HeroA slides={await getHeroSlides()} basePath={basePath} />;
 }

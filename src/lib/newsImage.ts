@@ -11,6 +11,6 @@ const categoryImage: Record<NewsItem["category"], string> = {
   "Photo News": "/images/sourced/news-category-photo.jpeg",
 };
 
-export function getNewsImage(item: NewsItem): string {
+export function getNewsImage(item: Pick<NewsItem, "imageUrl" | "category">): string {
   return item.imageUrl ?? categoryImage[item.category];
 }

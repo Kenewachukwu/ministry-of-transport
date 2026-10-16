@@ -6,9 +6,9 @@ import { getDepartments, getLeadership } from "@/lib/cms";
  * The live site's organogram is a single flat image with no alt text —
  * replaced here with an accessible, data-driven hierarchy.
  */
-export function StructureTemplate() {
-  const departments = getDepartments();
-  const people = getLeadership();
+export async function StructureTemplate() {
+  const departments = await getDepartments();
+  const people = await getLeadership();
   const minister = people.find((p) => p.role === "minister");
   const permSec = people.find((p) => p.role === "permanent-secretary");
 

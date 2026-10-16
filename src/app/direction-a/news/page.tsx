@@ -1,9 +1,9 @@
 import type { Metadata } from "next";
 import { NewsHubTemplate } from "@/components/templates/NewsHubTemplate";
-import { getNews } from "@/lib/cms";
+import { getNewsSummaries } from "@/lib/cms";
 
 export const metadata: Metadata = { title: "News & Events" };
 
-export default function Page() {
-  return <NewsHubTemplate news={getNews()} basePath="/direction-a" />;
+export default async function Page() {
+  return <NewsHubTemplate news={await getNewsSummaries("all")} basePath="/direction-a" />;
 }

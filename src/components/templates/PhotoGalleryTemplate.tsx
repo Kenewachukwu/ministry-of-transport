@@ -3,10 +3,10 @@ import { Container } from "@/design-system/primitives/Container";
 import { PageHeader } from "./PageHeader";
 import { getNewsImage } from "@/lib/newsImage";
 import { ScrollRevealGroup, ScrollRevealItem } from "@/design-system/motion/ScrollReveal";
-import type { NewsItem } from "@/content/types";
+import type { NewsSummary } from "@/lib/cms/types";
 
 /** Fixes the live site's Photo News page, which currently throws a WordPress critical error. */
-export function PhotoGalleryTemplate({ items }: { items: NewsItem[] }) {
+export function PhotoGalleryTemplate({ items }: { items: NewsSummary[] }) {
   return (
     <>
       <PageHeader eyebrow="News & Events" title="Photo News" description="Photo coverage of Ministry activities and events." />

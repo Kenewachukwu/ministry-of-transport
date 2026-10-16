@@ -4,7 +4,8 @@ import { useState } from "react";
 import { motion, AnimatePresence } from "motion/react";
 import Link from "next/link";
 import { MapPin, Clock } from "lucide-react";
-import type { NewsItem, EventItem } from "@/content/types";
+import type { EventItem } from "@/content/types";
+import type { NewsSummary } from "@/lib/cms/types";
 import { getNewsImage } from "@/lib/newsImage";
 import { NewsImageFrame } from "./NewsImageFrame";
 import { cn } from "@/lib/utils";
@@ -18,7 +19,7 @@ const dateFmt = new Intl.DateTimeFormat("en-GB", {
   year: "numeric",
 });
 
-function NewsCard({ item, basePath }: { item: NewsItem; basePath: string }) {
+function NewsCard({ item, basePath }: { item: NewsSummary; basePath: string }) {
   return (
     <Link
       href={`${basePath}/news/${item.slug}`}
@@ -79,7 +80,7 @@ export function TabbedNewsSection({
   events,
   basePath,
 }: {
-  news: NewsItem[];
+  news: NewsSummary[];
   events: EventItem[];
   basePath: string;
 }) {
@@ -140,7 +141,7 @@ export function TabbedNewsSection({
               <div className="grid gap-6 lg:grid-cols-3">
                 {items[active].length > 0 ? (
                   items[active].map((item) => (
-                    <NewsCard key={item.id} item={item as NewsItem} basePath={basePath} />
+                    <NewsCard key={item.id} item={item as NewsSummary} basePath={basePath} />
                   ))
                 ) : (
                   <p className="text-ink-muted col-span-3">No items in this category yet.</p>

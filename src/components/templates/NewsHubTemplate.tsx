@@ -4,12 +4,12 @@ import { useState } from "react";
 import { Container } from "@/design-system/primitives/Container";
 import { PageHeader } from "./PageHeader";
 import { FeaturedNews } from "@/components/sections/FeaturedNews";
-import type { NewsItem } from "@/content/types";
+import type { NewsSummary } from "@/lib/cms/types";
 import { cn } from "@/lib/utils";
 
 const categories = ["All", "Online News Report", "Press Release", "Photo News"] as const;
 
-export function NewsHubTemplate({ news, basePath }: { news: NewsItem[]; basePath: string }) {
+export function NewsHubTemplate({ news, basePath }: { news: NewsSummary[]; basePath: string }) {
   const [category, setCategory] = useState<(typeof categories)[number]>("All");
   const filtered = category === "All" ? news : news.filter((n) => n.category === category);
 

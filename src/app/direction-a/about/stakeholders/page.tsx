@@ -4,6 +4,6 @@ import { getStakeholders } from "@/lib/cms";
 
 export const metadata: Metadata = { title: "Stakeholders" };
 
-export default function Page() {
-  return <StakeholderDirectoryTemplate groups={getStakeholders()} />;
+export default async function Page() {
+  return <StakeholderDirectoryTemplate groups={await getStakeholders()} />;
 }

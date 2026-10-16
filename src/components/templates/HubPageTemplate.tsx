@@ -1,15 +1,16 @@
 import { Container } from "@/design-system/primitives/Container";
 import { PageHeader } from "./PageHeader";
 import { CardGrid, type CardGridItem } from "@/components/sections/CardGrid";
-import { mandate } from "@/content/mandate";
+import { getSiteText } from "@/lib/cms";
 
-export function HubPageTemplate({
+export async function HubPageTemplate({
   basePath,
   links,
 }: {
   basePath: string;
   links: CardGridItem[];
 }) {
+  const { mandate } = await getSiteText();
   return (
     <>
       <PageHeader eyebrow="Federal Ministry of Transportation" title="About Us" description={mandate} />

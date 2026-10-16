@@ -4,8 +4,8 @@ import { getEServices } from "@/lib/cms";
 
 export const metadata: Metadata = { title: "E-Services" };
 
-export default function Page() {
-  const services = getEServices();
+export default async function Page() {
+  const services = await getEServices();
   return (
     <DirectoryTemplate
       eyebrow="Find Government Services"

@@ -1,6 +1,6 @@
 import Link from "next/link";
 import { Clock } from "lucide-react";
-import type { NewsItem } from "@/content/types";
+import type { NewsSummary } from "@/lib/cms/types";
 import { getNewsImage } from "@/lib/newsImage";
 import { NewsImageFrame } from "./NewsImageFrame";
 import { ScrollRevealGroup, ScrollRevealItem } from "@/design-system/motion/ScrollReveal";
@@ -16,7 +16,7 @@ const dateFormatter = new Intl.DateTimeFormat("en-GB", {
  * fmmbe.gov.ng's "Featured News" section — the pattern the client
  * specifically flagged as one to carry over.
  */
-export function FeaturedNews({ items, basePath }: { items: NewsItem[]; basePath: string }) {
+export function FeaturedNews({ items, basePath }: { items: NewsSummary[]; basePath: string }) {
   return (
     <div>
       <ScrollRevealGroup className="grid gap-6 lg:grid-cols-3">

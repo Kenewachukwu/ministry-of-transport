@@ -6,8 +6,8 @@ export const metadata: Metadata = { title: "Departments" };
 
 const basePath = "/direction-a";
 
-export default function Page() {
-  const departments = getDepartments();
+export default async function Page() {
+  const departments = await getDepartments();
   return (
     <DirectoryTemplate
       eyebrow="About Us"

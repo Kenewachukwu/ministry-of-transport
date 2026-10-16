@@ -4,8 +4,8 @@ import { getAgencies } from "@/lib/cms";
 
 export const metadata: Metadata = { title: "Agencies" };
 
-export default function Page() {
-  const agencies = getAgencies();
+export default async function Page() {
+  const agencies = await getAgencies();
   return (
     <DirectoryTemplate
       eyebrow="About Us"

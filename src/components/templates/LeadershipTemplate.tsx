@@ -8,8 +8,8 @@ import { getLeadership } from "@/lib/cms";
  * Leadership hub. Entries with `name: null` render as honest placeholders
  * (never an invented name); every card links to that person's profile page.
  */
-export function LeadershipTemplate({ basePath }: { basePath: string }) {
-  const people = getLeadership();
+export async function LeadershipTemplate({ basePath }: { basePath: string }) {
+  const people = await getLeadership();
   const minister = people.find((p) => p.role === "minister");
   const permSec = people.find((p) => p.role === "permanent-secretary");
   const directors = people.filter((p) => p.id !== minister?.id && p.id !== permSec?.id);

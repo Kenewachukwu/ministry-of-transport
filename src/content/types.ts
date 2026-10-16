@@ -143,3 +143,26 @@ export interface ImageManifestEntry {
   license?: string;
   attribution?: string;
 }
+
+/** One block of the FCSSIP 25 page, in display order. Consecutive `link` blocks render as one list. */
+export type FcssipBlock =
+  | { type: "paragraph"; text: string }
+  | { type: "heading"; text: string }
+  | { type: "link"; label: string; href: string }
+  | {
+      type: "image";
+      src: string;
+      alt: string;
+      caption?: string;
+      width: number;
+      height: number;
+      /** "medium" centres the image at a reduced width. */
+      size: "full" | "medium";
+    };
+
+export interface FcssipPage {
+  eyebrow: string;
+  title: string;
+  description: string;
+  blocks: FcssipBlock[];
+}

@@ -4,10 +4,11 @@ import { getNctCommuniques } from "@/lib/cms";
 
 export const metadata: Metadata = { title: "NCT Communique" };
 
-export default function Page() {
+export default async function Page() {
+  const documents = await getNctCommuniques();
   return (
     <DocumentLibraryTemplate
-      documents={getNctCommuniques()}
+      documents={documents}
       title="NCT Communique"
       description="Communiques from past editions of the National Council on Transportation."
     />

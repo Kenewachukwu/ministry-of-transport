@@ -2,11 +2,11 @@ import Link from "next/link";
 import { FileText } from "lucide-react";
 import { Container } from "@/design-system/primitives/Container";
 import { PageHeader } from "./PageHeader";
-import type { NewsItem } from "@/content/types";
+import type { NewsSummary } from "@/lib/cms/types";
 
 const dateFormatter = new Intl.DateTimeFormat("en-GB", { day: "2-digit", month: "short", year: "numeric" });
 
-export function ArticleListTemplate({ items, basePath }: { items: NewsItem[]; basePath: string }) {
+export function ArticleListTemplate({ items, basePath }: { items: NewsSummary[]; basePath: string }) {
   return (
     <>
       <PageHeader eyebrow="News & Events" title="Online News Sector" description="A running log of the Ministry's online news coverage." />
