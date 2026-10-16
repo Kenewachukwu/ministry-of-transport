@@ -3,6 +3,7 @@ import { unstable_rethrow } from "next/navigation";
 import { z } from "zod";
 import { ForbiddenError } from "@/lib/auth/permissions";
 import { UserError } from "@/lib/auth/users";
+import { ContentError } from "@/lib/dal/admin/errors";
 
 /** What every admin Server Action returns to its form. */
 export interface ActionState {
@@ -32,7 +33,7 @@ export async function guard(run: () => Promise<ActionState | void>): Promise<Act
       for (const issue of error.issues) fieldErrors[String(issue.path[0] ?? "form")] ??= issue.message;
       return { error: "Please correct the highlighted fields.", fieldErrors };
     }
-    if (error instanceof ForbiddenError || error instanceof UserError || error instanceof ActionError) {
+    if (error instanceof ForbiddenError || error instanceof UserError || error instanceof ActionError || error instanceof ContentError) {
       return { error: error.message };
     }
     console.error("[admin action] unexpected error:", error);

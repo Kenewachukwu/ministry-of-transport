@@ -1,10 +1,10 @@
 import { notFound } from "next/navigation";
 import type { Metadata } from "next";
 import { LeadershipDetailTemplate } from "@/components/templates/LeadershipDetailTemplate";
-import { getLeadership, getLeadershipById } from "@/lib/cms";
+import { getLeadershipById, listLeadershipIds } from "@/lib/cms";
 
 export async function generateStaticParams() {
-  return (await getLeadership()).map((person) => ({ id: person.id }));
+  return (await listLeadershipIds()).map((id) => ({ id }));
 }
 
 export async function generateMetadata(props: PageProps<"/direction-a/about/leadership/[id]">): Promise<Metadata> {

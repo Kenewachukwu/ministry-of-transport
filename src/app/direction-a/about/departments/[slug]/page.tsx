@@ -1,10 +1,10 @@
 import { notFound } from "next/navigation";
 import type { Metadata } from "next";
 import { DepartmentDetailTemplate } from "@/components/templates/DepartmentDetailTemplate";
-import { getDepartments, getDepartmentBySlug } from "@/lib/cms";
+import { getDepartments, getDepartmentBySlug, listDepartmentSlugs } from "@/lib/cms";
 
 export async function generateStaticParams() {
-  return (await getDepartments()).map((department) => ({ slug: department.id }));
+  return (await listDepartmentSlugs()).map((slug) => ({ slug }));
 }
 
 export async function generateMetadata(props: PageProps<"/direction-a/about/departments/[slug]">): Promise<Metadata> {

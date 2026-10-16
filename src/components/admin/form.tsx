@@ -90,7 +90,7 @@ export function SubmitButton({
   );
 }
 
-function useFieldError(name: string): string | undefined {
+export function useFieldError(name: string): string | undefined {
   return useContext(FormStateContext).fieldErrors?.[name];
 }
 

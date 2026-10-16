@@ -8,6 +8,7 @@ import { agencies } from "@/content/agencies";
 import { stakeholders } from "@/content/stakeholders";
 import { stats } from "@/content/stats";
 import type { NewsItem } from "@/content/types";
+import { contentSource } from "@/lib/env";
 import { resolveSource } from "./source";
 import type { NewsFilter, NewsSummary } from "./types";
 
@@ -45,9 +46,28 @@ export async function getNewsArticle(slug: string): Promise<NewsItem | undefined
   return items.find((item) => item.slug === slug);
 }
 
+/**
+ * Pages to pre-render at build time (`generateStaticParams`). Skipped for the
+ * embedded development database: Next runs those lists in a separate process,
+ * and only one process may open an embedded database. Unlisted pages simply
+ * render on demand, which is how development works anyway.
+ */
+const prerenderable = () => contentSource() !== "pglite";
+
 export async function listNewsSlugs(): Promise<string[]> {
+  if (!prerenderable()) return [];
   const items = await (await resolveSource()).news();
   return items.map((item) => item.slug);
+}
+
+export async function listDepartmentSlugs(): Promise<string[]> {
+  if (!prerenderable()) return [];
+  return (await getDepartments()).map((department) => department.id);
+}
+
+export async function listLeadershipIds(): Promise<string[]> {
+  if (!prerenderable()) return [];
+  return (await getLeadership()).map((person) => person.id);
 }
 
 export async function getEvents() {

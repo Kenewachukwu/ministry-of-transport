@@ -90,6 +90,28 @@ describe("public content layer, database mode", () => {
   });
 });
 
+describe("pre-rendering lists", () => {
+  afterEach(() => {
+    delete process.env.CONTENT_SOURCE;
+  });
+
+  it("are empty for the embedded dev database (only one process may open it)", async () => {
+    process.env.CONTENT_SOURCE = "pglite";
+    await createTestDb({ seed: true });
+    const cms = await facade();
+    expect(await cms.listDepartmentSlugs()).toEqual([]);
+    expect(await cms.listLeadershipIds()).toEqual([]);
+    expect(await cms.listNewsSlugs()).toEqual([]);
+  });
+
+  it("list every published page for a real database or the static content", async () => {
+    process.env.CONTENT_SOURCE = "static";
+    const cms = await facade();
+    expect((await cms.listDepartmentSlugs()).length).toBe(staticDepartments.length);
+    expect((await cms.listLeadershipIds())).toContain("minister");
+  });
+});
+
 describe("fallback to static content", () => {
   afterEach(() => {
     delete process.env.CONTENT_SOURCE;
