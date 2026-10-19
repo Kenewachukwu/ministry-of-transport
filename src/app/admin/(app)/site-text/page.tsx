@@ -2,6 +2,7 @@ import type { Metadata } from "next";
 import { getDb } from "@/db/client";
 import { siteText } from "@/db/schema";
 import { ActionForm, SubmitButton, TextArea, UnsavedNote } from "@/components/admin/form";
+import { HelpLink } from "@/components/admin/help/HelpLink";
 import { PageTitle, Panel } from "@/components/admin/ui";
 import { requireSectionPage } from "@/lib/auth/dal";
 import { mandate, mission, vision } from "@/content/mandate";
@@ -17,7 +18,7 @@ export default async function SiteTextPage() {
 
   return (
     <>
-      <PageTitle title="Mandate, Mission & Vision" description="Shown on the home page and as the introduction to the About Us page." />
+      <PageTitle title="Mandate, Mission & Vision" description="Shown on the home page and as the introduction to the About Us page." actions={<HelpLink slug="edit-mandate-mission-vision" />} />
       <Panel>
         <ActionForm action={save} warnOnLeave>
           <TextArea name="mandate" label="Mandate" rows={5} required defaultValue={map.get("mandate") ?? mandate} help="Shown as “Why we exist”, and as the intro on the About Us page." />

@@ -1,6 +1,7 @@
 import type { Metadata } from "next";
 import Link from "next/link";
 import { ArrowUpRight } from "lucide-react";
+import { HelpLink } from "@/components/admin/help/HelpLink";
 import { Notice, PageTitle, Panel } from "@/components/admin/ui";
 import { CONTENT_NAV, SYSTEM_NAV } from "@/lib/admin/nav";
 import { requireUser } from "@/lib/auth/dal";
@@ -21,6 +22,19 @@ export default async function Dashboard({ searchParams }: { searchParams: Promis
       {content.length === 0 && system.length === 0 && (
         <Notice tone="warn">Your account has no sections assigned yet. Ask a super administrator to grant you access.</Notice>
       )}
+
+      <Panel className="mb-6">
+        <div className="flex flex-wrap items-center justify-between gap-4">
+          <div>
+            <h2 className="font-display text-lg font-semibold text-ink">New here?</h2>
+            <p className="mt-1 max-w-xl text-sm text-ink-muted">Short step-by-step guides show you how to do each task, using the exact names of the buttons you will see.</p>
+          </div>
+          <div className="flex flex-wrap gap-2">
+            <HelpLink slug="finding-your-way-around" label="Find your way around" />
+            <Link href="/admin/help" className="rounded-control bg-cta px-4 py-2 text-sm font-semibold text-cta-ink hover:bg-brand-600 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-cta">Open Help</Link>
+          </div>
+        </div>
+      </Panel>
 
       {content.length > 0 && (
         <Panel title="Your sections">

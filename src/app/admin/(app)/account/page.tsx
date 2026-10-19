@@ -1,5 +1,6 @@
 import type { Metadata } from "next";
 import { ActionForm, Field, SubmitButton } from "@/components/admin/form";
+import { HelpLink } from "@/components/admin/help/HelpLink";
 import { PageTitle, Panel } from "@/components/admin/ui";
 import { PASSWORD_HINT } from "@/lib/admin/action";
 import { requireUser } from "@/lib/auth/dal";
@@ -12,7 +13,7 @@ export default async function AccountPage() {
   const user = await requireUser();
   return (
     <>
-      <PageTitle title="My account" description={`${user.name} · ${user.email}`} />
+      <PageTitle title="My account" description={`${user.name} · ${user.email}`} actions={<HelpLink slug="change-your-password" />} />
 
       <Panel title="Your access">
         <p className="text-sm text-ink-muted">

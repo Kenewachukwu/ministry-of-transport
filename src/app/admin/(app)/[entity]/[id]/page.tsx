@@ -5,9 +5,11 @@ import { ExternalLink } from "lucide-react";
 import { z } from "zod";
 import { EntityForm } from "@/components/admin/EntityForm";
 import { RowAction } from "@/components/admin/RowAction";
+import { HelpLink } from "@/components/admin/help/HelpLink";
 import { Notice, PageTitle, Panel, StatusBadge } from "@/components/admin/ui";
 import { requireSectionPage } from "@/lib/auth/dal";
 import { getRow, rowTitle } from "@/lib/dal/admin/crud";
+import { ENTITY_GUIDE } from "@/lib/admin/help";
 import { getEntity } from "@/lib/admin/registry";
 import { toFormValues } from "@/lib/admin/parse";
 import { storageMode } from "@/lib/storage/mode";
@@ -38,6 +40,7 @@ export default async function EditEntityPage({ params, searchParams }: { params:
         description={def.subtitle?.(row) ?? undefined}
         actions={
           <>
+            <HelpLink slug={ENTITY_GUIDE[def.key]} />
             <Link href={`/admin/${def.key}`} className="rounded-control border border-border px-3 py-2 text-sm font-semibold text-ink hover:border-cta hover:text-cta">← Back to the list</Link>
             {viewHref && !archived && (
               <Link href={viewHref} target="_blank" className="inline-flex items-center gap-1.5 rounded-control border border-border px-3 py-2 text-sm font-semibold text-ink hover:border-cta hover:text-cta">

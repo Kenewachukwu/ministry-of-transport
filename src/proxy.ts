@@ -13,6 +13,7 @@ const PUBLIC_PATHS = [
   /^\/admin\/forgot-password$/,
   /^\/admin\/reset-password\/[^/]+$/,
   /^\/admin\/accept-invite\/[^/]+$/,
+  /^\/admin\/sign-in-help$/, // static help for people who cannot sign in yet
 ];
 
 export async function proxy(request: NextRequest) {

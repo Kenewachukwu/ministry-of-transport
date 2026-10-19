@@ -3,6 +3,7 @@ import { eq, sql } from "drizzle-orm";
 import type { PgTable } from "drizzle-orm/pg-core";
 import { getDb } from "@/db/client";
 import { appMeta, departments, eServices, heroSlides, leadership, newsItems, pageBlocks, pillars, resources, users } from "@/db/schema";
+import { HelpLink } from "@/components/admin/help/HelpLink";
 import { PageTitle, Panel } from "@/components/admin/ui";
 import { requireSuperAdminPage } from "@/lib/auth/dal";
 import { getEmailProvider } from "@/lib/email/provider";
@@ -54,7 +55,7 @@ export default async function StatusPage() {
   const storage = storageMode();
   return (
     <>
-      <PageTitle title="System status" description="Whether the pieces the admin depends on are connected. Secret values are never shown here." />
+      <PageTitle title="System status" description="Whether the pieces the admin depends on are connected. Secret values are never shown here." actions={<HelpLink slug="check-system-status" />} />
       <Panel>
         <ul className="divide-y divide-border">
           <Row label="Database" ok detail={`${contentSource() === "pglite" ? "Local embedded database" : "PostgreSQL"} · responding`} />

@@ -69,7 +69,13 @@ const mediaUrl = z.string().trim().min(1, "A picture is required.").refine(isAll
 const optionalMedia = z
   .union([z.literal(""), z.string().trim().refine(isAllowedMediaUrl, mediaMessage)])
   .transform((v) => (v === "" ? null : v));
-const link = z.string().trim().min(1, "Enter a link.").refine(isAllowedLink, "Use a site path like /about, or a full https:// link.");
+const link = z
+  .string()
+  .trim()
+  .min(1, "Enter a link.")
+  .refine(isAllowedLink, "Use a site path like /about, or a full https:// link.")
+  // "#" is how the database says "no file yet"; as a button or service link it would go nowhere.
+  .refine((v) => v !== "#", "Enter the real address, not #.");
 
 /* ---------- the entities ---------------------------------------------------------------------------- */
 
@@ -313,14 +319,16 @@ const resourcesDef: EntityDef = {
     { kind: "select", name: "kind", label: "Appears in", options: RESOURCE_KINDS, required: true },
     { kind: "text", name: "title", label: "Title", required: true, maxLength: 300 },
     { kind: "select", name: "category", label: "Category", required: true, options: documentCategories.map((c) => ({ value: c, label: c })) },
-    { kind: "file", name: "href", label: "File or link", help: "Upload a PDF, Word or Excel file, or paste a full https:// link." },
+    { kind: "file", name: "href", label: "File or link", help: "Upload a PDF, Word or Excel file, or paste a full https:// link. Leave it empty if the file is not ready: the website then shows “Available on request”." },
   ],
   schema: z.object({
     kind: z.enum(["document", "nct_communique"]),
     title: required(300),
     category: z.enum(documentCategories as unknown as [string, ...string[]]),
-    href: link,
+    // Empty means "no file yet", stored as "#" (the public site shows "Available on request").
+    href: z.union([z.literal(""), link]).transform((v) => (v === "" ? "#" : v)),
   }),
+  fromRow: (row) => ({ ...row, href: row.href === "#" ? "" : row.href }),
   publicPath: (r) => (r.kind === "nct_communique" ? "/direction-a/resources/nct-communique" : "/direction-a/resources"),
 };
 

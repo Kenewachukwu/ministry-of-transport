@@ -35,6 +35,9 @@ export default async function LoginPage({ searchParams }: { searchParams: Promis
         <Link href="/admin/forgot-password" className="text-center text-sm text-ink-muted hover:text-cta focus-visible:text-cta">
           Forgot your password?
         </Link>
+        <Link href="/admin/sign-in-help" className="text-center text-sm text-ink-muted hover:text-cta focus-visible:text-cta">
+          Trouble signing in?
+        </Link>
       </ActionForm>
     </>
   );

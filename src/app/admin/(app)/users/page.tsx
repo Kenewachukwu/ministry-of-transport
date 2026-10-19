@@ -5,6 +5,7 @@ import { getDb } from "@/db/client";
 import { users } from "@/db/schema";
 import { ActionForm, Field, SelectField, SubmitButton } from "@/components/admin/form";
 import { PermissionGrid } from "@/components/admin/PermissionGrid";
+import { HelpLink } from "@/components/admin/help/HelpLink";
 import { PageTitle, Panel, StatusBadge } from "@/components/admin/ui";
 import { requireSuperAdminPage } from "@/lib/auth/dal";
 import { SECTION_LABELS, isSection } from "@/lib/auth/permissions";
@@ -21,7 +22,7 @@ export default async function UsersPage() {
 
   return (
     <>
-      <PageTitle title="Users & access" description="Invite Ministry staff and choose which parts of the website each person can manage. People are deactivated, never deleted." />
+      <PageTitle title="Users & access" description="Invite Ministry staff and choose which parts of the website each person can manage. People are deactivated, never deleted." actions={<HelpLink slug="invite-someone" />} />
 
       <Panel title="Invite someone">
         <ActionForm action={inviteUserAction} resetOnSuccess>

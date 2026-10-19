@@ -1,5 +1,5 @@
 import Link from "next/link";
-import { ExternalLink, LogOut, UserRound } from "lucide-react";
+import { CircleHelp, ExternalLink, LogOut, UserRound } from "lucide-react";
 import { Logo } from "@/components/layout/Header/Logo";
 import { CONTENT_NAV, SYSTEM_NAV, type NavEntry } from "@/lib/admin/nav";
 import { can, type SessionUser } from "@/lib/auth/permissions";
@@ -60,6 +60,9 @@ export function AdminShell({ user, children }: { user: SessionUser; children: Re
           <span className="block truncate text-xs text-ink-muted">{user.role === "super_admin" ? "Super administrator" : "Content editor"}</span>
         </span>
       </div>
+      <Link href="/admin/help" className={`${linkClasses} inline-flex items-center gap-1.5`}>
+        <CircleHelp size={14} aria-hidden /> Help
+      </Link>
       <Link href="/admin/account" className={linkClasses}>My account</Link>
       <Link href="/direction-a" target="_blank" className={`${linkClasses} inline-flex items-center gap-1.5`}>
         View website <ExternalLink size={13} aria-hidden />
@@ -75,7 +78,7 @@ export function AdminShell({ user, children }: { user: SessionUser; children: Re
   return (
     <div className="flex min-h-screen flex-1 flex-col lg:flex-row">
       {/* Mobile: collapsible menu (no JavaScript needed) */}
-      <header className="border-b border-border bg-surface-raised lg:hidden">
+      <header className="border-b border-border bg-surface-raised lg:hidden print:hidden">
         <details className="group">
           <summary className="flex cursor-pointer list-none items-center justify-between px-4 py-3">
             <Logo basePath="/direction-a" />
@@ -88,7 +91,7 @@ export function AdminShell({ user, children }: { user: SessionUser; children: Re
         </details>
       </header>
 
-      <aside className="hidden w-72 shrink-0 flex-col gap-6 border-r border-border bg-surface-raised p-5 lg:flex">
+      <aside className="hidden w-72 shrink-0 flex-col gap-6 border-r border-border bg-surface-raised p-5 lg:flex print:!hidden">
         <Logo basePath="/direction-a" />
         <div className="flex flex-1 flex-col justify-between gap-8">
           <NavList user={user} />

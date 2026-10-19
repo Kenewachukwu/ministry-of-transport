@@ -7,6 +7,7 @@ import { getDb } from "@/db/client";
 import { users } from "@/db/schema";
 import { ActionForm, Field, SelectField, SubmitButton, UnsavedNote } from "@/components/admin/form";
 import { PermissionGrid } from "@/components/admin/PermissionGrid";
+import { HelpLink } from "@/components/admin/help/HelpLink";
 import { PageTitle, Panel, StatusBadge } from "@/components/admin/ui";
 import { requireSuperAdminPage } from "@/lib/auth/dal";
 import { isSection } from "@/lib/auth/permissions";
@@ -27,7 +28,12 @@ export default async function ManageUserPage({ params }: { params: Promise<{ id:
       <PageTitle
         title={user.name}
         description={user.email}
-        actions={<Link href="/admin/users" className="rounded-control border border-border px-3 py-2 text-sm font-semibold text-ink hover:border-cta hover:text-cta">← All users</Link>}
+        actions={
+          <>
+            <HelpLink slug="change-someones-access" />
+            <Link href="/admin/users" className="rounded-control border border-border px-3 py-2 text-sm font-semibold text-ink hover:border-cta hover:text-cta">← All users</Link>
+          </>
+        }
       />
       <p className="mb-6"><StatusBadge status={user.status} /></p>
 

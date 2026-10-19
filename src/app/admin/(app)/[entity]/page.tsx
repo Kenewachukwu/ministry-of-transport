@@ -2,11 +2,13 @@ import type { Metadata } from "next";
 import Link from "next/link";
 import { notFound } from "next/navigation";
 import { Plus } from "lucide-react";
+import { HelpLink } from "@/components/admin/help/HelpLink";
 import { Notice, PageTitle, Panel, StatusBadge } from "@/components/admin/ui";
 import { ReorderList } from "@/components/admin/ReorderList";
 import { RowAction } from "@/components/admin/RowAction";
 import { requireSectionPage } from "@/lib/auth/dal";
 import { countByStatus, listRows, rowTitle } from "@/lib/dal/admin/crud";
+import { ENTITY_GUIDE } from "@/lib/admin/help";
 import { getEntity } from "@/lib/admin/registry";
 import { cn } from "@/lib/utils";
 import { archiveEntityAction, reorderEntityAction, restoreEntityAction } from "./actions";
@@ -75,9 +77,12 @@ export default async function EntityListPage({ params, searchParams }: { params:
         title={def.plural}
         description={def.description}
         actions={
+          <>
+            <HelpLink slug={ENTITY_GUIDE[def.key]} />
           <Link href={`${base}/new`} className="inline-flex items-center gap-1.5 rounded-control bg-cta px-4 py-2 text-sm font-semibold text-cta-ink transition-colors hover:bg-brand-600 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-cta">
             <Plus size={15} aria-hidden /> Add {def.singular}
           </Link>
+          </>
         }
       />
 

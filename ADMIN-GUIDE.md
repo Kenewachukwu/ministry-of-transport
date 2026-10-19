@@ -8,6 +8,8 @@ This guide has two parts: **[Part A](#part-a--for-ministry-administrators-and-ed
 
 ## Part A — For Ministry administrators and editors
 
+> **The same help is built into the admin.** Press **Help** in the menu for step-by-step guides (searchable, with the exact names of the buttons and fields), a glossary, and a printable quick reference for your role. People who cannot sign in can read the sign-in guides at `/admin/sign-in-help`. The guides live in `src/lib/admin/help/` and a test fails if one mentions a button or field that no longer exists.
+
 ### Signing in
 
 Go to `https://<the-website>/admin` and sign in with your Ministry email address and password.

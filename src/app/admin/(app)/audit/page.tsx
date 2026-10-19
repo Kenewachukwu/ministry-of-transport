@@ -3,6 +3,7 @@ import Link from "next/link";
 import { desc } from "drizzle-orm";
 import { getDb } from "@/db/client";
 import { auditLog } from "@/db/schema";
+import { HelpLink } from "@/components/admin/help/HelpLink";
 import { PageTitle, Panel } from "@/components/admin/ui";
 import { requireSuperAdminPage } from "@/lib/auth/dal";
 
@@ -22,7 +23,7 @@ export default async function AuditPage({ searchParams }: { searchParams: Promis
 
   return (
     <>
-      <PageTitle title="Activity log" description="Who did what, and when: sign-ins, content changes, archiving and access changes. This log can't be edited." />
+      <PageTitle title="Activity log" description="Who did what, and when: sign-ins, content changes, archiving and access changes. This log can't be edited." actions={<HelpLink slug="read-the-activity-log" />} />
       <Panel>
         <div className="overflow-x-auto">
           <table className="w-full min-w-[640px] text-left text-sm">
