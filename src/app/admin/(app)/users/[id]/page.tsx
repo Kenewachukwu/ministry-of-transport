@@ -11,7 +11,7 @@ import { HelpLink } from "@/components/admin/help/HelpLink";
 import { PageTitle, Panel, StatusBadge } from "@/components/admin/ui";
 import { requireSuperAdminPage } from "@/lib/auth/dal";
 import { isSection } from "@/lib/auth/permissions";
-import { archiveUserAction, restoreUserAction, resendInviteAction, updateUserAction } from "../actions";
+import { archiveUserAction, changeUserEmailAction, restoreUserAction, resendInviteAction, updateUserAction } from "../actions";
 
 export const metadata: Metadata = { title: "Manage user" };
 
@@ -56,6 +56,18 @@ export default async function ManageUserPage({ params }: { params: Promise<{ id:
             <UnsavedNote />
           </div>
         </ActionForm>
+      </Panel>
+
+      <Panel title="Sign-in email" className="mt-6">
+        {user.id === me.id ? (
+          <p className="text-sm text-ink-muted">This is your own account. To change your email address, ask another super administrator, so a typing mistake cannot lock you out.</p>
+        ) : (
+          <ActionForm action={changeUserEmailAction} className="max-w-md">
+            <input type="hidden" name="id" value={user.id} />
+            <Field name="email" label="Sign-in email address" type="email" required defaultValue={user.email} autoComplete="off" help={user.status === "invited" ? "They have not activated yet, so a new invitation is sent to the new address." : "Their password stays the same. We email both the old and the new address."} />
+            <SubmitButton variant="secondary" className="self-start">Change email address</SubmitButton>
+          </ActionForm>
+        )}
       </Panel>
 
       <Panel title="Account" className="mt-6">

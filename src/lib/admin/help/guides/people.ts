@@ -26,7 +26,7 @@ export const peopleGuides: HelpGuide[] = [
       "Give people only the sections they need.",
     ],
     problems: [{ q: "It says to choose at least one section.", a: "A content editor needs at least one ticked section. Tick one, or make them a super administrator if they should manage everything." }],
-    related: ["change-someones-access", "resend-an-invitation"],
+    related: ["change-someones-access", "resend-an-invitation", "change-someones-email"],
     reviewed,
   },
   {
@@ -43,6 +43,26 @@ export const peopleGuides: HelpGuide[] = [
     ],
     tips: ["The last active super administrator cannot be demoted or deactivated, so the admin can never be left without one."],
     related: ["invite-someone", "deactivate-or-reactivate-someone"],
+    reviewed,
+  },
+  {
+    slug: "change-someones-email",
+    title: "Correct someone's sign-in email",
+    summary: "Fix a mistyped address, or move a person to a new email, without losing their account.",
+    area: "people",
+    audience: "super_admin",
+    time: "2 minutes",
+    steps: [
+      { text: "Press “Users & access”, then “Manage” beside the person.", link: { label: "Open Users & access", href: "/admin/users" } },
+      { text: "In the Sign-in email panel, type the new address in “Sign-in email address”." },
+      { text: "Press “Change email address”.", detail: "Their password, access and history stay as they are. If they are already active, both the old and the new address get an email saying it changed." },
+    ],
+    tips: [
+      "If the person has not activated yet, a new invitation is sent to the new address and the old link stops working. That is the fix for an invitation sent to a mistyped address.",
+      "You cannot change your own address, so a typing mistake cannot lock you out. Ask another super administrator.",
+      "An address already used by another account is refused.",
+    ],
+    related: ["resend-an-invitation", "change-someones-access"],
     reviewed,
   },
   {

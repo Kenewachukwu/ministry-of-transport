@@ -32,6 +32,19 @@ export function inviteEmail(to: string, name: string, token: string): EmailMessa
   };
 }
 
+/** Sent to BOTH the old and the new address when an administrator changes someone's sign-in email. */
+export function emailChangedEmail(to: string, name: string, oldEmail: string, newEmail: string): EmailMessage & { link: string } {
+  const link = `${siteUrl()}/admin/login`;
+  const intro = `Hello ${name}, an administrator changed the sign-in email for your Ministry website admin account from ${oldEmail} to ${newEmail}. Your password has not changed. From now on, sign in with ${newEmail}.`;
+  return {
+    to,
+    link,
+    subject: "Your Ministry website admin sign-in email was changed",
+    text: `${intro}\n\nSign in: ${link}\n\nIf you did not expect this, tell your super administrator straight away.`,
+    html: layout("Your sign-in email was changed", intro, "Go to sign in", link, "If you did not expect this, tell your super administrator straight away."),
+  };
+}
+
 export function resetEmail(to: string, name: string, token: string): EmailMessage & { link: string } {
   const link = `${siteUrl()}/admin/reset-password/${token}`;
   const intro = `Hello ${name}, we received a request to reset your password. This link works once and expires in 60 minutes.`;

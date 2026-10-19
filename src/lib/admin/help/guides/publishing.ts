@@ -13,7 +13,7 @@ export const publishingGuides: HelpGuide[] = [
     steps: [
       { text: "Open the section that contains the item (for example “News, Photo News & Events”)." },
       { text: "Press “Archive” beside the item, or open it and press “Archive this item” near the bottom of the page." },
-      { text: "Confirm when asked.", detail: "The item disappears from the website straight away. Anyone who has its web address now sees a page not found message." },
+      { text: "A box asks you to confirm. Press “Archive” in the box, or “Cancel” to stop.", detail: "The item disappears from the website straight away. Anyone who has its web address now sees a page not found message." },
       { text: "To bring it back, open the “Archived” tab and press “Restore” beside it.", detail: "It is published again immediately." },
     ],
     tips: [

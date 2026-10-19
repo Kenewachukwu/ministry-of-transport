@@ -7,7 +7,7 @@ import { audit } from "@/lib/auth/audit";
 import { authorize } from "@/lib/auth/dal";
 import { isSection } from "@/lib/auth/permissions";
 import { issueToken } from "@/lib/auth/tokens";
-import { archiveUser, createInvitedUser, restoreUser, sendInvite, updateUserAccess } from "@/lib/auth/users";
+import { archiveUser, changeUserEmail, createInvitedUser, restoreUser, sendInvite, updateUserAccess } from "@/lib/auth/users";
 import { getDb } from "@/db/client";
 import { users } from "@/db/schema";
 import { eq } from "drizzle-orm";
@@ -77,6 +77,22 @@ export async function restoreUserAction(_prev: ActionState, formData: FormData):
         : { ok: true, message: "Account restored.", reveal: { label: `Invitation link for ${user.email}`, value: delivery.link! } };
     }
     return { ok: true, message: "Account restored. They can sign in again." };
+  });
+}
+
+export async function changeUserEmailAction(_prev: ActionState, formData: FormData): Promise<ActionState> {
+  return guard(async () => {
+    const actor = await authorize("super_admin");
+    const { id, email } = z.object({ id: z.uuid(), email: emailSchema }).parse(Object.fromEntries(formData));
+    const { user, invitation } = await changeUserEmail(id, email, { id: actor.id, label: actor.email });
+    revalidatePath("/admin/users");
+    revalidatePath(`/admin/users/${id}`);
+    if (invitation) {
+      return invitation.sent
+        ? { ok: true, message: `Email changed. A new invitation was sent to ${user.email}; the old link no longer works.` }
+        : { ok: true, message: "Email changed.", reveal: { label: `Invitation link for ${user.email}`, value: invitation.link! } };
+    }
+    return { ok: true, message: `Sign-in email changed to ${user.email}. Their password is unchanged, and both addresses were told.` };
   });
 }
 

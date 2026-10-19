@@ -8,7 +8,7 @@ import { isSection, type Role, type Section } from "./permissions";
 import { revokeAllSessions } from "./session";
 import { issueToken } from "./tokens";
 import { getEmailProvider } from "@/lib/email/provider";
-import { inviteEmail, resetEmail } from "@/lib/email/templates";
+import { emailChangedEmail, inviteEmail, resetEmail } from "@/lib/email/templates";
 
 export type UserRow = typeof users.$inferSelect;
 
@@ -113,6 +113,44 @@ export async function updateUserAccess(
   const permissions = input.role === "super_admin" ? [] : input.permissions.filter(isSection);
   await db.update(users).set({ name: input.name.trim(), role: input.role, permissions, updatedAt: new Date() }).where(eq(users.id, id));
   await audit(actor, "user.update", { entity: "user", entityId: id, summary: `Changed access for ${current.email}`, meta: { role: input.role, permissions } });
+}
+
+export interface EmailChangeResult {
+  user: UserRow;
+  /** For someone who has not activated yet: the new invitation, since the old link went to the old address. */
+  invitation?: DeliveryResult;
+}
+
+/**
+ * Changes someone ELSE's sign-in email. Their password, sessions and history are
+ * untouched. Both addresses are told, so a wrong or malicious change is noticed.
+ * Someone who has not activated yet gets a fresh invitation at the new address
+ * (and the old link stops working). You cannot change your own: a typo would lock
+ * you out, and the one person who could fix it is you.
+ */
+export async function changeUserEmail(id: string, newEmailRaw: string, actor: AuditActor & { id: string }): Promise<EmailChangeResult> {
+  const db = await getDb();
+  if (id === actor.id) throw new UserError("You can't change your own email address here. Ask another super administrator.");
+  const [current] = await db.select().from(users).where(eq(users.id, id)).limit(1);
+  if (!current) throw new UserError("User not found.");
+
+  const email = normaliseEmail(newEmailRaw);
+  if (email === normaliseEmail(current.email)) throw new UserError("That is already their email address.");
+  const taken = await findUserByEmail(email, db);
+  if (taken && taken.id !== id) throw new UserError("Another account already uses that email address.");
+
+  const [user] = await db.update(users).set({ email, updatedAt: new Date() }).where(eq(users.id, id)).returning();
+  await audit(actor, "user.email_changed", { entity: "user", entityId: id, summary: `Changed sign-in email from ${current.email} to ${email}`, meta: { from: current.email, to: email } });
+
+  if (user.status === "invited") {
+    const token = await issueToken(id, "invite", actor.id, db);
+    return { user, invitation: await sendInvite(user, token) };
+  }
+  if (user.status === "active") {
+    // Best effort: the change has happened either way.
+    await Promise.all([current.email, email].map((to) => deliver(emailChangedEmail(to, user.name, current.email, email), false)));
+  }
+  return { user };
 }
 
 /** Deactivate (the Ministry's "archive, never delete"). Ends all of that person's sessions. */

@@ -14,7 +14,7 @@ export const UI_LABELS: string[] = [
   // Menu and navigation
   "Menu", "Dashboard", "Help", "View website", "View on website", "Users & access", "Activity log", "System status",
   // Lists
-  "Published", "Archived", "All", "Search", "Clear search", "Edit", "Archive", "Restore", "Older →", "← Newer", "Up", "Down", "Remove", "Remove block", "Save new order",
+  "Published", "Archived", "All", "Search", "Clear search", "Edit", "Archive", "Restore", "Cancel", "Older →", "← Newer", "Up", "Down", "Remove", "Remove block", "Save new order",
   // Forms
   "Save changes", "Save heading", "Save access", "Upload a picture", "Upload a file", "Add a detail", "Add a target", "Add a block", "More pictures", "Add a picture", "Caption (optional)",
   // Site text and FCSSIP heading
@@ -25,7 +25,7 @@ export const UI_LABELS: string[] = [
   "Heading", "Lead-in sentence (optional)",
   // People
   "Full name", "Ministry email address", "Role", "Content editor", "Super administrator", "Sections this person can manage",
-  "Send invitation", "Send a new invitation", "Manage", "Deactivate account", "Reactivate account",
+  "Send invitation", "Send a new invitation", "Manage", "Deactivate account", "Reactivate account", "Sign-in email address", "Change email address",
   // Public wording quoted in guides (so staff can recognise it on the website)
   "Why we exist", "Where we are headed", "How we get there", "Name to be announced", "Available on request",
   // System status lines

@@ -8,7 +8,7 @@ import { hashPassword, passwordProblem, verifyPassword } from "./password";
 import { consumeToken, hashToken, issueToken, peekToken } from "./tokens";
 import { hitRateLimit } from "./rate-limit";
 import { signSessionToken, verifySessionToken } from "./token";
-import { archiveUser, createInvitedUser, setPassword, updateUserAccess, UserError } from "./users";
+import { archiveUser, changeUserEmail, createInvitedUser, setPassword, updateUserAccess, UserError } from "./users";
 
 const actor = { id: null, label: "test" };
 
@@ -159,6 +159,58 @@ describe("user safeguards", () => {
   it("nobody can deactivate their own account", async () => {
     const { user } = await createInvitedUser({ email: "x@example.gov.ng", name: "X", role: "staff", permissions: [] }, actor, db);
     await expect(archiveUser(user.id, { id: user.id, label: "x" })).rejects.toThrow(/own account/);
+  });
+
+  describe("changing someone's sign-in email", () => {
+    const boss = async () => {
+      const { user } = await createInvitedUser({ email: "boss@example.gov.ng", name: "Boss", role: "super_admin", permissions: [] }, actor, db);
+      await setPassword(user.id, "a long enough password!", db);
+      return user;
+    };
+
+    it("changes only the address: the password, status and permissions stay, and it is audited", async () => {
+      const admin = await boss();
+      const { user } = await createInvitedUser({ email: "old@example.gov.ng", name: "Old", role: "staff", permissions: ["news"] }, actor, db);
+      await setPassword(user.id, "another long password!!", db);
+      const [before] = await db.select().from(users).where(eq(users.id, user.id));
+
+      const result = await changeUserEmail(user.id, "  New@Example.gov.ng ", { id: admin.id, label: "boss" });
+      const [after] = await db.select().from(users).where(eq(users.id, user.id));
+      expect(result.user.email).toBe("new@example.gov.ng");
+      expect(after.email).toBe("new@example.gov.ng");
+      expect(after.passwordHash).toBe(before.passwordHash);
+      expect(after.status).toBe("active");
+      expect(after.permissions).toEqual(["news"]);
+      expect(result.invitation).toBeUndefined();
+
+      const { auditLog } = await import("@/db/schema");
+      const rows = await db.select().from(auditLog).where(eq(auditLog.action, "user.email_changed"));
+      expect(rows).toHaveLength(1);
+      expect(rows[0].summary).toMatch(/old@example.gov.ng to new@example.gov.ng/);
+    });
+
+    it("refuses the same address, an address already in use (any case), and your own account", async () => {
+      const admin = await boss();
+      const { user } = await createInvitedUser({ email: "a@example.gov.ng", name: "A", role: "staff", permissions: ["news"] }, actor, db);
+      await setPassword(user.id, "another long password!!", db);
+      await expect(changeUserEmail(user.id, "A@example.gov.ng", { id: admin.id, label: "boss" })).rejects.toThrow(/already their email/);
+      await expect(changeUserEmail(user.id, "BOSS@example.gov.ng", { id: admin.id, label: "boss" })).rejects.toThrow(/already uses that email/);
+      await expect(changeUserEmail(admin.id, "me2@example.gov.ng", { id: admin.id, label: "boss" })).rejects.toThrow(/your own email/);
+      await expect(changeUserEmail("00000000-0000-4000-8000-0000000000ff", "x@example.gov.ng", { id: admin.id, label: "boss" })).rejects.toThrow(/not found/);
+    });
+
+    it("someone who has not activated gets a fresh invitation at the new address, and the old link stops working", async () => {
+      const admin = await boss();
+      const { user, token: oldToken } = await createInvitedUser({ email: "typo@example.gov.ng", name: "T", role: "staff", permissions: ["news"] }, actor, db);
+      expect(await peekToken(oldToken, "invite")).toBe(user.id);
+
+      const result = await changeUserEmail(user.id, "right@example.gov.ng", { id: admin.id, label: "boss" });
+      expect(result.user.status).toBe("invited");
+      expect(result.invitation).toBeDefined();
+      expect(await peekToken(oldToken, "invite")).toBeNull();
+      const live = await db.select().from(authTokens).where(eq(authTokens.userId, user.id));
+      expect(live.filter((t) => t.usedAt === null && t.purpose === "invite")).toHaveLength(1);
+    });
   });
 
   it("deactivating a user archives rather than deletes", async () => {
