@@ -5,7 +5,7 @@ import { eq } from "drizzle-orm";
 import { z } from "zod";
 import { getDb } from "@/db/client";
 import { users } from "@/db/schema";
-import { ActionForm, Field, SelectField, SubmitButton } from "@/components/admin/form";
+import { ActionForm, Field, SelectField, SubmitButton, UnsavedNote } from "@/components/admin/form";
 import { PermissionGrid } from "@/components/admin/PermissionGrid";
 import { PageTitle, Panel, StatusBadge } from "@/components/admin/ui";
 import { requireSuperAdminPage } from "@/lib/auth/dal";
@@ -32,7 +32,7 @@ export default async function ManageUserPage({ params }: { params: Promise<{ id:
       <p className="mb-6"><StatusBadge status={user.status} /></p>
 
       <Panel title="Access">
-        <ActionForm action={updateUserAction}>
+        <ActionForm action={updateUserAction} warnOnLeave>
           <input type="hidden" name="id" value={user.id} />
           <Field name="name" label="Full name" defaultValue={user.name} required />
           <SelectField
@@ -45,7 +45,10 @@ export default async function ManageUserPage({ params }: { params: Promise<{ id:
             ]}
           />
           <PermissionGrid selected={user.permissions.filter(isSection)} />
-          <SubmitButton className="self-start">Save access</SubmitButton>
+          <div className="flex flex-wrap items-center gap-4">
+            <SubmitButton>Save access</SubmitButton>
+            <UnsavedNote />
+          </div>
         </ActionForm>
       </Panel>
 

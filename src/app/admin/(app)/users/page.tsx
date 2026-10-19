@@ -24,7 +24,7 @@ export default async function UsersPage() {
       <PageTitle title="Users & access" description="Invite Ministry staff and choose which parts of the website each person can manage. People are deactivated, never deleted." />
 
       <Panel title="Invite someone">
-        <ActionForm action={inviteUserAction}>
+        <ActionForm action={inviteUserAction} resetOnSuccess>
           <div className="grid gap-5 sm:grid-cols-2">
             <Field name="name" label="Full name" required autoComplete="off" />
             <Field name="email" label="Ministry email address" type="email" required autoComplete="off" />

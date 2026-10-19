@@ -38,6 +38,8 @@ export interface SessionUser {
   name: string;
   role: Role;
   permissions: Section[];
+  /** When the current session ends (ISO time). Set for signed-in requests; the editor warns shortly before it. */
+  sessionExpiresAt?: string;
 }
 
 export function isSection(value: string): value is Section {

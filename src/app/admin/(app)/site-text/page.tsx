@@ -1,7 +1,7 @@
 import type { Metadata } from "next";
 import { getDb } from "@/db/client";
 import { siteText } from "@/db/schema";
-import { ActionForm, SubmitButton, TextArea } from "@/components/admin/form";
+import { ActionForm, SubmitButton, TextArea, UnsavedNote } from "@/components/admin/form";
 import { PageTitle, Panel } from "@/components/admin/ui";
 import { requireSectionPage } from "@/lib/auth/dal";
 import { mandate, mission, vision } from "@/content/mandate";
@@ -19,11 +19,14 @@ export default async function SiteTextPage() {
     <>
       <PageTitle title="Mandate, Mission & Vision" description="Shown on the home page and as the introduction to the About Us page." />
       <Panel>
-        <ActionForm action={save}>
+        <ActionForm action={save} warnOnLeave>
           <TextArea name="mandate" label="Mandate" rows={5} required defaultValue={map.get("mandate") ?? mandate} help="Shown as “Why we exist”, and as the intro on the About Us page." />
           <TextArea name="vision" label="Vision" rows={3} required defaultValue={map.get("vision") ?? vision} help="Shown as “Where we are headed”." />
           <TextArea name="mission" label="Mission" rows={5} required defaultValue={map.get("mission") ?? mission} help="Shown as “How we get there”." />
-          <SubmitButton className="self-start">Save changes</SubmitButton>
+          <div className="flex flex-wrap items-center gap-4">
+            <SubmitButton>Save changes</SubmitButton>
+            <UnsavedNote />
+          </div>
         </ActionForm>
       </Panel>
     </>

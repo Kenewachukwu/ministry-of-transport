@@ -4,6 +4,7 @@ import { Logo } from "@/components/layout/Header/Logo";
 import { CONTENT_NAV, SYSTEM_NAV, type NavEntry } from "@/lib/admin/nav";
 import { can, type SessionUser } from "@/lib/auth/permissions";
 import { logoutAction } from "@/app/admin/(auth)/actions";
+import { SessionWatcher } from "./SessionWatcher";
 
 function visible(user: SessionUser, entry: NavEntry) {
   if (entry.superAdminOnly) return user.role === "super_admin";
@@ -96,7 +97,10 @@ export function AdminShell({ user, children }: { user: SessionUser; children: Re
       </aside>
 
       <main id="admin-main" className="min-w-0 flex-1 px-4 py-8 sm:px-8 lg:px-12">
-        <div className="mx-auto w-full max-w-5xl">{children}</div>
+        <div className="mx-auto w-full max-w-5xl">
+          {user.sessionExpiresAt && <SessionWatcher expiresAt={user.sessionExpiresAt} />}
+          {children}
+        </div>
       </main>
     </div>
   );

@@ -25,7 +25,7 @@ export default async function AccountPage() {
       </Panel>
 
       <Panel title="Change password" className="mt-6">
-        <ActionForm action={changePasswordAction} className="max-w-md">
+        <ActionForm action={changePasswordAction} className="max-w-md" resetOnSuccess>
           <Field name="current" label="Current password" type="password" required autoComplete="current-password" />
           <Field name="password" label="New password" type="password" required autoComplete="new-password" help={PASSWORD_HINT} />
           <Field name="confirm" label="Confirm new password" type="password" required autoComplete="new-password" />

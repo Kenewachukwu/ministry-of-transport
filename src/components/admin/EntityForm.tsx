@@ -1,7 +1,7 @@
 "use client";
 
 import { useState } from "react";
-import { ActionForm, CheckboxField, Field, SelectField, SubmitButton, TextArea, useFieldError } from "./form";
+import { ActionForm, CheckboxField, Field, SelectField, SubmitButton, TextArea, UnsavedNote, useFieldError } from "./form";
 import { MediaField, RepeaterField, SectionsField } from "./fields";
 import type { FieldDef } from "@/lib/admin/fields";
 import type { ActionState } from "@/lib/admin/action";
@@ -47,6 +47,7 @@ export function EntityForm({
   return (
     <ActionForm
       action={action}
+      warnOnLeave
       // One handler at the form level keeps the "show when" fields in step with their controlling field.
     >
       <div
@@ -98,7 +99,10 @@ export function EntityForm({
           }
         })}
 
-        <SubmitButton className="self-start">{submitLabel}</SubmitButton>
+        <div className="flex flex-wrap items-center gap-4">
+          <SubmitButton>{submitLabel}</SubmitButton>
+          <UnsavedNote />
+        </div>
       </div>
     </ActionForm>
   );

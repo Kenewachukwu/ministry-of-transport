@@ -73,6 +73,7 @@ export const getCurrentUser = cache(async (): Promise<SessionUser | null> => {
       name: users.name,
       role: users.role,
       permissions: users.permissions,
+      sessionExpiresAt: sessions.expiresAt,
     })
     .from(sessions)
     .innerJoin(users, eq(users.id, sessions.userId))
@@ -86,5 +87,6 @@ export const getCurrentUser = cache(async (): Promise<SessionUser | null> => {
     )
     .limit(1);
   if (!row) return null;
-  return { ...row, permissions: row.permissions.filter(isSection) };
+  const { sessionExpiresAt, ...person } = row;
+  return { ...person, permissions: person.permissions.filter(isSection), sessionExpiresAt: sessionExpiresAt.toISOString() };
 });
