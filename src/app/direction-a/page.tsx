@@ -100,7 +100,7 @@ export default function DirectionAHomePage() {
         <Container className="relative z-10">
           <Heading as="h2" size="h2">The Road Ahead</Heading>
           <p className="mt-2 max-w-2xl text-ink-muted">
-            Our key goals, translated into measurable targets across the sector.
+            Our key goals for the transport sector.
           </p>
           <div className="mt-10">
             <PillarCards pillars={pillars} />

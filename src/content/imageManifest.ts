@@ -15,13 +15,6 @@ export const imageManifest: ImageManifestEntry[] = [
     attribution: "Federal Ministry of Transportation (official site asset)",
   },
   {
-    path: "/images/sourced/minister-alkali.jpeg",
-    usage: "Minister portrait — Leadership page, Welcome Message block",
-    source: "official",
-    sourceUrl: "https://transportation.gov.ng/wp-content/uploads/2021/03/New-HMT-1.jpeg",
-    attribution: "Federal Ministry of Transportation (official site asset)",
-  },
-  {
     path: "/images/sourced/agency-nrc.jpg",
     usage: "Nigerian Railway Corporation agency card",
     source: "official",
@@ -173,13 +166,6 @@ export const imageManifest: ImageManifestEntry[] = [
     usage: "News item + Events listing — 19th NCT & National Land Transport Policy unveiling",
     source: "official",
     sourceUrl: "https://transportation.gov.ng/wp-content/uploads/2026/08/19TH-NCT-2026-347x560.jpeg",
-    attribution: "Federal Ministry of Transportation (official site asset)",
-  },
-  {
-    path: "/images/sourced/news-whatsapp-2024.jpeg",
-    usage: "News item — Minister inspects Kubwa rail station, Abuja",
-    source: "official",
-    sourceUrl: "https://transportation.gov.ng/wp-content/uploads/2024/08/WhatsApp-Image-2024-08-27-at-8.09.58-AM.jpeg",
     attribution: "Federal Ministry of Transportation (official site asset)",
   },
   // Kano–Maradi Railway inspection, 17 Oct 2026: photographs supplied with the Ministry's 18 Oct 2026 press release.

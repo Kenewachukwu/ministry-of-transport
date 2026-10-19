@@ -1,12 +1,11 @@
 import type { NewsItem } from "./types";
 
 /**
- * The 18th NCT (Abeokuta, Feb 2024) and Dala Inland Dry Port items reflect
- * real events referenced on the live site. The remaining items are
- * representative placeholder content matching the ministry's real news
- * categories (Online News Report / Press Release / Photo News) — meant to
- * demonstrate the FeaturedNews pattern, not to assert unverified facts.
- * Replace with real copy before launch.
+ * Only real, confirmed items belong here. The 18th NCT (Abeokuta, Feb 2024) and
+ * Dala Inland Dry Port items reflect real events referenced on the previous
+ * site, and the 18 Oct 2026 press release is the Ministry's own. Earlier
+ * "representative placeholder" stories were removed because a government site
+ * must not publish news that did not happen. Add real items through the admin.
  */
 const KANO_MARADI = "/images/news/kano-maradi-inspection-2026-10";
 
@@ -130,62 +129,5 @@ export const news: NewsItem[] = [
     imageQuery: "dry port cargo containers rail",
     readTimeMinutes: 2,
     featured: true,
-  },
-  {
-    id: "rail-rehabilitation-inspection",
-    slug: "minister-inspects-rail-rehabilitation-works",
-    title: "Minister Inspects Kubwa Rail Station in Abuja",
-    category: "Online News Report",
-    excerpt:
-      "A site visit to assess station facilities and platform readiness along the Abuja rail corridor.",
-    body: [
-      "The Honourable Minister led a delegation, including security detail and ministry officials, on a site visit to the Kubwa rail station in Abuja, reviewing platform facilities and engaging with staff on outstanding works.",
-    ],
-    date: "2025-11-04",
-    imageQuery: "Minister inspects Kubwa rail station Abuja",
-    imageUrl: "/images/sourced/news-whatsapp-2024.jpeg",
-    readTimeMinutes: 2,
-  },
-  {
-    id: "road-safety-campaign",
-    slug: "ministry-backs-national-road-safety-campaign",
-    title: "Ministry Backs National Road Safety Awareness Campaign",
-    category: "Press Release",
-    excerpt:
-      "A joint initiative with road safety agencies to reduce accident rates ahead of the festive travel season.",
-    body: [
-      "The Ministry announced its backing for a nationwide road safety awareness drive, coordinated with the Federal Road Safety Corps and state transport ministries ahead of the peak travel period.",
-    ],
-    date: "2025-12-01",
-    imageQuery: "highway traffic safety signage Nigeria",
-    readTimeMinutes: 2,
-  },
-  {
-    id: "nitt-graduation",
-    slug: "nitt-graduation-ceremony",
-    title: "NITT Holds Graduation Ceremony for Transport Technology Cohort",
-    category: "Photo News",
-    excerpt:
-      "The Nigerian Institute of Transport Technology marks another cohort's completion of its professional training programmes.",
-    body: [
-      "Graduates from the Nigerian Institute of Transport Technology's professional and postgraduate programmes were formally conferred at a ceremony attended by Ministry officials.",
-    ],
-    date: "2026-01-22",
-    imageQuery: "graduation ceremony university Nigeria",
-    readTimeMinutes: 1,
-  },
-  {
-    id: "fcssip-quarterly-review",
-    slug: "fcssip-25-quarterly-review",
-    title: "FCSSIP 25 Quarterly Implementation Review Holds at the Ministry",
-    category: "Online News Report",
-    excerpt:
-      "Departmental heads present progress against the Federal Civil Service Strategy Implementation Plan targets.",
-    body: [
-      "Directors across the Ministry's fifteen departments presented quarterly progress reports against the FCSSIP 25 implementation plan, with the Permanent Secretary chairing the review session.",
-    ],
-    date: "2026-04-10",
-    imageQuery: "office meeting presentation government Nigeria",
-    readTimeMinutes: 2,
   },
 ];

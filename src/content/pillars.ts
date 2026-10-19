@@ -1,9 +1,11 @@
 import type { Pillar } from "./types";
 
 /**
- * Adapted from fmmbe.gov.ng's "The Road Ahead" pillar-cards pattern
- * (bullet KPIs + target years), mapped onto this ministry's own Key Goals.
- * Placeholder KPI figures — flagged for the ministry to confirm real targets.
+ * The Ministry's four key goals, in the layout of fmmbe.gov.ng's "The Road
+ * Ahead". The targets (`kpis`) are deliberately empty: earlier figures were
+ * placeholders, and a government site must not publish commitments the Ministry
+ * has not made. Add real, confirmed targets through the admin (or here) and
+ * they appear under each goal automatically.
  */
 export const pillars: Pillar[] = [
   {
@@ -11,37 +13,25 @@ export const pillars: Pillar[] = [
     title: "Safe and Secure Transportation",
     description:
       "Strengthening safety standards across road and rail to protect the travelling public.",
-    kpis: [
-      { label: "Reduce rail incident rate year-on-year", targetYear: "2027" },
-      { label: "Nationwide road-rail crossing safety audit", targetYear: "2026" },
-    ],
+    kpis: [],
   },
   {
     id: "economic-development",
     title: "Drive Economic Development",
     description:
       "Positioning transport infrastructure as a driver of trade, industry, and job creation.",
-    kpis: [
-      { label: "Expand freight rail capacity", targetYear: "2028" },
-      { label: "Reduce logistics cost as % of GDP", targetYear: "2030" },
-    ],
+    kpis: [],
   },
   {
     id: "connectivity",
     title: "Facilitate Connectivity",
     description: "Building an integrated, intermodal and multimodal transport network.",
-    kpis: [
-      { label: "New intermodal terminals commissioned", targetYear: "2027" },
-      { label: "Rail network extension (km)", targetYear: "2029" },
-    ],
+    kpis: [],
   },
   {
     id: "local-capacity",
     title: "Develop Local Capacity",
     description: "Growing professionalism and technical capability within the sector's workforce.",
-    kpis: [
-      { label: "NITT graduate placement rate", targetYear: "2026" },
-      { label: "Local content in rail maintenance", targetYear: "2028" },
-    ],
+    kpis: [],
   },
 ];
