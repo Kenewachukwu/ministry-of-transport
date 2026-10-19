@@ -16,7 +16,7 @@ export const footerColumns: FooterLinkColumn[] = [
     heading: "Support",
     links: [
       { label: "Contact Us", href: "/contact" },
-      { label: "Staff Portal", href: "/portal/login" },
+      { label: "Staff Portal", href: "/portal" },
       { label: "Ext. Corres.", href: ECMS_URL, external: true },
       { label: pebecNav.label, href: pebecNav.href, external: true },
       { label: "FCSSIP 25", href: "/fcssip-25" },

@@ -1,6 +1,7 @@
 import type { Metadata } from "next";
 import { StaticContentTemplate } from "@/components/templates/StaticContentTemplate";
 import { InlineLink } from "@/design-system/primitives/Link";
+import { siteMeta } from "@/content/siteMeta";
 
 export const metadata: Metadata = { title: "Code of Ethics" };
 
@@ -13,11 +14,11 @@ export default function Page() {
       </p>
       <p>
         The full Code of Conduct and Ethics document, including the Anti-Corruption and
-        Transparency Unit (ACTU) guidelines, is available for download below.
+        Transparency Unit (ACTU) guidelines, is not yet available to download from this website.
       </p>
       <p>
-        <InlineLink href="#" external chevron>
-          Read and download the FMT Code of Conduct &amp; Ethics
+        <InlineLink href={`mailto:${siteMeta.email}?subject=${encodeURIComponent("Request for the Code of Conduct and Ethics")}`} chevron>
+          Request a copy by email
         </InlineLink>
       </p>
     </StaticContentTemplate>

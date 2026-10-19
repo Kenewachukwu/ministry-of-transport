@@ -4,7 +4,8 @@ export const siteMeta = {
   country: "Federal Republic of Nigeria",
   address: "Bukar Dipcharima House, Central Business District, FCT, Abuja, Nigeria",
   hours: "Mon – Fri: 8:00 am – 4:00 pm",
-  phone: "+234 800 000 0000",
+  /** The Ministry's public telephone number. Hidden while empty: the old value was a placeholder, never a real line. */
+  phone: null as string | null,
   email: "info@transportation.gov.ng",
   social: {
     x: "https://x.com/MinTransportNG",

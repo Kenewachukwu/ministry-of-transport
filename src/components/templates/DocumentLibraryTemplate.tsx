@@ -6,7 +6,11 @@ import { Container } from "@/design-system/primitives/Container";
 import { PageHeader } from "./PageHeader";
 import type { DocumentItem } from "@/content/types";
 import { documentCategories } from "@/content/documents";
+import { siteMeta } from "@/content/siteMeta";
 import { cn } from "@/lib/utils";
+
+/** A document whose file has not been uploaded yet carries "#" (or nothing) as its link. */
+const hasFile = (href: string | undefined) => !!href && href !== "#";
 
 export function DocumentLibraryTemplate({
   documents,
@@ -48,12 +52,22 @@ export function DocumentLibraryTemplate({
                   <FileText size={16} className="shrink-0 text-cta" aria-hidden />
                   <span className="text-sm font-medium text-ink">{doc.title}</span>
                 </span>
-                <a
-                  href={doc.href}
-                  className="flex shrink-0 items-center gap-1.5 text-xs font-semibold text-cta hover:underline"
-                >
-                  <Download size={13} aria-hidden /> Download
-                </a>
+                {hasFile(doc.href) ? (
+                  <a
+                    href={doc.href}
+                    className="flex shrink-0 items-center gap-1.5 text-xs font-semibold text-cta hover:underline"
+                  >
+                    <Download size={13} aria-hidden /> Download
+                  </a>
+                ) : (
+                  <a
+                    href={`mailto:${siteMeta.email}?subject=${encodeURIComponent(`Request for document: ${doc.title}`)}`}
+                    className="shrink-0 text-xs font-semibold text-ink-muted hover:text-cta hover:underline"
+                  >
+                    Available on request
+                    <span className="sr-only"> — email the Ministry to request {doc.title}</span>
+                  </a>
+                )}
               </li>
             ))}
             {filtered.length === 0 && (

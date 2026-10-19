@@ -15,13 +15,6 @@ export const imageManifest: ImageManifestEntry[] = [
     attribution: "Federal Ministry of Transportation (official site asset)",
   },
   {
-    path: "/images/sourced/minister-alkali.jpeg",
-    usage: "Minister portrait — Leadership page, Welcome Message block",
-    source: "official",
-    sourceUrl: "https://transportation.gov.ng/wp-content/uploads/2021/03/New-HMT-1.jpeg",
-    attribution: "Federal Ministry of Transportation (official site asset)",
-  },
-  {
     path: "/images/sourced/agency-nrc.jpg",
     usage: "Nigerian Railway Corporation agency card",
     source: "official",
@@ -175,11 +168,25 @@ export const imageManifest: ImageManifestEntry[] = [
     sourceUrl: "https://transportation.gov.ng/wp-content/uploads/2026/08/19TH-NCT-2026-347x560.jpeg",
     attribution: "Federal Ministry of Transportation (official site asset)",
   },
-  {
-    path: "/images/sourced/news-whatsapp-2024.jpeg",
-    usage: "News item — Minister inspects Kubwa rail station, Abuja",
-    source: "official",
-    sourceUrl: "https://transportation.gov.ng/wp-content/uploads/2024/08/WhatsApp-Image-2024-08-27-at-8.09.58-AM.jpeg",
-    attribution: "Federal Ministry of Transportation (official site asset)",
-  },
+  // Kano–Maradi Railway inspection, 17 Oct 2026: photographs supplied with the Ministry's 18 Oct 2026 press release.
+  // No photographer credit was given; the Press and Public Relations unit should confirm provenance.
+  ...(
+    [
+      ["beam-launch-crane.jpg", "cover image"],
+      ["site-office.jpg", "gallery"],
+      ["sleeper-plant.jpg", "gallery"],
+      ["sleeper-yard.jpg", "gallery"],
+      ["beam-launch-camera.jpg", "gallery"],
+      ["beam-launch-bridge-piers.jpg", "gallery"],
+      ["media-briefing.jpg", "gallery"],
+      ["group-photograph.jpg", "gallery"],
+    ] as const
+  ).map(
+    ([file, role]): ImageManifestEntry => ({
+      path: `/images/news/kano-maradi-inspection-2026-10/${file}`,
+      usage: `News item — FG approves surveillance equipment and additional railway coaches (${role})`,
+      source: "official",
+      attribution: "Federal Ministry of Transportation, supplied with the 18 Oct 2026 press release",
+    })
+  ),
 ];
