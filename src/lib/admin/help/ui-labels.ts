@@ -14,7 +14,7 @@ export const UI_LABELS: string[] = [
   // Menu and navigation
   "Menu", "Dashboard", "Help", "View website", "View on website", "Users & access", "Activity log", "System status",
   // Lists
-  "Published", "Archived", "All", "Edit", "Archive", "Restore", "Older →", "← Newer", "Up", "Down", "Remove block", "Save new order",
+  "Published", "Archived", "All", "Search", "Clear search", "Edit", "Archive", "Restore", "Older →", "← Newer", "Up", "Down", "Remove block", "Save new order",
   // Forms
   "Save changes", "Save heading", "Save access", "Upload a picture", "Upload a file", "Add a detail", "Add a target", "Add a block",
   // Site text and FCSSIP heading

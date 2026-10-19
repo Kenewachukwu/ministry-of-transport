@@ -137,6 +137,51 @@ describe("content operations", () => {
   });
 });
 
+describe("searching a list", () => {
+  let db: Db;
+  beforeEach(async () => {
+    db = await createTestDb({ seed: true });
+    const { users } = await import("@/db/schema");
+    await db.insert(users).values([{ id: admin.id, email: admin.email, name: admin.name, role: "super_admin", status: "active" }]);
+  });
+
+  // Made-up words, so nothing in the seeded content can match by accident.
+  const newsItem = (title: string, excerpt = "x", body = "") => ({ kind: "online_news", title, itemDate: "2026-10-01", isPressRelease: false, location: null, excerpt, body, imageUrl: null, imageAlt: null, featured: false });
+
+  it("finds news by words in the title, summary or text, ignoring case and partial words", async () => {
+    await createRow(news, admin, newsItem("Quokka corridor opens", "A zorblax line", "Passengers will board at Wombatville."));
+    await createRow(news, admin, newsItem("Glimmerport tariffs updated", "Fees change", "Plinkton only."));
+    const find = async (q: string) => (await listRows(news, admin, { q })).map((r) => String(r.title));
+    expect(await find("QUOKKA")).toEqual(["Quokka corridor opens"]);
+    expect(await find("quokka")).not.toContain("Glimmerport tariffs updated");
+    expect(await find("wombatville")).toEqual(["Quokka corridor opens"]); // found in the body
+    expect(await find("zorblax")).toEqual(["Quokka corridor opens"]); // found in the summary
+    expect(await find("quokk")).toEqual(["Quokka corridor opens"]); // partial word
+    expect(await find("zzzznotthere")).toEqual([]);
+  });
+
+  it("treats % and _ as ordinary characters, never as wildcards", async () => {
+    await createRow(news, admin, newsItem("Ordinaryzz title"));
+    // a lone % becomes blank after stripping, which means "no search"
+    expect(await listRows(news, admin, { q: "%" })).toHaveLength((await listRows(news, admin)).length);
+    expect((await listRows(news, admin, { q: "Ordinaryzz_title" })).map((r) => String(r.title))).toEqual([]);
+  });
+
+  it("combines with the status and the kind filter", async () => {
+    const id = await createRow(news, admin, newsItem("Archived flumph story"));
+    await archiveRow(news, admin, id);
+    expect(await listRows(news, admin, { q: "flumph", status: "published" })).toHaveLength(0);
+    expect((await listRows(news, admin, { q: "flumph", status: "archived" })).map((r) => String(r.title))).toEqual(["Archived flumph story"]);
+    expect(await listRows(news, admin, { q: "flumph", status: "archived", filter: "event" })).toHaveLength(0);
+  });
+
+  it("searches FCSSIP blocks by the text inside them", async () => {
+    await createRow(blocks, admin, { type: "paragraph", text: "The strategy covers snorklewhistle transformation.", label: "", href: "", src: "", alt: "", caption: "", width: "", height: "", size: "full" });
+    expect((await listRows(blocks, admin, { q: "snorklewhistle" })).length).toBe(1);
+    expect(await listRows(blocks, admin, { q: "zzzznotthere" })).toHaveLength(0);
+  });
+});
+
 describe("registry", () => {
   it("every plain field maps to a real database column", () => {
     for (const def of ENTITIES.filter((e) => !e.toRow || e.key === "news")) {

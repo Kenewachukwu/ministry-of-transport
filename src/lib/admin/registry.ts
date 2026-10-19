@@ -40,6 +40,8 @@ export interface EntityDef {
   scope?: (cols: Columns) => SQL | undefined;
   /** Values applied to every new row (e.g. which page a block belongs to). */
   createDefaults?: Row;
+  /** Columns the list's search box looks in (case-insensitive, partial match). Defaults to the title column. */
+  searchColumns?: string[];
   /** Optional filter shown above the list (news kind, resource kind). */
   filter?: { column: string; label: string; options: { value: string; label: string }[] };
   /** The last N published rows can't be archived (a carousel must never be empty). */
@@ -89,6 +91,7 @@ const heroDef: EntityDef = {
   tags: [TAG.hero],
   orderable: true,
   titleColumn: "headline",
+  searchColumns: ["headline", "eyebrow", "body"],
   subtitle: (r) => String(r.eyebrow ?? ""),
   minPublished: 1,
   fields: [
@@ -127,6 +130,7 @@ const newsDef: EntityDef = {
   tags: [TAG.news],
   orderable: false,
   titleColumn: "title",
+  searchColumns: ["title", "excerpt", "body"],
   subtitle: (r) => `${NEWS_KINDS.find((k) => k.value === r.kind)?.label ?? ""} · ${String(r.itemDate ?? "")}`,
   filter: { column: "kind", label: "Kind", options: NEWS_KINDS },
   fields: [
@@ -171,6 +175,7 @@ const departmentsDef: EntityDef = {
   tags: [TAG.departments],
   orderable: true,
   titleColumn: "name",
+  searchColumns: ["name", "summary"],
   subtitle: (r) => String(r.summary ?? ""),
   fields: [
     { kind: "text", name: "name", label: "Name", required: true, maxLength: 120 },
@@ -216,6 +221,7 @@ const leadershipDef: EntityDef = {
   tags: [TAG.leadership],
   orderable: true,
   titleColumn: "title",
+  searchColumns: ["title", "name"],
   subtitle: (r) => (r.name ? String(r.name) : "Name to be announced"),
   fields: [
     {
@@ -264,6 +270,7 @@ const roadAheadDef: EntityDef = {
   tags: [TAG.pillars],
   orderable: true,
   titleColumn: "title",
+  searchColumns: ["title", "description"],
   subtitle: (r) => String(r.description ?? ""),
   fields: [
     { kind: "text", name: "title", label: "Goal", required: true, maxLength: 120 },
@@ -288,6 +295,7 @@ const eServicesDef: EntityDef = {
   tags: [TAG.eServices],
   orderable: true,
   titleColumn: "name",
+  searchColumns: ["name", "description", "href"],
   subtitle: (r) => String(r.href ?? ""),
   fields: [
     { kind: "text", name: "name", label: "Service name", required: true, maxLength: 120 },
@@ -313,6 +321,7 @@ const resourcesDef: EntityDef = {
   tags: [TAG.resources],
   orderable: true,
   titleColumn: "title",
+  searchColumns: ["title", "category"],
   subtitle: (r) => `${String(r.category ?? "")}${r.href === "#" ? " · no file attached yet" : ""}`,
   filter: { column: "kind", label: "List", options: RESOURCE_KINDS },
   fields: [
@@ -351,6 +360,7 @@ const fcssipBlocksDef: EntityDef = {
   tags: [TAG.fcssip],
   orderable: true,
   titleColumn: "type",
+  searchColumns: ["data"],
   title: (row) => blockTitle(row),
   subtitle: (r) => BLOCK_TYPES.find((b) => b.value === r.type)?.label ?? String(r.type),
   scope: (cols) => eq(cols.page, "fcssip"),

@@ -1,5 +1,5 @@
 import "server-only";
-import { and, asc, desc, eq, ilike, inArray, sql, type SQL } from "drizzle-orm";
+import { and, asc, desc, eq, ilike, inArray, or, sql, type SQL } from "drizzle-orm";
 import { getTableColumns } from "drizzle-orm";
 import type { PgColumn } from "drizzle-orm/pg-core";
 import { getDb } from "@/db/client";
@@ -34,6 +34,15 @@ export function rowTitle(def: EntityDef, row: Row): string {
   return def.title ? def.title(row) : String(row[def.titleColumn] ?? "(untitled)");
 }
 
+/** Case-insensitive partial match of the typed words in any of the section's search columns. */
+function searchCondition(def: EntityDef, c: Cols, q: string | undefined): SQL | undefined {
+  const term = q?.trim().replace(/[\\%_]/g, "");
+  if (!term) return undefined;
+  const names = (def.searchColumns ?? [def.titleColumn]).filter((n) => c[n]);
+  if (names.length === 0) return undefined;
+  return or(...names.map((n) => ilike(sql`${c[n]}::text`, `%${term}%`)));
+}
+
 export async function listRows(
   def: EntityDef,
   user: SessionUser,
@@ -46,7 +55,7 @@ export async function listRows(
   const conditions = [
     status === "all" ? undefined : eq(c.status, status),
     options.filter && def.filter ? eq(c[def.filter.column], options.filter) : undefined,
-    options.q && c[def.titleColumn] && !def.title ? ilike(c[def.titleColumn], `%${options.q.replace(/[%_]/g, "")}%`) : undefined,
+    searchCondition(def, c, options.q),
   ];
   const order = def.orderable ? [asc(c.sortOrder), asc(c.createdAt)] : [c.itemDate ? desc(c.itemDate) : desc(c.updatedAt), desc(c.createdAt)];
   const rows = (await db

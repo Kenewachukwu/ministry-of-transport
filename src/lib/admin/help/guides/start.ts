@@ -91,6 +91,7 @@ export const startGuides: HelpGuide[] = [
       },
     ],
     tips: [
+      "To find an item in a long list, type a word in the search box above the list and press “Search”. It looks in titles and text. “Clear search” shows everything again.",
       "You only see the sections a super administrator has given you. If something is missing, ask them.",
       "A section you are not allowed to open takes you back to the dashboard with a short notice.",
     ],
