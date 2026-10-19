@@ -8,6 +8,13 @@
       "when": 1792137085591,
       "tag": "0000_init",
       "breakpoints": true
+    },
+    {
+      "idx": 1,
+      "version": "7",
+      "when": 1792444740536,
+      "tag": "0001_bumpy_captain_midlands",
+      "breakpoints": true
     }
   ]
 }

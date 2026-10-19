@@ -65,6 +65,25 @@ describe("public content layer, database mode", () => {
     expect(article?.body.length).toBeGreaterThan(0);
   });
 
+  it("the gallery and the cover picture's description reach the article, but not the lists", async () => {
+    const cms = await facade();
+    const article = await cms.getNewsArticle("fg-approves-surveillance-equipment-additional-railway-coaches");
+    expect(article?.gallery?.length).toBeGreaterThan(3);
+    expect(article?.gallery?.every((p) => p.src.startsWith("/images/") && p.alt.length > 10)).toBe(true);
+    expect(article?.imageAlt).toMatch(/crane/i);
+    const summaries = await cms.getNewsSummaries("all");
+    const listed = summaries.find((n) => n.slug === article?.slug);
+    expect(listed).toBeDefined();
+    expect("gallery" in (listed as object)).toBe(false);
+    expect("body" in (listed as object)).toBe(false);
+  });
+
+  it("a story with no gallery has none (an empty list in the database is not a gallery)", async () => {
+    const cms = await facade();
+    const article = await cms.getNewsArticle("dala-inland-dry-port-commissioning");
+    expect(article?.gallery).toBeUndefined();
+  });
+
   it("derives placeholder status from a missing name and hides internal notes' effect on cards", async () => {
     const cms = await facade();
     const minister = await cms.getLeadershipById("minister");

@@ -41,6 +41,7 @@ export const news: NewsItem[] = [
     date: "2026-10-18",
     imageQuery: "Kano–Maradi railway bridge beam launching Chainage 191",
     imageUrl: `${KANO_MARADI}/beam-launch-crane.jpg`,
+    imageAlt: "A crane lifting a precast concrete beam beside completed spans of a railway bridge under construction.",
     gallery: [
       {
         src: `${KANO_MARADI}/site-office.jpg`,

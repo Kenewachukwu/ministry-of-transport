@@ -71,7 +71,7 @@ export function ArticleTemplate({ item, basePath }: { item: NewsItem; basePath: 
       <section className="py-14">
         <Container size="narrow">
           <div className="aspect-[16/9] overflow-hidden rounded-card">
-            <Image src={getNewsImage(item)} alt="" width={800} height={450} className="h-full w-full object-cover" />
+            <Image src={getNewsImage(item)} alt={item.imageAlt ?? ""} width={800} height={450} className="h-full w-full object-cover" />
           </div>
           <div className="mt-8 flex flex-col gap-5 text-lg leading-relaxed text-ink">
             {item.body.map((paragraph, i) => (

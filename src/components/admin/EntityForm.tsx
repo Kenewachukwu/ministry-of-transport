@@ -2,7 +2,7 @@
 
 import { useState } from "react";
 import { ActionForm, CheckboxField, Field, SelectField, SubmitButton, TextArea, UnsavedNote, useFieldError } from "./form";
-import { MediaField, RepeaterField, SectionsField } from "./fields";
+import { GalleryField, MediaField, RepeaterField, SectionsField } from "./fields";
 import type { FieldDef } from "@/lib/admin/fields";
 import type { ActionState } from "@/lib/admin/action";
 import type { UploadMode } from "@/lib/storage/client";
@@ -94,6 +94,8 @@ export function EntityForm({
               return <MediaWithError key={f.name} def={f} value={value} mode="file" uploadMode={uploadMode} />;
             case "repeater":
               return <RepeaterField key={f.name} name={f.name} label={f.label} help={f.help} columns={f.columns} initial={(value as Record<string, string>[]) ?? []} addLabel={f.addLabel} />;
+            case "gallery":
+              return <GalleryField key={f.name} name={f.name} label={f.label} help={f.help} initial={(value as { src: string; alt: string; caption?: string }[]) ?? []} uploadMode={uploadMode} addLabel={f.addLabel} />;
             case "sections":
               return <SectionsField key={f.name} name={f.name} label={f.label} help={f.help} initial={(value as { heading: string; note?: string; items: string[] }[]) ?? []} />;
           }

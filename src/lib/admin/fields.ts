@@ -31,6 +31,8 @@ export type FieldDef = {
   /** A downloadable file (PDF / Word / Excel): upload or link. Sets the file name/size/type fields too. */
   | { kind: "file" }
   | { kind: "repeater"; columns: RepeaterColumn[]; addLabel?: string }
+  /** Several pictures, each with a screen-reader description and an optional caption. */
+  | { kind: "gallery"; addLabel?: string }
   /** Department-style blocks: heading, optional lead-in, and one item per line. */
   | { kind: "sections" }
 );

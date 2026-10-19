@@ -51,6 +51,8 @@ export const newsItems = pgTable(
     location: text("location"),
     imageUrl: text("image_url"),
     imageAlt: text("image_alt"),
+    /** More pictures shown under the story: [{ src, alt, caption? }]. */
+    gallery: jsonb("gallery").$type<{ src: string; alt: string; caption?: string }[]>().notNull().default([]),
     featured: boolean("featured").notNull().default(false),
   },
   (t) => [index("news_items_list_idx").on(t.status, t.kind, t.itemDate)]

@@ -14,10 +14,11 @@ import type { NewsFilter, NewsSummary } from "./types";
 
 export type { NewsSummary, NewsFilter, SiteText } from "./types";
 
-/** Drop the article body so list pages never ship it to the browser. */
+/** Drop the article body and gallery so list pages never ship them to the browser. */
 function summarise(item: NewsItem): NewsSummary {
-  const { body, ...summary } = item;
+  const { body, gallery, ...summary } = item;
   void body;
+  void gallery;
   return summary;
 }
 

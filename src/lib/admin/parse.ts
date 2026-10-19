@@ -24,6 +24,7 @@ export function parseFields(fields: FieldDef[], formData: FormData): FieldValues
           .filter(Boolean);
         break;
       case "repeater":
+      case "gallery":
       case "sections":
         out[f.name] = json(raw);
         break;

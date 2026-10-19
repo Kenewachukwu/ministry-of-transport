@@ -28,6 +28,8 @@ function toNewsItem(row: NewsRow): NewsItem {
     date: row.itemDate,
     imageQuery: "",
     imageUrl: row.imageUrl ?? undefined,
+    imageAlt: row.imageAlt ?? undefined,
+    gallery: row.gallery?.length ? row.gallery : undefined,
     readTimeMinutes: Math.max(1, Math.round(words / WORDS_PER_MINUTE)),
     featured: row.featured,
   };

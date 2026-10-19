@@ -143,6 +143,7 @@ const newsDef: EntityDef = {
     { kind: "textarea", name: "body", label: "Full text", rows: 12, maxLength: 20000, help: "Separate paragraphs with a blank line. Plain text only.", showWhen: { field: "kind", in: ["online_news", "photo_news"] } },
     { kind: "image", name: "imageUrl", label: "Picture", altName: "imageAlt", help: "Shown in full on cards. Leave empty to use the standard picture for this kind." },
     { kind: "text", name: "imageAlt", label: "Picture description (for screen readers)", maxLength: 200 },
+    { kind: "gallery", name: "gallery", label: "More pictures", addLabel: "Add a picture", help: "Extra pictures shown in a gallery under the story. Each one needs a description for screen readers.", showWhen: { field: "kind", in: ["online_news", "photo_news"] } },
     { kind: "checkbox", name: "featured", label: "Feature this item", showWhen: { field: "kind", in: ["online_news", "photo_news"] } },
   ],
   schema: z.object({
@@ -155,13 +156,32 @@ const newsDef: EntityDef = {
     body: z.string().trim().max(20000, "Keep this under 20,000 characters."),
     imageUrl: optionalMedia,
     imageAlt: optional(200),
+    gallery: z
+      .array(
+        z.object({
+          src: z.string().trim().min(1, "Every picture in the gallery needs a picture.").refine(isAllowedMediaUrl, mediaMessage),
+          alt: z.string().trim().min(1, "Describe every picture in the gallery for screen readers.").max(200, "Keep descriptions under 200 characters."),
+          caption: z
+            .string()
+            .trim()
+            .max(200, "Keep captions under 200 characters.")
+            .optional()
+            .transform((v) => v || undefined),
+        })
+      )
+      .max(24, "A gallery can hold up to 24 pictures."),
     featured: z.boolean(),
   }),
   prepareCreate: async (values, { slugExists }) => {
     const { slugify, uniqueSlug } = await import("./slug");
     return { ...values, slug: await uniqueSlug(slugify(String(values.title)), slugExists) };
   },
-  toRow: (v) => ({ ...v, isPressRelease: v.kind === "online_news" ? v.isPressRelease : false, featured: v.kind === "event" ? false : v.featured }),
+  toRow: (v) => ({
+    ...v,
+    isPressRelease: v.kind === "online_news" ? v.isPressRelease : false,
+    featured: v.kind === "event" ? false : v.featured,
+    gallery: v.kind === "event" ? [] : v.gallery,
+  }),
   publicPath: (r) => (r.kind === "event" ? "/direction-a/news/events" : `/direction-a/news/${String(r.slug)}`),
 };
 

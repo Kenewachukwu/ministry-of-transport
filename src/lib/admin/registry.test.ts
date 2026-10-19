@@ -34,6 +34,40 @@ describe("links in the editors", () => {
   });
 });
 
+describe("a news item's gallery", () => {
+  const news = getEntity("news")!;
+  const base = { kind: "photo_news", title: "Site visit", itemDate: "2026-10-18", isPressRelease: false, location: "", excerpt: "A visit.", body: "", imageUrl: "", imageAlt: "", featured: false };
+  const photo = { src: "/images/news/a.jpg", alt: "Engineers at a bridge", caption: "" };
+
+  it("accepts a list of described pictures and drops an empty caption", () => {
+    const parsed = news.schema.parse({ ...base, gallery: [photo, { ...photo, src: "/uploads/b.jpg", caption: "At the pier" }] });
+    expect(parsed.gallery).toEqual([
+      { src: "/images/news/a.jpg", alt: "Engineers at a bridge", caption: undefined },
+      { src: "/uploads/b.jpg", alt: "Engineers at a bridge", caption: "At the pier" },
+    ]);
+  });
+
+  it("accepts no gallery at all", () => {
+    expect(news.schema.safeParse({ ...base, gallery: [] }).success).toBe(true);
+  });
+
+  it("refuses a picture with no description, no picture, or a picture from somewhere unapproved", () => {
+    expect(news.schema.safeParse({ ...base, gallery: [{ ...photo, alt: "" }] }).success).toBe(false);
+    expect(news.schema.safeParse({ ...base, gallery: [{ ...photo, src: "" }] }).success).toBe(false);
+    expect(news.schema.safeParse({ ...base, gallery: [{ ...photo, src: "https://evil.example/x.jpg" }] }).success).toBe(false);
+  });
+
+  it("allows at most 24 pictures", () => {
+    expect(news.schema.safeParse({ ...base, gallery: Array.from({ length: 24 }, () => photo) }).success).toBe(true);
+    expect(news.schema.safeParse({ ...base, gallery: Array.from({ length: 25 }, () => photo) }).success).toBe(false);
+  });
+
+  it("an event never keeps a gallery", () => {
+    const row = news.toRow!({ ...base, kind: "event", gallery: [photo] }) as { gallery: unknown[] };
+    expect(row.gallery).toEqual([]);
+  });
+});
+
 describe("documents with no file yet", () => {
   const base = { kind: "document", title: "Finance Act", category: "Finance & Budget" };
 

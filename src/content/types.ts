@@ -90,6 +90,8 @@ export interface NewsItem {
   imageQuery: string;
   /** Real photo for this specific item; falls back to a per-category default when absent. */
   imageUrl?: string;
+  /** What the cover picture shows, for screen readers. Empty means the picture is decorative. */
+  imageAlt?: string;
   /** More photographs for the article page, shown below the text. */
   gallery?: NewsPhoto[];
   readTimeMinutes: number;

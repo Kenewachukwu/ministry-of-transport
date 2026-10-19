@@ -82,6 +82,8 @@ export async function seedIfEmpty(db: Db) {
           body: n.body.join("\n\n"),
           itemDate: n.date,
           imageUrl: n.imageUrl ?? null,
+          imageAlt: n.imageAlt ?? null,
+          gallery: n.gallery ?? [],
           featured: n.featured ?? false,
         })),
         ...eventContent.map((e) => ({

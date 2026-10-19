@@ -5,7 +5,7 @@ import { ArrowDown, ArrowUp, FileText, ImageIcon, Plus, Trash2, Upload } from "l
 import { cn } from "@/lib/utils";
 import type { RepeaterColumn } from "@/lib/admin/fields";
 import { uploadFile, type UploadMode } from "@/lib/storage/client";
-import { inputClasses } from "./form";
+import { inputClasses, useFieldError } from "./form";
 
 type Row = Record<string, string>;
 
@@ -175,29 +175,31 @@ export function SectionsField({
 
 /* ---------- picture / file with optional upload ---------------------------------------------------- */
 
-export function MediaField({
+/**
+ * The picture-or-file control without its label: a preview, a box for a link,
+ * and an Upload button. Controlled, so it works both as a single field and as
+ * one row of a gallery.
+ */
+function MediaPicker({
+  id,
   name,
-  label,
-  help,
-  required,
-  defaultValue,
-  error,
+  value,
+  onChange,
   mode,
   uploadMode,
+  invalid,
 }: {
-  name: string;
-  label: string;
-  help?: string;
-  required?: boolean;
-  defaultValue?: string | null;
-  error?: string;
+  id: string;
+  /** Present for a stand-alone field (the link box is what gets submitted); absent inside a gallery. */
+  name?: string;
+  value: string;
+  onChange: (next: string) => void;
   mode: "image" | "file";
   uploadMode: UploadMode;
+  invalid?: boolean;
 }) {
-  const [value, setValue] = useState(defaultValue ?? "");
   const [busy, setBusy] = useState(false);
   const [problem, setProblem] = useState<string | null>(null);
-  const id = `f-${name}`;
   const previewable = mode === "image" && value && (value.startsWith("/") || value.startsWith("https://"));
 
   async function onPick(file: File | undefined) {
@@ -205,8 +207,7 @@ export function MediaField({
     setProblem(null);
     setBusy(true);
     try {
-      const url = await uploadFile(file, mode, uploadMode);
-      setValue(url);
+      onChange(await uploadFile(file, mode, uploadMode));
     } catch (e) {
       setProblem(e instanceof Error ? e.message : "The upload failed.");
     } finally {
@@ -216,11 +217,7 @@ export function MediaField({
 
   const accept = mode === "image" ? "image/jpeg,image/png,image/webp,image/avif" : ".pdf,.docx,.xlsx,application/pdf";
   return (
-    <div className="flex flex-col gap-2">
-      <Label id={id} help={!error ? help : undefined}>
-        {label}
-        {required && <span className="text-red-700" aria-hidden> *</span>}
-      </Label>
+    <>
       <div className="flex flex-col gap-3 sm:flex-row">
         {previewable && (
           // eslint-disable-next-line @next/next/no-img-element -- admin preview of an arbitrary uploaded picture
@@ -241,9 +238,9 @@ export function MediaField({
             id={id}
             name={name}
             value={value}
-            onChange={(e) => setValue(e.target.value)}
+            onChange={(e) => onChange(e.target.value)}
             placeholder={mode === "image" ? "/images/… or https://… picture link" : "https://… link to the file"}
-            aria-invalid={error ? true : undefined}
+            aria-invalid={invalid ? true : undefined}
             className={inputClasses}
           />
           {uploadMode !== "none" ? (
@@ -257,12 +254,114 @@ export function MediaField({
           )}
         </div>
       </div>
-      {error && <p className="text-xs font-medium text-red-700">{error}</p>}
       {problem && (
         <p role="alert" className="text-xs font-medium text-red-700">
           {problem}
         </p>
       )}
+    </>
+  );
+}
+
+export function MediaField({
+  name,
+  label,
+  help,
+  required,
+  defaultValue,
+  error,
+  mode,
+  uploadMode,
+}: {
+  name: string;
+  label: string;
+  help?: string;
+  required?: boolean;
+  defaultValue?: string | null;
+  error?: string;
+  mode: "image" | "file";
+  uploadMode: UploadMode;
+}) {
+  const [value, setValue] = useState(defaultValue ?? "");
+  const id = `f-${name}`;
+  return (
+    <div className="flex flex-col gap-2">
+      <Label id={id} help={!error ? help : undefined}>
+        {label}
+        {required && <span className="text-red-700" aria-hidden> *</span>}
+      </Label>
+      <MediaPicker id={id} name={name} value={value} onChange={setValue} mode={mode} uploadMode={uploadMode} invalid={Boolean(error)} />
+      {error && <p className="text-xs font-medium text-red-700">{error}</p>}
+    </div>
+  );
+}
+
+/* ---------- gallery: several pictures, each with a description and an optional caption ----------- */
+
+interface GalleryRow {
+  src: string;
+  alt: string;
+  caption: string;
+}
+
+export function GalleryField({
+  name,
+  label,
+  help,
+  initial,
+  uploadMode,
+  addLabel = "Add a picture",
+}: {
+  name: string;
+  label: string;
+  help?: string;
+  initial: { src: string; alt: string; caption?: string }[];
+  uploadMode: UploadMode;
+  addLabel?: string;
+}) {
+  const [rows, setRows] = useState<GalleryRow[]>((initial ?? []).map((r) => ({ src: r.src, alt: r.alt, caption: r.caption ?? "" })));
+  const error = useFieldError(name);
+  const baseId = useId();
+  const set = (i: number, patch: Partial<GalleryRow>) => setRows((all) => all.map((row, j) => (j === i ? { ...row, ...patch } : row)));
+  const value = JSON.stringify(rows.map((r) => ({ src: r.src, alt: r.alt, ...(r.caption.trim() ? { caption: r.caption.trim() } : {}) })));
+
+  return (
+    <div className="flex flex-col gap-2" id={`f-${name}`}>
+      <Label help={!error ? help : undefined}>{label}</Label>
+      <input type="hidden" name={name} value={value} />
+      <ul className="flex flex-col gap-3">
+        {rows.map((row, i) => (
+          <li key={i} className="rounded-control border border-border bg-surface p-3">
+            <p className="mb-2 text-xs font-semibold text-ink-muted">Picture {i + 1}</p>
+            <MediaPicker id={`${baseId}-${i}-src`} value={row.src} onChange={(src) => set(i, { src })} mode="image" uploadMode={uploadMode} />
+            <div className="mt-3 grid gap-3 sm:grid-cols-2">
+              <div className="flex flex-col gap-1">
+                <label htmlFor={`${baseId}-${i}-alt`} className="text-xs font-semibold text-ink-muted">Picture description (for screen readers)</label>
+                <input id={`${baseId}-${i}-alt`} value={row.alt} maxLength={200} onChange={(e) => set(i, { alt: e.target.value })} className={inputClasses} />
+              </div>
+              <div className="flex flex-col gap-1">
+                <label htmlFor={`${baseId}-${i}-caption`} className="text-xs font-semibold text-ink-muted">Caption (optional)</label>
+                <input id={`${baseId}-${i}-caption`} value={row.caption} maxLength={200} onChange={(e) => set(i, { caption: e.target.value })} className={inputClasses} />
+              </div>
+            </div>
+            <div className="mt-3 flex gap-2">
+              <button type="button" className={smallButton} onClick={() => setRows((r) => moveItem(r, i, i - 1))} disabled={i === 0}>
+                <ArrowUp size={13} aria-hidden /> Up
+              </button>
+              <button type="button" className={smallButton} onClick={() => setRows((r) => moveItem(r, i, i + 1))} disabled={i === rows.length - 1}>
+                <ArrowDown size={13} aria-hidden /> Down
+              </button>
+              <button type="button" className={cn(smallButton, "ml-auto")} onClick={() => setRows((r) => r.filter((_, j) => j !== i))}>
+                <Trash2 size={13} aria-hidden /> Remove
+              </button>
+            </div>
+          </li>
+        ))}
+      </ul>
+      <button type="button" className={cn(smallButton, "self-start")} onClick={() => setRows((r) => [...r, { src: "", alt: "", caption: "" }])}>
+        <Plus size={13} aria-hidden /> {addLabel}
+      </button>
+      {error && <p className="text-xs font-medium text-red-700">{error}</p>}
     </div>
   );
 }

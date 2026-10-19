@@ -19,7 +19,7 @@ export function PhotoGalleryTemplate({ items }: { items: NewsSummary[] }) {
                   <div className="aspect-[4/3]">
                     <Image
                       src={getNewsImage(item)}
-                      alt=""
+                      alt={item.imageAlt ?? ""}
                       width={560}
                       height={420}
                       className="h-full w-full object-cover"
