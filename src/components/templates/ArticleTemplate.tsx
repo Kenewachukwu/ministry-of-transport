@@ -1,14 +1,51 @@
 import Image from "next/image";
 import { Container } from "@/design-system/primitives/Container";
+import { Heading } from "@/design-system/primitives/Heading";
 import { InlineLink } from "@/design-system/primitives/Link";
 import { getNewsImage } from "@/lib/newsImage";
-import type { NewsItem } from "@/content/types";
+import type { NewsItem, NewsPhoto } from "@/content/types";
 
 const dateFormatter = new Intl.DateTimeFormat("en-GB", {
   day: "2-digit",
   month: "long",
   year: "numeric",
 });
+
+/**
+ * Two photographs per row. An odd photo at the end takes the full width,
+ * so the grid never ends with a gap.
+ */
+function Gallery({ photos }: { photos: NewsPhoto[] }) {
+  return (
+    <section aria-label="Photo gallery" className="mt-14">
+      <Heading as="h2" size="h3">
+        Photo gallery
+      </Heading>
+      <ul className="mt-6 grid gap-6 sm:grid-cols-2">
+        {photos.map((photo, i) => {
+          const wide = i === photos.length - 1 && photos.length % 2 === 1;
+          return (
+            <li key={photo.src} className={wide ? "sm:col-span-2" : undefined}>
+              <figure>
+                <div className="overflow-hidden rounded-card border border-border bg-brand-50">
+                  <Image
+                    src={photo.src}
+                    alt={photo.alt}
+                    width={1080}
+                    height={810}
+                    sizes={wide ? "(min-width: 768px) 704px, 100vw" : "(min-width: 768px) 340px, 100vw"}
+                    className="aspect-[4/3] w-full object-cover"
+                  />
+                </div>
+                {photo.caption && <figcaption className="mt-2 text-sm text-ink-muted">{photo.caption}</figcaption>}
+              </figure>
+            </li>
+          );
+        })}
+      </ul>
+    </section>
+  );
+}
 
 /**
  * Fixes the live site's sitewide broken article-detail pages (every post
@@ -41,6 +78,7 @@ export function ArticleTemplate({ item, basePath }: { item: NewsItem; basePath: 
               <p key={i}>{paragraph}</p>
             ))}
           </div>
+          {item.gallery && item.gallery.length > 0 && <Gallery photos={item.gallery} />}
         </Container>
       </section>
     </article>

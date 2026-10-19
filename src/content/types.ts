@@ -72,6 +72,13 @@ export interface Stat {
   label: string;
 }
 
+/** A photograph shown in an article's gallery. `alt` describes the picture; `caption` is the visible line under it. */
+export interface NewsPhoto {
+  src: string;
+  alt: string;
+  caption?: string;
+}
+
 export interface NewsItem {
   id: string;
   slug: string;
@@ -83,6 +90,8 @@ export interface NewsItem {
   imageQuery: string;
   /** Real photo for this specific item; falls back to a per-category default when absent. */
   imageUrl?: string;
+  /** More photographs for the article page, shown below the text. */
+  gallery?: NewsPhoto[];
   readTimeMinutes: number;
   featured?: boolean;
 }

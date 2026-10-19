@@ -182,4 +182,25 @@ export const imageManifest: ImageManifestEntry[] = [
     sourceUrl: "https://transportation.gov.ng/wp-content/uploads/2024/08/WhatsApp-Image-2024-08-27-at-8.09.58-AM.jpeg",
     attribution: "Federal Ministry of Transportation (official site asset)",
   },
+  // Kano–Maradi Railway inspection, 17 Oct 2026: photographs supplied with the Ministry's 18 Oct 2026 press release.
+  // No photographer credit was given; the Press and Public Relations unit should confirm provenance.
+  ...(
+    [
+      ["beam-launch-crane.jpg", "cover image"],
+      ["site-office.jpg", "gallery"],
+      ["sleeper-plant.jpg", "gallery"],
+      ["sleeper-yard.jpg", "gallery"],
+      ["beam-launch-camera.jpg", "gallery"],
+      ["beam-launch-bridge-piers.jpg", "gallery"],
+      ["media-briefing.jpg", "gallery"],
+      ["group-photograph.jpg", "gallery"],
+    ] as const
+  ).map(
+    ([file, role]): ImageManifestEntry => ({
+      path: `/images/news/kano-maradi-inspection-2026-10/${file}`,
+      usage: `News item — FG approves surveillance equipment and additional railway coaches (${role})`,
+      source: "official",
+      attribution: "Federal Ministry of Transportation, supplied with the 18 Oct 2026 press release",
+    })
+  ),
 ];
