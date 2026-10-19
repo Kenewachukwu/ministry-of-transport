@@ -1,4 +1,4 @@
-import { siteMeta } from "@/content/siteMeta";
+import type { SiteMeta } from "@/content/types";
 
 /**
  * lucide-react dropped brand/logo icons (trademark reasons), so these four
@@ -30,19 +30,18 @@ const YoutubeIcon = ({ size = 18 }: { size?: number }) => (
   </svg>
 );
 
-const links = [
-  { label: "X (Twitter)", href: siteMeta.social.x, Icon: XIcon },
-  { label: "Instagram", href: siteMeta.social.instagram, Icon: InstagramIcon },
-  { label: "Facebook", href: siteMeta.social.facebook, Icon: FacebookIcon },
-  { label: "YouTube", href: siteMeta.social.youtube, Icon: YoutubeIcon },
-];
+const icons = { x: XIcon, instagram: InstagramIcon, facebook: FacebookIcon, youtube: YoutubeIcon } as const;
+const labels = { x: "X (Twitter)", instagram: "Instagram", facebook: "Facebook", youtube: "YouTube" } as const;
 
-export function SocialLinks({ className }: { className?: string }) {
+export function SocialLinks({ social, className }: { social: SiteMeta["social"]; className?: string }) {
+  // A link the Ministry has cleared in the admin is simply not shown.
+  const links = (Object.keys(icons) as (keyof typeof icons)[]).filter((key) => social[key]).map((key) => ({ key, label: labels[key], href: social[key], Icon: icons[key] }));
+  if (links.length === 0) return null;
   return (
     <div className={className}>
-      {links.map(({ label, href, Icon }) => (
+      {links.map(({ key, label, href, Icon }) => (
         <a
-          key={label}
+          key={key}
           href={href}
           target="_blank"
           rel="noopener noreferrer"

@@ -1,10 +1,11 @@
 import type { Metadata } from "next";
 import { StaticContentTemplate } from "@/components/templates/StaticContentTemplate";
-import { siteMeta } from "@/content/siteMeta";
+import { getSiteMeta } from "@/lib/cms";
 
 export const metadata: Metadata = { title: "Freedom of Information" };
 
-export default function Page() {
+export default async function Page() {
+  const siteMeta = await getSiteMeta();
   return (
     <StaticContentTemplate eyebrow="Legal" title="Freedom of Information (FOI)">
       <p>

@@ -1,7 +1,6 @@
 import Link from "next/link";
 import { footerColumns } from "@/content/footerLinks";
-import { getAgencies, getEServices } from "@/lib/cms";
-import { siteMeta } from "@/content/siteMeta";
+import { getAgencies, getEServices, getSiteMeta } from "@/lib/cms";
 import { Container } from "@/design-system/primitives/Container";
 import { SocialLinks } from "./SocialLinks";
 import { ComplianceBar } from "./ComplianceBar";
@@ -12,7 +11,7 @@ const footerLinkClasses =
   "text-sm text-white/75 underline-offset-4 transition-colors hover:text-white hover:underline focus-visible:text-white focus-visible:underline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-white";
 
 export async function Footer({ basePath }: { basePath: string }) {
-  const [agencies, eServices] = await Promise.all([getAgencies(), getEServices()]);
+  const [agencies, eServices, siteMeta] = await Promise.all([getAgencies(), getEServices(), getSiteMeta()]);
   return (
     <footer className="bg-surface-inverse text-white">
       <Container className="py-14">
@@ -35,7 +34,7 @@ export async function Footer({ basePath }: { basePath: string }) {
                 </>
               )}
             </p>
-            <SocialLinks className="mt-6 flex gap-3" />
+            <SocialLinks social={siteMeta.social} className="mt-6 flex gap-3" />
           </div>
 
           {footerColumns.map((col) => (

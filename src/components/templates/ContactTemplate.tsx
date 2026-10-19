@@ -4,7 +4,7 @@ import { Heading } from "@/design-system/primitives/Heading";
 import { ButtonLink } from "@/design-system/primitives/Button";
 import { PageHeader } from "./PageHeader";
 import { SocialLinks } from "@/components/layout/Footer/SocialLinks";
-import { siteMeta } from "@/content/siteMeta";
+import { getSiteMeta } from "@/lib/cms";
 import { ECMS_URL } from "@/content/nav.config";
 
 /**
@@ -13,7 +13,8 @@ import { ECMS_URL } from "@/content/nav.config";
  * Email and the Ministry's correspondence portal are real, working routes.
  * (A routed enquiry form returns with the admin backend.)
  */
-export function ContactTemplate() {
+export async function ContactTemplate() {
+  const siteMeta = await getSiteMeta();
   return (
     <>
       <PageHeader eyebrow="Get in Touch" title="Contact Us" description="We'd like to hear from you." />
@@ -42,7 +43,7 @@ export function ContactTemplate() {
                 {siteMeta.email}
               </a>
             </div>
-            <SocialLinks className="mt-2 flex gap-3 [&_a]:border-border [&_a]:text-ink-muted [&_a:hover]:border-cta [&_a:hover]:text-cta" />
+            <SocialLinks social={siteMeta.social} className="mt-2 flex gap-3 [&_a]:border-border [&_a]:text-ink-muted [&_a:hover]:border-cta [&_a:hover]:text-cta" />
           </div>
 
           <div className="flex flex-col gap-6">

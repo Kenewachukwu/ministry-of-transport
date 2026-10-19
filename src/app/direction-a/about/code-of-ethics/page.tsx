@@ -1,11 +1,12 @@
 import type { Metadata } from "next";
 import { StaticContentTemplate } from "@/components/templates/StaticContentTemplate";
 import { InlineLink } from "@/design-system/primitives/Link";
-import { siteMeta } from "@/content/siteMeta";
+import { getSiteMeta } from "@/lib/cms";
 
 export const metadata: Metadata = { title: "Code of Ethics" };
 
-export default function Page() {
+export default async function Page() {
+  const siteMeta = await getSiteMeta();
   return (
     <StaticContentTemplate eyebrow="About Us" title="Code of Ethics">
       <p>

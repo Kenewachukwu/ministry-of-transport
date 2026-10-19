@@ -6,7 +6,6 @@ import { Container } from "@/design-system/primitives/Container";
 import { PageHeader } from "./PageHeader";
 import type { DocumentItem } from "@/content/types";
 import { documentCategories } from "@/content/documents";
-import { siteMeta } from "@/content/siteMeta";
 import { cn } from "@/lib/utils";
 
 /** A document whose file has not been uploaded yet carries "#" (or nothing) as its link. */
@@ -14,10 +13,13 @@ const hasFile = (href: string | undefined) => !!href && href !== "#";
 
 export function DocumentLibraryTemplate({
   documents,
+  contactEmail,
   title = "Resources",
   description = "Acts, policies, agreements, and reports relevant to the transport sector.",
 }: {
   documents: DocumentItem[];
+  /** Where "Available on request" emails go. */
+  contactEmail: string;
   title?: string;
   description?: string;
 }) {
@@ -61,7 +63,7 @@ export function DocumentLibraryTemplate({
                   </a>
                 ) : (
                   <a
-                    href={`mailto:${siteMeta.email}?subject=${encodeURIComponent(`Request for document: ${doc.title}`)}`}
+                    href={`mailto:${contactEmail}?subject=${encodeURIComponent(`Request for document: ${doc.title}`)}`}
                     className="shrink-0 text-xs font-semibold text-ink-muted hover:text-cta hover:underline"
                   >
                     Available on request

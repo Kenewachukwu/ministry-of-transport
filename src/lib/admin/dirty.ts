@@ -4,10 +4,10 @@
  * form was loaded or last saved. Plain data in, plain string out, so it is
  * testable without a browser.
  *
- * `id` and `version` are left out on purpose: after a save the server hands the
- * form a new version number, which is not something the person changed.
+ * `id`, `version` and `loadedAt` are left out on purpose: after a save the server
+ * hands the form a new version, which is not something the person changed.
  */
-const IGNORED = new Set(["id", "version"]);
+const IGNORED = new Set(["id", "version", "loadedAt"]);
 
 export function serializeEntries(entries: Iterable<[string, unknown]>): string {
   const out: [string, string][] = [];

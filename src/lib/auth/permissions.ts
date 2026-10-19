@@ -14,6 +14,7 @@ export const SECTIONS = [
   "fcssip",
   "e_services",
   "resources",
+  "contact",
 ] as const;
 
 export type Section = (typeof SECTIONS)[number];
@@ -28,6 +29,7 @@ export const SECTION_LABELS: Record<Section, string> = {
   fcssip: "FCSSIP 25 page",
   e_services: "E-Services",
   resources: "Resources & documents",
+  contact: "Contact details & links",
 };
 
 export type Role = "super_admin" | "staff";

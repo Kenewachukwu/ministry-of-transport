@@ -8,6 +8,7 @@ import type {
   LeadershipPerson,
   NewsItem,
   Pillar,
+  SiteMeta,
 } from "@/content/types";
 
 /** A news item as list components need it: no article body (kept off the client). */
@@ -31,6 +32,7 @@ export interface SiteText {
  */
 export interface ContentSource {
   siteText(): Promise<SiteText>;
+  siteMeta(): Promise<SiteMeta>;
   heroSlides(): Promise<HeroSlide[]>;
   pillars(): Promise<Pillar[]>;
   /** Published online + photo news, newest first, WITH article bodies. */

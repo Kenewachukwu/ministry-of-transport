@@ -11,6 +11,8 @@ export interface ActionState {
   message?: string;
   error?: string;
   fieldErrors?: Record<string, string>;
+  /** For site-text forms: when the saved group was last changed, so the next save knows what the form is based on. */
+  loadedAt?: string;
   /** One-time secret shown to the administrator (e.g. an invitation link when email is not configured). */
   reveal?: { label: string; value: string };
 }

@@ -1,7 +1,7 @@
 import type { Metadata } from "next";
 import { StaticContentTemplate } from "@/components/templates/StaticContentTemplate";
 import { InlineLink } from "@/design-system/primitives/Link";
-import { siteMeta } from "@/content/siteMeta";
+import { getSiteMeta } from "@/lib/cms";
 
 export const metadata: Metadata = { title: "Accessibility Statement" };
 
@@ -11,7 +11,8 @@ export const metadata: Metadata = { title: "Accessibility Statement" };
  * list after every accessibility review, and only claim conformance once an
  * audit supports it.
  */
-export default function Page() {
+export default async function Page() {
+  const siteMeta = await getSiteMeta();
   return (
     <StaticContentTemplate eyebrow="Legal" title="Accessibility Statement">
       <p>

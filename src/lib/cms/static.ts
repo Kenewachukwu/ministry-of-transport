@@ -9,6 +9,7 @@ import { leadership } from "@/content/leadership";
 import { documents, nctCommuniques } from "@/content/documents";
 import { eServices } from "@/content/eServices";
 import { fcssipPage } from "@/content/fcssip";
+import { siteMeta } from "@/content/siteMeta";
 
 const byDateDesc = <T extends { date: string }>(items: T[]) =>
   [...items].sort((a, b) => b.date.localeCompare(a.date));
@@ -16,6 +17,7 @@ const byDateDesc = <T extends { date: string }>(items: T[]) =>
 /** The content files in `src/content/` — the always-available fallback. */
 export const staticSource: ContentSource = {
   siteText: async () => ({ mandate, vision, mission }),
+  siteMeta: async () => siteMeta,
   heroSlides: async () => heroSlides,
   pillars: async () => pillars,
   news: async () => byDateDesc(news),

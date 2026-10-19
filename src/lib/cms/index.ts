@@ -29,6 +29,11 @@ export async function getSiteText() {
   return (await resolveSource()).siteText();
 }
 
+/** The Ministry's address, hours, phone, email and social links (editable in the admin under Contact details & links). */
+export async function getSiteMeta() {
+  return (await resolveSource()).siteMeta();
+}
+
 export async function getHeroSlides() {
   return (await resolveSource()).heroSlides();
 }

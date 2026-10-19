@@ -193,6 +193,12 @@ export function ActionForm({
   );
 }
 
+/** Carries "what this form is based on" to the server; moves on after each successful save so the next save is not refused. */
+export function LoadedAt({ initial }: { initial: string }) {
+  const state = useContext(FormStateContext);
+  return <input type="hidden" name="loadedAt" value={state.loadedAt ?? initial} />;
+}
+
 /** "You have unsaved changes", shown beside the Save button while the form differs from what is saved. */
 export function UnsavedNote() {
   const dirty = useContext(DirtyContext);

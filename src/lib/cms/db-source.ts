@@ -4,6 +4,7 @@ import { getDb } from "@/db/client";
 import { appMeta, departments, eServices, heroSlides, leadership, newsItems, pageBlocks, pillars, resources, siteText } from "@/db/schema";
 import type { DocumentCategory, FcssipBlock, NewsItem } from "@/content/types";
 import { mandate as fallbackMandate, vision as fallbackVision, mission as fallbackMission } from "@/content/mandate";
+import { siteMeta as fallbackSiteMeta } from "@/content/siteMeta";
 import { isBuildPhase } from "@/lib/env";
 import { cachedRead, TAG } from "./cache";
 import type { ContentSource } from "./types";
@@ -43,6 +44,28 @@ const readSiteText = cachedRead("siteText", TAG.siteText, async () => {
     mandate: map.get("mandate") ?? fallbackMandate,
     vision: map.get("vision") ?? fallbackVision,
     mission: map.get("mission") ?? fallbackMission,
+  };
+});
+
+/** Saved contact details override the defaults one by one; an empty value hides that item (a phone, a social link). */
+const readSiteMeta = cachedRead("siteMeta", TAG.contact, async () => {
+  const db = await getDb();
+  const rows = await db.select().from(siteText);
+  const map = new Map(rows.map((r) => [r.key, r.value.trim()]));
+  const pick = (key: string, fallback: string): string => (map.has(key) ? (map.get(key) as string) : fallback);
+  const social = fallbackSiteMeta.social;
+  return {
+    ...fallbackSiteMeta,
+    address: pick("contact.address", fallbackSiteMeta.address) || fallbackSiteMeta.address,
+    hours: pick("contact.hours", fallbackSiteMeta.hours) || fallbackSiteMeta.hours,
+    phone: pick("contact.phone", fallbackSiteMeta.phone ?? "") || null,
+    email: pick("contact.email", fallbackSiteMeta.email) || fallbackSiteMeta.email,
+    social: {
+      x: pick("social.x", social.x),
+      instagram: pick("social.instagram", social.instagram),
+      facebook: pick("social.facebook", social.facebook),
+      youtube: pick("social.youtube", social.youtube),
+    },
   };
 });
 
@@ -153,6 +176,7 @@ const readFcssip = cachedRead("fcssip", TAG.fcssip, async () => {
 
 export const dbSource: ContentSource = {
   siteText: readSiteText,
+  siteMeta: readSiteMeta,
   heroSlides: readHero,
   pillars: readPillars,
   news: readNews,

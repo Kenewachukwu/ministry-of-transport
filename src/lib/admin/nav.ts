@@ -18,6 +18,7 @@ export const CONTENT_NAV: NavEntry[] = [
   { href: "/admin/fcssip", label: "FCSSIP 25 page", section: "fcssip" },
   { href: "/admin/e-services", label: "E-Services", section: "e_services" },
   { href: "/admin/resources", label: "Resources & documents", section: "resources" },
+  { href: "/admin/contact", label: "Contact details & links", section: "contact" },
 ];
 
 export const SYSTEM_NAV: NavEntry[] = [

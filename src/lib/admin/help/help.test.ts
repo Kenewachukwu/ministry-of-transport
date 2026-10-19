@@ -39,7 +39,7 @@ function textsOf(guide: (typeof GUIDES)[number]): string[] {
 }
 
 function isKnownAdminPath(href: string): boolean {
-  const staticPaths = ["/admin", "/admin/site-text", "/admin/users", "/admin/audit", "/admin/status", "/admin/account"];
+  const staticPaths = ["/admin", "/admin/site-text", "/admin/contact", "/admin/users", "/admin/audit", "/admin/status", "/admin/account"];
   if (staticPaths.includes(href) || href.startsWith("/admin/help")) return true;
   const m = href.match(/^\/admin\/([a-z-]+)(\/new)?$/);
   return Boolean(m && ENTITIES.some((e) => e.key === m[1]));

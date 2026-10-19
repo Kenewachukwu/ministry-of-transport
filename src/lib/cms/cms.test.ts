@@ -78,6 +78,40 @@ describe("public content layer, database mode", () => {
     expect("body" in (listed as object)).toBe(false);
   });
 
+  it("contact details come from the admin, one by one, with the built-in values as the fallback", async () => {
+    const { siteText } = await import("@/db/schema");
+    const { siteMeta } = await import("@/content/siteMeta");
+    let cms = await facade();
+    expect(await cms.getSiteMeta()).toEqual(siteMeta); // nothing saved yet
+
+    await db.insert(siteText).values([
+      { key: "contact.phone", value: " +234 9 000 0000 " },
+      { key: "contact.email", value: "press@transportation.gov.ng" },
+      { key: "social.x", value: "" }, // cleared: hidden
+      { key: "social.facebook", value: "https://www.facebook.com/FMoTNigeria" },
+    ]);
+    cms = await facade();
+    const meta = await cms.getSiteMeta();
+    expect(meta.phone).toBe("+234 9 000 0000");
+    expect(meta.email).toBe("press@transportation.gov.ng");
+    expect(meta.address).toBe(siteMeta.address); // untouched keys keep the default
+    expect(meta.social.x).toBe("");
+    expect(meta.social.facebook).toBe("https://www.facebook.com/FMoTNigeria");
+    expect(meta.social.youtube).toBe(siteMeta.social.youtube);
+  });
+
+  it("an emptied phone number or required value falls back safely instead of showing nothing", async () => {
+    const { siteText } = await import("@/db/schema");
+    const { siteMeta } = await import("@/content/siteMeta");
+    await db.insert(siteText).values([
+      { key: "contact.phone", value: "" },
+      { key: "contact.address", value: "" },
+    ]);
+    const meta = await (await facade()).getSiteMeta();
+    expect(meta.phone).toBeNull(); // empty phone means "show none"
+    expect(meta.address).toBe(siteMeta.address); // an empty address must never blank the footer
+  });
+
   it("a story with no gallery has none (an empty list in the database is not a gallery)", async () => {
     const cms = await facade();
     const article = await cms.getNewsArticle("dala-inland-dry-port-commissioning");

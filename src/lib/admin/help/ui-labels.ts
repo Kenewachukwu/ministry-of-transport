@@ -19,6 +19,8 @@ export const UI_LABELS: string[] = [
   "Save changes", "Save heading", "Save access", "Upload a picture", "Upload a file", "Add a detail", "Add a target", "Add a block", "More pictures", "Add a picture", "Caption (optional)",
   // Site text and FCSSIP heading
   "Mandate", "Vision", "Mission", "Title", "Small heading above the title", "Introduction under the title",
+  // Contact details
+  "Address", "Opening hours", "Email address", "Telephone number", "X (Twitter) link", "Instagram link", "Facebook link", "YouTube link",
   // Department blocks
   "Heading", "Lead-in sentence (optional)",
   // People

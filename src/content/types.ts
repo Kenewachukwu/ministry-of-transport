@@ -65,6 +65,19 @@ export interface Pillar {
   kpis: { label: string; targetYear: string }[];
 }
 
+/** The Ministry's public contact details and social links. Empty strings mean "not set" and are hidden on the site. */
+export interface SiteMeta {
+  name: string;
+  shortName: string;
+  country: string;
+  address: string;
+  hours: string;
+  /** Hidden while empty. */
+  phone: string | null;
+  email: string;
+  social: { x: string; instagram: string; facebook: string; youtube: string };
+}
+
 export interface Stat {
   id: string;
   value: number;

@@ -7,6 +7,7 @@ import { unstable_cache } from "next/cache";
  */
 export const TAG = {
   siteText: "site-text",
+  contact: "contact",
   hero: "hero",
   news: "news",
   departments: "departments",

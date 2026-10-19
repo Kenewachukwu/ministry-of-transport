@@ -75,6 +75,7 @@ export const ENTITY_GUIDE: Record<string, string> = {
 export const PAGE_GUIDE: Record<string, string> = {
   "/admin": "finding-your-way-around",
   "/admin/site-text": "edit-mandate-mission-vision",
+  "/admin/contact": "edit-contact-details",
   "/admin/users": "invite-someone",
   "/admin/audit": "read-the-activity-log",
   "/admin/status": "check-system-status",
