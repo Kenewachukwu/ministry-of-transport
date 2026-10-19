@@ -26,10 +26,14 @@ export function Footer({ basePath }: { basePath: string }) {
               <a href={`mailto:${siteMeta.email}`} className="hover:text-white">
                 {siteMeta.email}
               </a>
-              {" · "}
-              <a href={`tel:${siteMeta.phone}`} className="hover:text-white">
-                {siteMeta.phone}
-              </a>
+              {siteMeta.phone && (
+                <>
+                  {" · "}
+                  <a href={`tel:${siteMeta.phone}`} className="hover:text-white">
+                    {siteMeta.phone}
+                  </a>
+                </>
+              )}
             </p>
             <SocialLinks className="mt-6 flex gap-3" />
           </div>

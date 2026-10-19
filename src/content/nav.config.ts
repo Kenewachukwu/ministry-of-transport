@@ -65,8 +65,8 @@ export const pebecNav: NavItem = {
   external: true,
 };
 
-/** Top-bar "Staff Portal" link (internal sign-in page). */
+/** Top-bar "Staff Portal" link (a page of links to the systems staff use; it is not a sign-in). */
 export const staffPortalNav: NavItem = {
   label: "Staff Portal",
-  href: "/portal/login",
+  href: "/portal",
 };
