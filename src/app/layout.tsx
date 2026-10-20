@@ -1,5 +1,6 @@
 import type { Metadata } from "next";
 import { Public_Sans, Source_Serif_4, Sora, Inter } from "next/font/google";
+import { siteUrl } from "@/lib/env";
 import "./globals.css";
 
 const publicSans = Public_Sans({
@@ -23,6 +24,8 @@ const inter = Inter({
 });
 
 export const metadata: Metadata = {
+  // Lets relative links in page metadata (canonical, social previews) become full addresses.
+  metadataBase: new URL(siteUrl()),
   title: {
     default: "Federal Ministry of Transportation | Nigeria",
     template: "%s | Federal Ministry of Transportation",

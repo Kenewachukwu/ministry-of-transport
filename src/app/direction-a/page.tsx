@@ -10,12 +10,17 @@ import { PillarCards } from "@/components/sections/PillarCards";
 import { TabbedNewsSection } from "@/components/sections/TabbedNewsSection";
 import { TopicDirectory } from "@/components/sections/TopicDirectory";
 import { CardGrid } from "@/components/sections/CardGrid";
-import { getPillars, getDepartments, getAgencies, getNewsSummaries, getEvents, getLeadership, getSiteText, getStats } from "@/lib/cms";
+import type { Metadata } from "next";
+import { JsonLd } from "@/components/seo/JsonLd";
+import { homeMetadata, organizationJsonLd } from "@/lib/seo";
+import { getSiteMeta, getPillars, getDepartments, getAgencies, getNewsSummaries, getEvents, getLeadership, getSiteText, getStats } from "@/lib/cms";
 
 const basePath = "/direction-a";
 
+export const metadata: Metadata = homeMetadata("Official website of the Federal Ministry of Transportation, Federal Republic of Nigeria: news, departments, policies, documents and online services.");
+
 export default async function DirectionAHomePage() {
-  const [pillars, allDepartments, agencies, news, events, leadership, { mandate, vision, mission }, stats] = await Promise.all([
+  const [pillars, allDepartments, agencies, news, events, leadership, { mandate, vision, mission }, stats, siteMeta] = await Promise.all([
     getPillars(),
     getDepartments(),
     getAgencies(),
@@ -24,12 +29,14 @@ export default async function DirectionAHomePage() {
     getLeadership(),
     getSiteText(),
     getStats(),
+    getSiteMeta(),
   ]);
   const departments = allDepartments.slice(0, 6);
   const topLeadership = leadership.filter((p) => p.role === "minister" || p.role === "permanent-secretary");
 
   return (
     <>
+      <JsonLd data={organizationJsonLd(siteMeta)} />
       <HeroSection basePath={basePath} />
 
       <section className="border-b border-border bg-surface-raised py-10">

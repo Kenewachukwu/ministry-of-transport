@@ -6,7 +6,9 @@ import { HeaderA } from "@/components/layout/Header/HeaderA";
 import { Footer } from "@/components/layout/Footer/Footer";
 import { PageTransition } from "@/design-system/motion/PageTransition";
 
-export const SITE_BASE_PATH = "/direction-a";
+import { SITE_BASE_PATH } from "@/lib/seo";
+
+export { SITE_BASE_PATH };
 
 /**
  * The public site's header, footer and themed page area. Shared by the

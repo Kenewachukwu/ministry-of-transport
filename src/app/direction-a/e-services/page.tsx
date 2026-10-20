@@ -1,8 +1,9 @@
 import type { Metadata } from "next";
+import { pageMetadata } from "@/lib/seo";
 import { DirectoryTemplate } from "@/components/templates/DirectoryTemplate";
 import { getEServices } from "@/lib/cms";
 
-export const metadata: Metadata = { title: "E-Services" };
+export const metadata: Metadata = pageMetadata("E-Services", "Online services offered by the Federal Ministry of Transportation and its agencies.", "/e-services");
 
 export default async function Page() {
   const services = await getEServices();

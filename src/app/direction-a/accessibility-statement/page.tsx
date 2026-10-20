@@ -1,9 +1,10 @@
 import type { Metadata } from "next";
+import { pageMetadata } from "@/lib/seo";
 import { StaticContentTemplate } from "@/components/templates/StaticContentTemplate";
 import { InlineLink } from "@/design-system/primitives/Link";
 import { getSiteMeta } from "@/lib/cms";
 
-export const metadata: Metadata = { title: "Accessibility Statement" };
+export const metadata: Metadata = pageMetadata("Accessibility Statement", "How this website supports people with disabilities, and how to report a problem.", "/accessibility-statement");
 
 /**
  * Keep this statement true. It names the target (WCAG 2.1 AA), what the site does

@@ -1,8 +1,9 @@
 import type { Metadata } from "next";
+import { pageMetadata } from "@/lib/seo";
 import { StaticContentTemplate } from "@/components/templates/StaticContentTemplate";
 import { getSiteMeta } from "@/lib/cms";
 
-export const metadata: Metadata = { title: "Freedom of Information" };
+export const metadata: Metadata = pageMetadata("Freedom of Information", "How to request information from the Federal Ministry of Transportation under the Freedom of Information Act.", "/foi");
 
 export default async function Page() {
   const siteMeta = await getSiteMeta();

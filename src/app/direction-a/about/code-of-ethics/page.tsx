@@ -1,9 +1,10 @@
 import type { Metadata } from "next";
+import { pageMetadata } from "@/lib/seo";
 import { StaticContentTemplate } from "@/components/templates/StaticContentTemplate";
 import { InlineLink } from "@/design-system/primitives/Link";
 import { getSiteMeta } from "@/lib/cms";
 
-export const metadata: Metadata = { title: "Code of Ethics" };
+export const metadata: Metadata = pageMetadata("Code of Ethics", "The code of ethics that guides the conduct of staff of the Federal Ministry of Transportation.", "/about/code-of-ethics");
 
 export default async function Page() {
   const siteMeta = await getSiteMeta();

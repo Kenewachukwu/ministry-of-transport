@@ -1,7 +1,8 @@
 import type { Metadata } from "next";
+import { pageMetadata } from "@/lib/seo";
 import { StaticContentTemplate } from "@/components/templates/StaticContentTemplate";
 
-export const metadata: Metadata = { title: "Terms of Use" };
+export const metadata: Metadata = pageMetadata("Terms of Use", "The terms for using the Federal Ministry of Transportation website.", "/terms-of-use");
 
 export default function Page() {
   return (

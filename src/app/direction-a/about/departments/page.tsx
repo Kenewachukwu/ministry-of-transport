@@ -1,8 +1,9 @@
 import type { Metadata } from "next";
+import { pageMetadata } from "@/lib/seo";
 import { DirectoryTemplate } from "@/components/templates/DirectoryTemplate";
 import { getDepartments } from "@/lib/cms";
 
-export const metadata: Metadata = { title: "Departments" };
+export const metadata: Metadata = pageMetadata("Departments", "The departments of the Federal Ministry of Transportation and what each one is responsible for.", "/about/departments");
 
 const basePath = "/direction-a";
 

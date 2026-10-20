@@ -1,8 +1,9 @@
 import type { Metadata } from "next";
+import { pageMetadata } from "@/lib/seo";
 import { StaticContentTemplate } from "@/components/templates/StaticContentTemplate";
 import { getSiteMeta } from "@/lib/cms";
 
-export const metadata: Metadata = { title: "Privacy Policy" };
+export const metadata: Metadata = pageMetadata("Privacy Policy", "How the Federal Ministry of Transportation handles personal information on this website.", "/privacy-policy");
 
 export default async function Page() {
   const siteMeta = await getSiteMeta();

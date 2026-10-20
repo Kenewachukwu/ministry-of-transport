@@ -1,8 +1,9 @@
 import type { Metadata } from "next";
+import { pageMetadata } from "@/lib/seo";
 import { HubPageTemplate } from "@/components/templates/HubPageTemplate";
 import { getDepartments } from "@/lib/cms";
 
-export const metadata: Metadata = { title: "About Us" };
+export const metadata: Metadata = pageMetadata("About Us", "The mandate, mission and vision of the Federal Ministry of Transportation, and how it is organised.", "/about");
 
 const buildLinks = (departmentCount: number) => [
   { id: "leadership", title: "Leadership", description: "Minister, Permanent Secretary, and directors.", href: "/about/leadership" },
