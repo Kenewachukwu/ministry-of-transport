@@ -56,6 +56,7 @@ Someone who can **Edit** but not **Publish** in a section never changes the webs
 - A **publisher** (someone with **Publish** for the section, or a super administrator) finds the work under **Approvals** in the menu (the number is how many items wait), sees exactly what would change, and presses **Approve and publish** or **Send back** with a note the author sees.
 - **Archive**, **Restore** and re-arranging need **Publish**. So do the Mandate/Mission/Vision and Contact details pages, which have no drafts: a save is live at once.
 - When existing accounts were upgraded to this version every editor kept their old ability to publish in their sections, so nothing changed for them; a super administrator can tighten it under **Users & access**.
+- When something is submitted, the section's publishers (and super administrators) get an email with a link to **Approvals** (when email is connected; the queue works without it).
 - Every submission, approval and return is written to the **Activity log**.
 
 ### Editing and re-arranging

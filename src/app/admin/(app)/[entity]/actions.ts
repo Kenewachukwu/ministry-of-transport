@@ -8,7 +8,9 @@ import { authorize } from "@/lib/auth/dal";
 import { canPublish } from "@/lib/auth/permissions";
 import { parseFields } from "@/lib/admin/parse";
 import { getEntity, type EntityDef } from "@/lib/admin/registry";
-import { approveRow, archiveRow, createRow, discardChanges, reorderRows, restoreRow, returnRow, submitForApproval, updateRow } from "@/lib/dal/admin/crud";
+import { approveRow, archiveRow, createRow, discardChanges, getRow, reorderRows, restoreRow, returnRow, rowTitle, submitForApproval, updateRow } from "@/lib/dal/admin/crud";
+import { notifyPublishers } from "@/lib/dal/admin/notify";
+import { effectiveRow, workflowState } from "@/lib/admin/workflow";
 
 function definition(key: string): EntityDef {
   const def = getEntity(key);
@@ -20,6 +22,20 @@ function definition(key: string): EntityDef {
 function publish(def: EntityDef) {
   for (const tag of def.tags) updateTag(tag);
   revalidatePath(`/admin/${def.key}`);
+}
+
+/**
+ * Puts an item in the approval queue and tells the people who can approve it
+ * (best effort: the email never fails the save). An item that is already waiting
+ * is left alone, so pressing the button twice does not email anyone twice.
+ */
+async function submitAndNotify(def: EntityDef, user: { id: string; name: string; email: string }, id: string): Promise<void> {
+  const before = await getRow(def, user as never, id);
+  const alreadyWaiting = before ? ["waiting", "changes-waiting"].includes(workflowState(before)) : false;
+  await submitForApproval(def, user as never, id);
+  if (alreadyWaiting) return;
+  const row = await getRow(def, user as never, id);
+  if (row) await notifyPublishers(def, { id, title: rowTitle(def, effectiveRow(row)) }, { id: user.id, name: user.name });
 }
 
 /** What the person asked for with the button they pressed: just save, save and submit for approval, or (publishers) save and publish. */
@@ -41,7 +57,9 @@ export async function saveEntityAction(key: string, _prev: ActionState, formData
       if (!Number.isInteger(version)) throw new ActionError("This form is out of date. Reload the page and try again.");
       z.uuid().parse(id);
       const outcome = await updateRow(def, user, id, version, values);
-      if (intent === "submit") await submitForApproval(def, user, id);
+      if (intent === "submit") {
+        await submitAndNotify(def, user, id);
+      }
       if (intent === "publish") await approveRow(def, user, id);
       if (outcome === "live" || intent === "publish") publish(def);
       revalidatePath(`/admin/${def.key}`);
@@ -50,7 +68,9 @@ export async function saveEntityAction(key: string, _prev: ActionState, formData
     }
 
     const newId = await createRow(def, user, values);
-    if (intent === "submit") await submitForApproval(def, user, newId);
+    if (intent === "submit") {
+      await submitAndNotify(def, user, newId);
+    }
     publish(def);
     const created = canPublish(user, def.section) ? "live" : intent === "submit" ? "submitted" : "draft";
     redirect(`/admin/${def.key}/${newId}?created=${created}`);
@@ -71,7 +91,7 @@ export async function submitEntityAction(key: string, _prev: ActionState, formDa
     const def = definition(key);
     const user = await authorize(def.section);
     const { id } = z.object({ id: z.uuid() }).parse(Object.fromEntries(formData));
-    await submitForApproval(def, user, id);
+    await submitAndNotify(def, user, id);
     revalidatePath(`/admin/${def.key}`);
     revalidatePath(`/admin/${def.key}/${id}`);
     revalidatePath("/admin/review");

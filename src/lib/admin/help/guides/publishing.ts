@@ -35,7 +35,7 @@ export const publishingGuides: HelpGuide[] = [
       "Changing something you already submitted takes it out of the queue until you submit it again.",
       "To abandon a draft, press “Discard draft”. It is archived, not deleted, and a publisher can restore it.",
     ],
-    problems: [{ q: "Nobody has looked at my submission.", a: "Tell a publisher for that section. The “Waiting for approval” tab shows it is in the queue." }],
+    problems: [{ q: "Nobody has looked at my submission.", a: "Publishers are emailed when you submit (if email is set up), but a quiet word helps. The “Waiting for approval” tab shows it is in the queue." }],
     related: ["change-something-already-published", "approve-or-return-work", "how-changes-reach-the-website"],
     reviewed,
   },

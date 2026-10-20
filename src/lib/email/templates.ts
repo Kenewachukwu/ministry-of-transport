@@ -79,3 +79,20 @@ export function enquiryEmail(
 </table></td></tr></table></body></html>`;
   return { to, link, replyTo: enquiry.email, subject, text: `${details}\n\n${enquiry.message}\n\nOpen in the admin: ${link}\n\n${footnote}`, html };
 }
+
+/** Tells a publisher that someone has submitted work for approval in a section they publish in. */
+export function approvalRequestEmail(
+  to: string,
+  name: string,
+  item: { section: string; singular: string; title: string; author: string; id: string }
+): EmailMessage & { link: string } {
+  const link = `${siteUrl()}/admin/review`;
+  const intro = `Hello ${name}, ${item.author} submitted a ${item.singular} for approval in ${item.section}: “${item.title}”. Nothing goes on the website until a publisher approves it.`;
+  return {
+    to,
+    link,
+    subject: `Waiting for your approval: ${item.title}`,
+    text: `${intro}\n\nReview it: ${link}\n\nYou are receiving this because you can publish in ${item.section}.`,
+    html: layout("Waiting for your approval", intro, "Open Approvals", link, `You are receiving this because you can publish in ${item.section}.`),
+  };
+}
