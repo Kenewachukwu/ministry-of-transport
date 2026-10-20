@@ -1,5 +1,6 @@
 import "server-only";
 import { z } from "zod";
+import { ENQUIRY_TOPICS } from "@/content/enquiryTopics";
 import { TAG } from "@/lib/cms/cache";
 
 const required = (max: number) => z.string().trim().min(1, "This field is required.").max(max, `Keep this under ${max} characters.`);
@@ -16,6 +17,14 @@ const phone = z
   .max(30, "Keep this under 30 characters.")
   .refine((v) => v === "" || /^\+?[0-9][0-9 ()-]{5,}$/.test(v), "Use digits, spaces, + and - only, or leave it empty.");
 const email = z.string().trim().toLowerCase().max(254, "Keep this under 254 characters.").pipe(z.email("Enter a valid email address."));
+
+/** Empty (use the Ministry's main email), or one email address. */
+const optionalEmail = z
+  .string()
+  .trim()
+  .toLowerCase()
+  .max(254, "Keep this under 254 characters.")
+  .refine((v) => v === "" || z.email().safeParse(v).success, "Enter a valid email address, or leave it empty.");
 
 export const GROUPS = {
   core: {
@@ -47,6 +56,14 @@ export const GROUPS = {
       "social.facebook": optionalHttps,
       "social.youtube": optionalHttps,
     }),
+  },
+  /** Which desk's email address each kind of enquiry is sent to. Not public, and only super administrators change it. */
+  desks: {
+    section: "super_admin",
+    tag: TAG.contact,
+    path: "/admin/enquiries/settings",
+    audit: "enquiry-routing.update",
+    schema: z.object(Object.fromEntries(ENQUIRY_TOPICS.map((t) => [`enquiries.desk.${t.id}`, optionalEmail]))),
   },
 } as const;
 

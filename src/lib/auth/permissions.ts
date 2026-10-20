@@ -15,6 +15,7 @@ export const SECTIONS = [
   "e_services",
   "resources",
   "contact",
+  "enquiries",
 ] as const;
 
 export type Section = (typeof SECTIONS)[number];
@@ -30,6 +31,7 @@ export const SECTION_LABELS: Record<Section, string> = {
   e_services: "E-Services",
   resources: "Resources & documents",
   contact: "Contact details & links",
+  enquiries: "Enquiries",
 };
 
 /**
@@ -39,6 +41,13 @@ export const SECTION_LABELS: Record<Section, string> = {
  * the approval step).
  */
 export const DIRECT_SECTIONS: readonly Section[] = ["site_text", "contact"];
+
+/**
+ * Sections that are an inbox rather than website content: nothing in them is
+ * published, so there is no Publish grant, only the right to read and handle
+ * what arrives.
+ */
+export const INBOX_SECTIONS: readonly Section[] = ["enquiries"];
 
 export type Role = "super_admin" | "staff";
 

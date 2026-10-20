@@ -14,7 +14,7 @@ function visible(user: SessionUser, entry: NavEntry) {
 const linkClasses =
   "block rounded-md px-3 py-2 text-sm text-ink-muted transition-colors hover:bg-brand-50 hover:text-cta focus-visible:bg-brand-50 focus-visible:text-cta focus-visible:outline-2 focus-visible:outline-offset-[-2px] focus-visible:outline-cta";
 
-function NavList({ user, waiting }: { user: SessionUser; waiting: number | null }) {
+function NavList({ user, waiting, badges }: { user: SessionUser; waiting: number | null; badges: Record<string, number> }) {
   const content = CONTENT_NAV.filter((e) => visible(user, e));
   const system = SYSTEM_NAV.filter((e) => visible(user, e));
   return (
@@ -39,7 +39,15 @@ function NavList({ user, waiting }: { user: SessionUser; waiting: number | null 
           <ul className="mt-2 flex flex-col">
             {content.map((e) => (
               <li key={e.href}>
-                <Link href={e.href} className={linkClasses}>{e.label}</Link>
+                <Link href={e.href} className={`${linkClasses} flex items-center justify-between gap-2`}>
+                  {e.label}
+                  {badges[e.href] > 0 && (
+                    <span className="rounded-full bg-amber-100 px-2 py-0.5 text-xs font-semibold text-amber-900">
+                      {badges[e.href]}
+                      <span className="sr-only"> new</span>
+                    </span>
+                  )}
+                </Link>
               </li>
             ))}
           </ul>
@@ -61,7 +69,19 @@ function NavList({ user, waiting }: { user: SessionUser; waiting: number | null 
   );
 }
 
-export function AdminShell({ user, waiting = null, children }: { user: SessionUser; /** Items waiting for this person's decision; null when they cannot publish anywhere. */ waiting?: number | null; children: React.ReactNode }) {
+export function AdminShell({
+  user,
+  waiting = null,
+  badges = {},
+  children,
+}: {
+  user: SessionUser;
+  /** Items waiting for this person's decision; null when they cannot publish anywhere. */
+  waiting?: number | null;
+  /** A count shown beside a menu entry (for example new enquiries), keyed by its address. */
+  badges?: Record<string, number>;
+  children: React.ReactNode;
+}) {
   const account = (
     <div className="flex flex-col gap-1 border-t border-border pt-4">
       <div className="flex items-center gap-2 px-3 text-sm text-ink">
@@ -96,7 +116,7 @@ export function AdminShell({ user, waiting = null, children }: { user: SessionUs
             <span className="rounded-control border border-border px-3 py-1.5 text-sm font-semibold text-ink group-open:bg-brand-50">Menu</span>
           </summary>
           <div className="flex flex-col gap-6 border-t border-border px-4 py-4">
-            <NavList user={user} waiting={waiting} />
+            <NavList user={user} waiting={waiting} badges={badges} />
             {account}
           </div>
         </details>
@@ -105,7 +125,7 @@ export function AdminShell({ user, waiting = null, children }: { user: SessionUs
       <aside className="hidden w-72 shrink-0 flex-col gap-6 border-r border-border bg-surface-raised p-5 lg:flex print:!hidden">
         <Logo basePath="/direction-a" />
         <div className="flex flex-1 flex-col justify-between gap-8">
-          <NavList user={user} waiting={waiting} />
+          <NavList user={user} waiting={waiting} badges={badges} />
           {account}
         </div>
       </aside>

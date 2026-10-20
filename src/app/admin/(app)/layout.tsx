@@ -4,6 +4,7 @@ import { adminAvailability } from "@/lib/admin/availability";
 import { requireUser } from "@/lib/auth/dal";
 import { canPublishAnywhere } from "@/lib/auth/permissions";
 import { countWaiting } from "@/lib/dal/admin/crud";
+import { newEnquiryCount } from "@/lib/dal/enquiries";
 import { ENTITIES } from "@/lib/admin/registry";
 
 export default async function AppLayout({ children }: { children: React.ReactNode }) {
@@ -11,9 +12,9 @@ export default async function AppLayout({ children }: { children: React.ReactNod
   // Every page below also checks its own permission — a layout alone is never enough.
   const user = await requireUser();
   // Publishers see how many submissions wait for them beside "Approvals" in the menu.
-  const waiting = canPublishAnywhere(user) ? await countWaiting(user, ENTITIES) : null;
+  const [waiting, enquiries] = await Promise.all([canPublishAnywhere(user) ? countWaiting(user, ENTITIES) : null, newEnquiryCount(user)]);
   return (
-    <AdminShell user={user} waiting={waiting}>
+    <AdminShell user={user} waiting={waiting} badges={enquiries ? { "/admin/enquiries": enquiries } : {}}>
       {children}
     </AdminShell>
   );

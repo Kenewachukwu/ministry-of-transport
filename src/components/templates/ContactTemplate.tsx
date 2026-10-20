@@ -6,12 +6,16 @@ import { PageHeader } from "./PageHeader";
 import { SocialLinks } from "@/components/layout/Footer/SocialLinks";
 import { getSiteMeta } from "@/lib/cms";
 import { ECMS_URL } from "@/content/nav.config";
+import { EnquiryForm } from "@/components/forms/EnquiryForm";
+import { submitEnquiryAction } from "@/app/direction-a/contact/actions";
+import { enquiryFormAvailable } from "@/lib/enquiries-public";
+import { SITE_BASE_PATH } from "@/lib/seo";
 
 /**
- * There is no enquiry form on purpose: the site has no backend to receive one
- * yet, and a form that only pretended to send would lose people's messages.
- * Email and the Ministry's correspondence portal are real, working routes.
- * (A routed enquiry form returns with the admin backend.)
+ * The enquiry form is only shown when messages can really be stored (a database
+ * is connected): a form that only pretended to send would lose people's messages.
+ * Without one, the page offers email, which always works. Official correspondence
+ * to the Minister or Permanent Secretary goes through the Ministry's own portal.
  */
 export async function ContactTemplate() {
   const siteMeta = await getSiteMeta();
@@ -52,19 +56,31 @@ export async function ContactTemplate() {
               <Heading as="h2" size="h4" className="mt-3">
                 Write to us
               </Heading>
-              <p className="mt-2 text-ink-muted">
-                For general enquiries, email{" "}
-                <a href={`mailto:${siteMeta.email}`} className="font-semibold text-cta underline underline-offset-2">
-                  {siteMeta.email}
-                </a>
-                . Please include your name and a way to reach you.
-              </p>
-              <ButtonLink
-                href={`mailto:${siteMeta.email}?subject=${encodeURIComponent("Enquiry from the website")}`}
-                className="mt-5"
-              >
-                Email the Ministry
-              </ButtonLink>
+              {enquiryFormAvailable() ? (
+                <>
+                  <p className="mb-6 mt-2 text-ink-muted">
+                    Send a message and it goes to the right team at the Ministry. You can also email{" "}
+                    <a href={`mailto:${siteMeta.email}`} className="font-semibold text-cta underline underline-offset-2">
+                      {siteMeta.email}
+                    </a>
+                    .
+                  </p>
+                  <EnquiryForm action={submitEnquiryAction} privacyHref={`${SITE_BASE_PATH}/privacy-policy`} />
+                </>
+              ) : (
+                <>
+                  <p className="mt-2 text-ink-muted">
+                    For general enquiries, email{" "}
+                    <a href={`mailto:${siteMeta.email}`} className="font-semibold text-cta underline underline-offset-2">
+                      {siteMeta.email}
+                    </a>
+                    . Please include your name and a way to reach you.
+                  </p>
+                  <ButtonLink href={`mailto:${siteMeta.email}?subject=${encodeURIComponent("Enquiry from the website")}`} className="mt-5">
+                    Email the Ministry
+                  </ButtonLink>
+                </>
+              )}
             </div>
 
             <div className="rounded-card border border-border bg-surface-raised p-8 shadow-card">

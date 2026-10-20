@@ -56,3 +56,26 @@ export function resetEmail(to: string, name: string, token: string): EmailMessag
     html: layout("Reset your password", intro, "Choose a new password", link, "If you did not ask for this, ignore this email — your password is unchanged."),
   };
 }
+
+/** Tells a desk that someone wrote in through the contact form. Replying goes straight to the sender. */
+export function enquiryEmail(
+  to: string,
+  enquiry: { id: string; topic: string; name: string; email: string; phone: string | null; message: string },
+  topicLabel: string
+): EmailMessage & { link: string } {
+  const link = `${siteUrl()}/admin/enquiries/${enquiry.id}`;
+  const subject = `New enquiry: ${topicLabel} from ${enquiry.name}`;
+  const details = `Topic: ${topicLabel}\nName: ${enquiry.name}\nEmail: ${enquiry.email}${enquiry.phone ? `\nPhone: ${enquiry.phone}` : ""}`;
+  const footnote = "Reply to this email to answer them directly. It is also kept in the Enquiries section of the website admin, where you can mark it as handled.";
+  const html = `<!doctype html><html><body style="margin:0;background:#f5f3ee;font-family:Arial,Helvetica,sans-serif;color:#111827">
+<table role="presentation" width="100%" cellpadding="0" cellspacing="0"><tr><td align="center" style="padding:32px 16px">
+<table role="presentation" width="560" cellpadding="0" cellspacing="0" style="background:#fff;border-radius:8px;padding:32px;max-width:560px">
+<tr><td style="font-size:13px;letter-spacing:.08em;text-transform:uppercase;color:#007d53;font-weight:bold">${escape(SITE)}</td></tr>
+<tr><td style="font-size:20px;font-weight:bold;padding:12px 0">New enquiry: ${escape(topicLabel)}</td></tr>
+<tr><td style="font-size:14px;line-height:1.7;color:#45566b;white-space:pre-line">${escape(details)}</td></tr>
+<tr><td style="font-size:15px;line-height:1.6;padding:16px 0;white-space:pre-wrap">${escape(enquiry.message)}</td></tr>
+<tr><td><a href="${escape(link)}" style="display:inline-block;background:#007d53;color:#fff;text-decoration:none;font-weight:bold;padding:10px 20px;border-radius:6px">Open in the admin</a></td></tr>
+<tr><td style="font-size:12px;line-height:1.6;color:#6b7280;padding-top:20px">${escape(footnote)}</td></tr>
+</table></td></tr></table></body></html>`;
+  return { to, link, replyTo: enquiry.email, subject, text: `${details}\n\n${enquiry.message}\n\nOpen in the admin: ${link}\n\n${footnote}`, html };
+}

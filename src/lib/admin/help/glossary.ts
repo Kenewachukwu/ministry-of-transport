@@ -6,6 +6,7 @@ export const GLOSSARY: GlossaryTerm[] = [
   { term: "Archive", meaning: "Hide something from the website without deleting it. Archived items stay in the Archived tab and can be restored at any time." },
   { term: "Content editor", meaning: "A person who can change only the sections of the website a super administrator has given them." },
   { term: "Event", meaning: "An entry on the Events page for something happening on a date, such as a council meeting, with a place and a short summary." },
+  { term: "Enquiry", meaning: "A message someone sent through the contact form on the website. It is emailed to the right team and kept in the Enquiries section until someone marks it as handled." },
   { term: "Feature (an item)", meaning: "Mark a news item so it is highlighted on the home page." },
   { term: "Hero", meaning: "The large picture-and-headline carousel at the top of the home page. Each picture with its words is a slide." },
   { term: "Invitation", meaning: "The email that lets a new person choose a password and start using the admin. The link works once and lasts 72 hours." },

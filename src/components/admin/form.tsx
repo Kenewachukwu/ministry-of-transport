@@ -113,12 +113,18 @@ function useUnsavedChanges(formRef: RefObject<HTMLFormElement | null>, enabled: 
  * after every submit the result (or the first field with a problem) is scrolled
  * into view and focused, which also makes screen readers announce it.
  *
- * The form is submitted with `startTransition` rather than the form's `action`
- * attribute on purpose: React 19 RESETS uncontrolled fields after an action
+ * Once the page has loaded, the form is submitted with `startTransition` from
+ * `onSubmit` (which stops the browser's own submission and React's) rather than
+ * through the form's `action` attribute on purpose: React 19 RESETS uncontrolled fields after an action
  * finishes, including when it only returned a validation error, which wiped
  * whatever the person had typed. Here a failed save leaves their text alone.
  * Forms that should clear after success (inviting someone, changing a password)
  * say so with `resetOnSuccess`.
+ *
+ * `action` is still set on the <form>, but only as the fallback for the moment
+ * before the page's scripts have loaded (slow connections): a submit then goes to
+ * the server as a POST instead of the browser's default GET, which would put what
+ * was typed, such as a password or a message, in the address bar.
  *
  * `warnOnLeave` turns on the unsaved-changes guard; use it for editing forms,
  * not for sign-in style forms.
@@ -169,7 +175,7 @@ export function ActionForm({
     <FormStateContext.Provider value={state}>
       <PendingContext.Provider value={pending}>
       <DirtyContext.Provider value={dirty}>
-        <form ref={formRef} onSubmit={onSubmit} className={cn("flex flex-col gap-5", className)} noValidate>
+        <form ref={formRef} action={formAction} onSubmit={onSubmit} className={cn("flex flex-col gap-5", className)} noValidate>
           {(state.error || state.message || state.reveal) && (
             <div ref={messageRef} tabIndex={-1} className="flex flex-col gap-5 outline-none">
               {state.error && (

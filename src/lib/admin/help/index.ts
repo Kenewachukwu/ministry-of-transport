@@ -80,5 +80,7 @@ export const PAGE_GUIDE: Record<string, string> = {
   "/admin/audit": "read-the-activity-log",
   "/admin/status": "check-system-status",
   "/admin/review": "approve-or-return-work",
+  "/admin/enquiries": "handle-enquiries",
+  "/admin/enquiries/settings": "set-where-enquiries-go",
   "/admin/account": "change-your-password",
 };

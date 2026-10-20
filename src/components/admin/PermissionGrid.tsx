@@ -1,4 +1,4 @@
-import { DIRECT_SECTIONS, SECTIONS, SECTION_LABELS, type Section } from "@/lib/auth/permissions";
+import { DIRECT_SECTIONS, INBOX_SECTIONS, SECTIONS, SECTION_LABELS, type Section } from "@/lib/auth/permissions";
 
 const box = "h-4 w-4 accent-[var(--color-cta)]";
 
@@ -6,6 +6,7 @@ const box = "h-4 w-4 accent-[var(--color-cta)]";
  * One row per content section with two ticks: may EDIT it, and may PUBLISH in it.
  * Publishing includes editing (the server enforces it), so ticking Publish alone is fine.
  * Sections made of fixed text (see DIRECT_SECTIONS) have no drafts, so they offer Publish only.
+ * An inbox (see INBOX_SECTIONS) publishes nothing, so it offers one tick: may they handle it.
  * Ignored for super administrators, who can do everything.
  */
 export function PermissionGrid({ editSelected = [], publishSelected = [] }: { editSelected?: Section[]; publishSelected?: Section[] }) {
@@ -13,7 +14,7 @@ export function PermissionGrid({ editSelected = [], publishSelected = [] }: { ed
     <fieldset className="rounded-control border border-border p-4">
       <legend className="px-1 text-sm font-semibold text-ink">Sections this person can manage</legend>
       <p className="mb-3 text-xs text-ink-muted">
-        <strong>Edit</strong> lets them write drafts and propose changes. <strong>Publish</strong> lets them approve other people&rsquo;s work, put changes on the website, archive and re-arrange. Publishing includes editing. Where a section is a few fixed pieces of text, only Publish is offered, because those changes go live as soon as they are saved. Super administrators can do everything regardless.
+        <strong>Edit</strong> lets them write drafts and propose changes. <strong>Publish</strong> lets them approve other people&rsquo;s work, put changes on the website, archive and re-arrange. Publishing includes editing. Where a section is a few fixed pieces of text, only Publish is offered, because those changes go live as soon as they are saved. Enquiries has one tick (Edit), which lets them read and handle the messages that arrive. Super administrators can do everything regardless.
       </p>
       <table className="w-full text-left text-sm">
         <thead className="text-xs uppercase tracking-wide text-ink-muted">
@@ -26,6 +27,7 @@ export function PermissionGrid({ editSelected = [], publishSelected = [] }: { ed
         <tbody className="divide-y divide-border">
           {SECTIONS.map((section) => {
             const direct = DIRECT_SECTIONS.includes(section);
+            const inbox = INBOX_SECTIONS.includes(section);
             return (
               <tr key={section}>
                 <th scope="row" className="py-2 pr-3 font-medium text-ink">{SECTION_LABELS[section]}</th>
@@ -33,11 +35,15 @@ export function PermissionGrid({ editSelected = [], publishSelected = [] }: { ed
                   {direct ? (
                     <span aria-hidden className="text-ink-muted">&ndash;</span>
                   ) : (
-                    <input type="checkbox" name="permissions" value={section} defaultChecked={editSelected.includes(section) || publishSelected.includes(section)} className={box} aria-label={`Can edit ${SECTION_LABELS[section]}`} />
+                    <input type="checkbox" name="permissions" value={section} defaultChecked={editSelected.includes(section) || publishSelected.includes(section)} className={box} aria-label={inbox ? `Can handle ${SECTION_LABELS[section]}` : `Can edit ${SECTION_LABELS[section]}`} />
                   )}
                 </td>
                 <td className="text-center">
-                  <input type="checkbox" name="publish" value={section} defaultChecked={publishSelected.includes(section)} className={box} aria-label={`Can publish in ${SECTION_LABELS[section]}`} />
+                  {inbox ? (
+                    <span aria-hidden className="text-ink-muted">&ndash;</span>
+                  ) : (
+                    <input type="checkbox" name="publish" value={section} defaultChecked={publishSelected.includes(section)} className={box} aria-label={`Can publish in ${SECTION_LABELS[section]}`} />
+                  )}
                 </td>
               </tr>
             );

@@ -277,6 +277,36 @@ export const contentGuides: HelpGuide[] = [
     reviewed,
   },
   {
+    slug: "handle-enquiries",
+    title: "Read and deal with enquiries",
+    summary: "See the messages sent through the website's contact form, reply, and mark them as dealt with.",
+    area: "content",
+    audience: "enquiries",
+    time: "3 minutes",
+    steps: [
+      {
+        text: "Press “Enquiries” in the menu.",
+        detail: "The number beside it is how many messages are new.",
+        link: { label: "Open Enquiries", href: "/admin/enquiries" },
+      },
+      { text: "On the “New” tab, press a name to open the message." },
+      {
+        text: "Read it, then press “Reply by email” to answer from your own email program.",
+        detail: "Replies go from your mailbox. The website never emails the person who wrote in.",
+      },
+      { text: "Back on the message, type what you did in “Note (optional)” and press “Mark as handled”.", detail: "It moves to the “Handled” tab, with your name, the time and your note." },
+      { text: "If it is not a real message, press “Mark as spam” instead." },
+    ],
+    tips: [
+      "Every message is also emailed to the team for its topic. If a yellow notice says the email did not go out, nobody was told, so check this list regularly until email is working (a super administrator can see “System status”).",
+      "Nothing is deleted. “Handled” and “Spam” messages stay in their tabs, and “Reopen” moves one back to “New”.",
+      "To find an old message, type a name, an email address or a word from the message in the search box and press “Search”.",
+    ],
+    problems: [{ q: "I am not sure whether a message is spam.", a: "Mark it as spam: you can always press “Reopen” later. A real person who needs an answer will usually write again." }],
+    related: ["set-where-enquiries-go", "troubleshooting"],
+    reviewed,
+  },
+  {
     slug: "publish-a-document",
     title: "Publish a document or NCT communique",
     summary: "Add a file to the Resources page.",

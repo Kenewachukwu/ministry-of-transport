@@ -8,7 +8,7 @@ import { PermissionGrid } from "@/components/admin/PermissionGrid";
 import { HelpLink } from "@/components/admin/help/HelpLink";
 import { PageTitle, Panel, StatusBadge } from "@/components/admin/ui";
 import { requireSuperAdminPage } from "@/lib/auth/dal";
-import { SECTION_LABELS, isSection } from "@/lib/auth/permissions";
+import { INBOX_SECTIONS, SECTION_LABELS, isSection } from "@/lib/auth/permissions";
 import { inviteUserAction } from "./actions";
 
 export const metadata: Metadata = { title: "Users & access" };
@@ -68,7 +68,7 @@ export default async function UsersPage() {
                       ? "Super administrator"
                       : u.permissions
                           .filter(isSection)
-                          .map((s) => `${SECTION_LABELS[s]} (${u.publishPermissions.includes(s) ? "publishes" : "edits"})`)
+                          .map((s) => `${SECTION_LABELS[s]} (${INBOX_SECTIONS.includes(s) ? "handles" : u.publishPermissions.includes(s) ? "publishes" : "edits"})`)
                           .join(", ") || "No sections"}
                   </td>
                   <td className="py-3 pr-4"><StatusBadge status={u.status} /></td>

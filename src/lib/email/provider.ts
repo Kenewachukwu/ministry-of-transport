@@ -7,6 +7,8 @@ export interface EmailMessage {
   subject: string;
   text: string;
   html: string;
+  /** Where a reply should go, when it is not the sender (for example the person who wrote in through the contact form). */
+  replyTo?: string;
 }
 
 export interface EmailProvider {

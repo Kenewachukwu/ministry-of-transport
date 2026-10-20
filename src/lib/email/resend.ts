@@ -24,7 +24,7 @@ export class ResendEmailProvider implements EmailProvider {
         subject: message.subject,
         html: message.html,
         text: message.text,
-        ...(this.replyTo ? { reply_to: this.replyTo } : {}),
+        ...(message.replyTo || this.replyTo ? { reply_to: message.replyTo ?? this.replyTo } : {}),
       }),
       signal: AbortSignal.timeout(10_000),
       cache: "no-store",

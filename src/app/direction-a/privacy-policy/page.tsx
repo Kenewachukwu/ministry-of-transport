@@ -16,6 +16,14 @@ export default async function Page() {
       </p>
       <h2>Information we collect</h2>
       <p>Emails you send to us, and standard web server logs (IP address, browser type, pages visited).</p>
+      <h2>Messages sent through the contact form</h2>
+      <p>
+        If you use the contact form, we receive the name, email address, optional telephone number and message you type.
+        They are stored in the Ministry&rsquo;s website system, emailed to the team that deals with your topic, and read
+        only by staff who handle enquiries. We also keep a one-way scrambled form of your network address, which cannot
+        be turned back into the address, only to stop floods of automated messages. We do not send marketing to the
+        address you give. How long messages are kept is being confirmed by the Ministry and will be stated here.
+      </p>
       <h2>Contact</h2>
       <p>Questions about this policy can be directed to {siteMeta.email}.</p>
     </StaticContentTemplate>

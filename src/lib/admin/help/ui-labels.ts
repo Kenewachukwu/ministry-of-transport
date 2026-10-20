@@ -17,6 +17,8 @@ export const UI_LABELS: string[] = [
   "Drafts", "Waiting for approval", "Approvals", "Approval", "Review", "Save as draft", "Save draft", "Save proposed changes", "Submit for approval",
   "Save and resubmit for approval", "Publish now", "Publish", "Approve and publish", "Send back", "Note to the author", "Discard draft", "Discard proposed changes",
   "On the website now", "Proposed", "Draft",
+  // Enquiries
+  "Where enquiries go", "Mark as handled", "Mark as spam", "Reopen", "Reply by email", "Note (optional)", "New", "Handled", "Spam",
   // Lists
   "Published", "Archived", "All", "Search", "Clear search", "Edit", "Archive", "Restore", "Cancel", "Older →", "← Newer", "Up", "Down", "Remove", "Remove block", "Save new order",
   // Forms
