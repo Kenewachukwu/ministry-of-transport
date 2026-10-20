@@ -13,6 +13,7 @@
     "db:migrate": "tsx --conditions=react-server scripts/db-migrate.ts",
     "db:seed": "tsx --conditions=react-server scripts/db-seed.ts",
     "db:setup": "npm run db:migrate && npm run db:seed",
+    "docs:build": "tsx scripts/build-docs.ts",
     "admin:bootstrap": "tsx --conditions=react-server scripts/admin-bootstrap.ts",
     "db:reset-local": "rm -rf .data/pglite"
   },
