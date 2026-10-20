@@ -104,7 +104,8 @@ describe("sitemap coverage", () => {
   it("includes every static public page, so a new page cannot be left out unnoticed", async () => {
     vi.stubEnv("SITE_URL", "https://www.example.gov.ng");
     const urls = new Set((await sitemap()).map((e) => e.url));
-    const missing = staticPagePaths(path.resolve(import.meta.dirname, "../app/direction-a")).filter((p) => !urls.has(pageUrl(p)));
+    // Search results are for people, not search engines (the page is marked noindex), so it is not listed.
+    const missing = staticPagePaths(path.resolve(import.meta.dirname, "../app/direction-a")).filter((p) => p !== "/search" && !urls.has(pageUrl(p)));
     expect(missing, "Add these pages to STATIC_PATHS in src/app/sitemap.ts").toEqual([]);
   });
 });

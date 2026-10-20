@@ -53,6 +53,7 @@ export function HeaderA({ basePath }: { basePath: string }) {
         </div>
       )}
       <div className={cn("hidden h-8 items-center justify-end gap-6 px-4 text-xs sm:px-6 lg:flex lg:px-8", solid ? "border-b border-border text-ink-muted" : "text-white/70")}>
+        <Link href={`${basePath}/search`} className={utilityLink}>Search</Link>
         <Link href={`${basePath}/contact`} className={utilityLink}>Contact</Link>
         <Link href={`${basePath}${staffPortalNav.href}`} className={utilityLink}>{staffPortalNav.label}</Link>
       </div>

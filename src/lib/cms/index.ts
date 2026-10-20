@@ -47,6 +47,11 @@ export async function getNewsSummaries(filter: NewsFilter = "all"): Promise<News
   return items.filter((item) => matchesFilter(item, filter)).map(summarise);
 }
 
+/** Every published story with its full text (for site search; list pages use the summaries). */
+export async function getNewsFull(): Promise<NewsItem[]> {
+  return (await resolveSource()).news();
+}
+
 export async function getNewsArticle(slug: string): Promise<NewsItem | undefined> {
   const items = await (await resolveSource()).news();
   return items.find((item) => item.slug === slug);

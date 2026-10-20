@@ -67,6 +67,23 @@ export function MobileNav({
                   <X size={22} />
                 </button>
               </div>
+              <form action={`${basePath}/search`} method="get" role="search" className="mt-2 flex gap-2">
+                <label htmlFor="mobile-search" className="sr-only">
+                  Search the website
+                </label>
+                <input
+                  id="mobile-search"
+                  type="search"
+                  name="q"
+                  maxLength={100}
+                  autoComplete="off"
+                  placeholder="Search the website"
+                  className="min-w-0 flex-1 rounded-control border border-border bg-surface-raised px-3 py-2 text-sm text-ink placeholder:text-ink-muted/70 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-cta"
+                />
+                <button type="submit" className="rounded-control bg-cta px-3.5 py-2 text-sm font-semibold text-cta-ink focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-cta">
+                  Search
+                </button>
+              </form>
               <nav className="mt-4 flex flex-col gap-1">
                 {items.map((item) => (
                   <div key={item.label} className="border-b border-border">
