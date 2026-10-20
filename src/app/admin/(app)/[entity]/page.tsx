@@ -3,10 +3,12 @@ import Link from "next/link";
 import { notFound } from "next/navigation";
 import { Plus } from "lucide-react";
 import { HelpLink } from "@/components/admin/help/HelpLink";
-import { Notice, PageTitle, Panel, StatusBadge } from "@/components/admin/ui";
+import { Notice, PageTitle, Panel, WorkflowBadge } from "@/components/admin/ui";
 import { ReorderList } from "@/components/admin/ReorderList";
 import { RowAction } from "@/components/admin/RowAction";
 import { requireSectionPage } from "@/lib/auth/dal";
+import { canPublish } from "@/lib/auth/permissions";
+import { STATE_LABEL, workflowState } from "@/lib/admin/workflow";
 import { countByStatus, listRows, rowTitle } from "@/lib/dal/admin/crud";
 import { ENTITY_GUIDE } from "@/lib/admin/help";
 import { getEntity } from "@/lib/admin/registry";
@@ -20,6 +22,8 @@ export async function generateMetadata({ params }: { params: Promise<{ entity: s
 }
 
 const dateFmt = new Intl.DateTimeFormat("en-GB", { day: "2-digit", month: "short", year: "numeric" });
+
+const TAB_NAME = { published: "Published", drafts: "Drafts", waiting: "Waiting for approval", archived: "Archived" } as const;
 
 type SearchParams = { status?: string; filter?: string; archived?: string; q?: string };
 
@@ -44,7 +48,8 @@ export default async function EntityListPage({ params, searchParams }: { params:
   if (!def) notFound();
   const user = await requireSectionPage(def.section);
   const sp = await searchParams;
-  const status = sp.status === "archived" ? "archived" : "published";
+  const status = sp.status === "archived" || sp.status === "drafts" || sp.status === "waiting" ? sp.status : "published";
+  const publisher = canPublish(user, def.section);
   const filter = def.filter?.options.some((o) => o.value === sp.filter) ? sp.filter : undefined;
   const q = sp.q?.trim().slice(0, 100) || undefined;
 
@@ -63,13 +68,14 @@ export default async function EntityListPage({ params, searchParams }: { params:
   const restore = restoreEntityAction.bind(null, def.key);
   const reorder = reorderEntityAction.bind(null, def.key);
 
-  const reorderable = def.orderable && status === "published" && !filter && !q;
+  const reorderable = def.orderable && publisher && status === "published" && !filter && !q;
   const items = rows.map((r) => ({
     id: String(r.id),
     title: rowTitle(def, r),
     subtitle: def.subtitle?.(r) ?? null,
     editHref: `${base}/${String(r.id)}`,
     viewHref: def.publicPath?.(r) ?? null,
+    state: workflowState(r),
   }));
 
   return (
@@ -87,11 +93,13 @@ export default async function EntityListPage({ params, searchParams }: { params:
         }
       />
 
-      {def.key === "fcssip" && <FcssipHeader />}
+      {def.key === "fcssip" && <FcssipHeader canPublish={publisher} />}
 
       <div className="mb-4 flex flex-wrap items-center justify-between gap-3">
         <div className="flex gap-1" role="tablist" aria-label="Show">
           <Tab href={qs({ status: undefined })} active={status === "published"}>Published ({counts.published})</Tab>
+          {(counts.drafts > 0 || status === "drafts") && <Tab href={qs({ status: "drafts" })} active={status === "drafts"}>Drafts ({counts.drafts})</Tab>}
+          {(counts.waiting > 0 || status === "waiting") && <Tab href={qs({ status: "waiting" })} active={status === "waiting"}>Waiting for approval ({counts.waiting})</Tab>}
           <Tab href={qs({ status: "archived" })} active={status === "archived"}>Archived ({counts.archived})</Tab>
         </div>
         {def.filter && (
@@ -130,22 +138,28 @@ export default async function EntityListPage({ params, searchParams }: { params:
       </form>
       {q && (
         <p role="status" className="mb-4 text-sm text-ink-muted">
-          {rows.length === 0 ? "Nothing matches" : `${rows.length} found for`} &ldquo;{q}&rdquo; in {status === "archived" ? "Archived" : "Published"}.
+          {rows.length === 0 ? "Nothing matches" : `${rows.length} found for`} &ldquo;{q}&rdquo; in {TAB_NAME[status]}.
         </p>
       )}
 
       {status === "archived" && counts.archived > 0 && (
         <Notice>Archived items are hidden from the website. Restore one to publish it again; it rejoins at the end of the list.</Notice>
       )}
+      {status === "drafts" && counts.drafts > 0 && (
+        <Notice>Drafts are not on the website. Open one and press &ldquo;Submit for approval&rdquo; when it is ready. Items marked &ldquo;Published &middot; changes in draft&rdquo; are live, with your proposed changes saved separately.</Notice>
+      )}
+      {status === "waiting" && counts.waiting > 0 && (
+        <Notice>{publisher ? "These are waiting for a publisher's decision. Open one to review it, then approve it or send it back with a note." : "These are waiting for a publisher to approve them. Nothing here is on the website yet."}</Notice>
+      )}
 
       {items.length === 0 ? (
         <Panel>
           <p className="text-sm text-ink-muted">
-            {q ? "Try a different word, or clear the search." : status === "archived" ? "Nothing has been archived." : `There are no ${def.plural.toLowerCase()} yet.`}
+            {q ? "Try a different word, or clear the search." : status === "archived" ? "Nothing has been archived." : status === "drafts" ? "You have no drafts." : status === "waiting" ? "Nothing is waiting for approval." : `There are no ${def.plural.toLowerCase()} yet.`}
           </p>
         </Panel>
       ) : reorderable ? (
-        <ReorderList items={items} reorderAction={reorder} archiveAction={archive} singular={def.singular} />
+        <ReorderList items={items.map(({ state, ...rest }) => ({ ...rest, flag: state === "live" ? null : STATE_LABEL[state] }))} reorderAction={reorder} archiveAction={archive} singular={def.singular} />
       ) : (
         <ul className="flex flex-col gap-2">
           {rows.map((r, i) => {
@@ -161,14 +175,15 @@ export default async function EntityListPage({ params, searchParams }: { params:
                     {r.updatedAt instanceof Date && <span> · edited {dateFmt.format(r.updatedAt)}</span>}
                   </p>
                 </div>
-                <StatusBadge status={r.status === "archived" ? "archived" : "published"} />
+                <WorkflowBadge state={item.state} />
                 <div className="flex items-center gap-2">
-                  <Link href={item.editHref} className="rounded-control border border-border px-2.5 py-1.5 text-xs font-semibold text-ink hover:border-cta hover:text-cta">Edit</Link>
-                  {r.status === "archived" ? (
-                    <RowAction action={restore} id={item.id} label="Restore" />
-                  ) : (
-                    <RowAction action={archive} id={item.id} label="Archive" tone="danger" confirmMessage={`Archive this ${def.singular}? It will disappear from the website, but you can restore it later.`} />
-                  )}
+                  <Link href={item.editHref} className="rounded-control border border-border px-2.5 py-1.5 text-xs font-semibold text-ink hover:border-cta hover:text-cta">{status === "waiting" && publisher ? "Review" : "Edit"}</Link>
+                  {publisher &&
+                    (r.status === "archived" ? (
+                      <RowAction action={restore} id={item.id} label="Restore" />
+                    ) : (
+                      <RowAction action={archive} id={item.id} label="Archive" tone="danger" confirmMessage={`Archive this ${def.singular}? It will disappear from the website, but you can restore it later.`} />
+                    ))}
                 </div>
               </li>
             );

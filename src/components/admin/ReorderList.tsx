@@ -17,6 +17,8 @@ export interface ReorderItem {
   subtitle?: string | null;
   editHref: string;
   viewHref?: string | null;
+  /** Shown beside the title when something needs attention (for example "Published · changes waiting"). */
+  flag?: string | null;
 }
 
 function SaveButton({ dirty }: { dirty: boolean }) {
@@ -77,6 +79,7 @@ export function ReorderList({
                     {item.title}
                   </Link>
                   {item.subtitle && <p className="truncate text-xs text-ink-muted">{item.subtitle}</p>}
+                  {item.flag && <p className="mt-0.5 inline-block rounded-full bg-amber-100 px-2 py-0.5 text-xs font-semibold text-amber-900">{item.flag}</p>}
                 </div>
               </div>
               <div className="flex flex-wrap items-center gap-2 pl-9 sm:pl-0">

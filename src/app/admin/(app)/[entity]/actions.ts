@@ -5,9 +5,10 @@ import { redirect } from "next/navigation";
 import { z } from "zod";
 import { ActionError, guard, type ActionState } from "@/lib/admin/action";
 import { authorize } from "@/lib/auth/dal";
+import { canPublish } from "@/lib/auth/permissions";
 import { parseFields } from "@/lib/admin/parse";
 import { getEntity, type EntityDef } from "@/lib/admin/registry";
-import { archiveRow, createRow, reorderRows, restoreRow, updateRow } from "@/lib/dal/admin/crud";
+import { approveRow, archiveRow, createRow, discardChanges, reorderRows, restoreRow, returnRow, submitForApproval, updateRow } from "@/lib/dal/admin/crud";
 
 function definition(key: string): EntityDef {
   const def = getEntity(key);
@@ -21,26 +22,99 @@ function publish(def: EntityDef) {
   revalidatePath(`/admin/${def.key}`);
 }
 
+/** What the person asked for with the button they pressed: just save, save and submit for approval, or (publishers) save and publish. */
+const intentOf = (formData: FormData): "save" | "submit" | "publish" => {
+  const v = String(formData.get("intent") ?? "save");
+  return v === "submit" || v === "publish" ? v : "save";
+};
+
 export async function saveEntityAction(key: string, _prev: ActionState, formData: FormData): Promise<ActionState> {
   return guard(async () => {
     const def = definition(key);
     const user = await authorize(def.section);
     const values = def.schema.parse(parseFields(def.fields, formData));
     const id = String(formData.get("id") ?? "");
+    const intent = intentOf(formData);
 
     if (id) {
       const version = Number.parseInt(String(formData.get("version") ?? ""), 10);
       if (!Number.isInteger(version)) throw new ActionError("This form is out of date. Reload the page and try again.");
       z.uuid().parse(id);
-      await updateRow(def, user, id, version, values);
-      publish(def);
+      const outcome = await updateRow(def, user, id, version, values);
+      if (intent === "submit") await submitForApproval(def, user, id);
+      if (intent === "publish") await approveRow(def, user, id);
+      if (outcome === "live" || intent === "publish") publish(def);
+      revalidatePath(`/admin/${def.key}`);
       revalidatePath(`/admin/${def.key}/${id}`); // pick up the new version number for the next save
-      return { ok: true, message: "Saved. The change is live on the website." };
+      return { ok: true, message: savedMessage(outcome, intent) };
     }
 
     const newId = await createRow(def, user, values);
+    if (intent === "submit") await submitForApproval(def, user, newId);
     publish(def);
-    redirect(`/admin/${def.key}/${newId}?created=1`);
+    const created = canPublish(user, def.section) ? "live" : intent === "submit" ? "submitted" : "draft";
+    redirect(`/admin/${def.key}/${newId}?created=${created}`);
+  });
+}
+
+function savedMessage(outcome: "live" | "proposed" | "draft", intent: "save" | "submit" | "publish"): string {
+  if (intent === "publish") return "Published. The change is live on the website.";
+  if (intent === "submit") return "Submitted for approval. The website keeps showing the current version until a publisher approves it.";
+  if (outcome === "live") return "Saved. The change is live on the website.";
+  if (outcome === "proposed") return "Saved as proposed changes. The website still shows the published version.";
+  return "Draft saved. It is not on the website yet.";
+}
+
+/** From a list or an edit page: send a draft (or proposed changes) for approval. */
+export async function submitEntityAction(key: string, _prev: ActionState, formData: FormData): Promise<ActionState> {
+  return guard(async () => {
+    const def = definition(key);
+    const user = await authorize(def.section);
+    const { id } = z.object({ id: z.uuid() }).parse(Object.fromEntries(formData));
+    await submitForApproval(def, user, id);
+    revalidatePath(`/admin/${def.key}`);
+    revalidatePath(`/admin/${def.key}/${id}`);
+    revalidatePath("/admin/review");
+    return { ok: true, message: "Submitted for approval." };
+  });
+}
+
+export async function approveEntityAction(key: string, _prev: ActionState, formData: FormData): Promise<ActionState> {
+  return guard(async () => {
+    const def = definition(key);
+    const user = await authorize(def.section);
+    const { id } = z.object({ id: z.uuid() }).parse(Object.fromEntries(formData));
+    await approveRow(def, user, id);
+    publish(def);
+    revalidatePath(`/admin/${def.key}/${id}`);
+    revalidatePath("/admin/review");
+    return { ok: true, message: "Approved. It is live on the website." };
+  });
+}
+
+export async function returnEntityAction(key: string, _prev: ActionState, formData: FormData): Promise<ActionState> {
+  return guard(async () => {
+    const def = definition(key);
+    const user = await authorize(def.section);
+    const { id, note } = z.object({ id: z.uuid(), note: z.string().max(1000) }).parse(Object.fromEntries(formData));
+    await returnRow(def, user, id, note);
+    revalidatePath(`/admin/${def.key}`);
+    revalidatePath(`/admin/${def.key}/${id}`);
+    revalidatePath("/admin/review");
+    return { ok: true, message: "Sent back to the author with your note." };
+  });
+}
+
+export async function discardEntityAction(key: string, _prev: ActionState, formData: FormData): Promise<ActionState> {
+  return guard(async () => {
+    const def = definition(key);
+    const user = await authorize(def.section);
+    const { id } = z.object({ id: z.uuid() }).parse(Object.fromEntries(formData));
+    await discardChanges(def, user, id);
+    revalidatePath(`/admin/${def.key}`);
+    revalidatePath(`/admin/${def.key}/${id}`);
+    revalidatePath("/admin/review");
+    return { ok: true, message: "Discarded. The website was not affected." };
   });
 }
 

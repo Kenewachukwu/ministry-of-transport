@@ -238,16 +238,21 @@ export function SubmitButton({
   children,
   variant = "primary",
   className,
+  name,
+  value,
 }: {
   children: ReactNode;
   variant?: "primary" | "secondary" | "ghost";
   className?: string;
+  /** With `value`, tells the server which button was pressed (a form can have several). */
+  name?: string;
+  value?: string;
 }) {
   const { pending: formPending } = useFormStatus();
   const submitting = useContext(PendingContext);
   const pending = formPending || submitting;
   return (
-    <Button type="submit" variant={variant} disabled={pending} aria-busy={pending} className={className}>
+    <Button type="submit" name={name} value={value} variant={variant} disabled={pending} aria-busy={pending} className={className}>
       {pending ? "Working…" : children}
     </Button>
   );

@@ -6,6 +6,7 @@ import { GalleryField, MediaField, RepeaterField, SectionsField } from "./fields
 import type { FieldDef } from "@/lib/admin/fields";
 import type { ActionState } from "@/lib/admin/action";
 import type { UploadMode } from "@/lib/storage/client";
+import { saveButtons, type WorkflowState } from "@/lib/admin/workflow";
 
 type Action = (state: ActionState, formData: FormData) => Promise<ActionState>;
 type Values = Record<string, unknown>;
@@ -30,7 +31,9 @@ export function EntityForm({
   id,
   version,
   uploadMode,
-  submitLabel,
+  singular,
+  publisher,
+  state,
 }: {
   action: Action;
   fields: FieldDef[];
@@ -38,9 +41,15 @@ export function EntityForm({
   id?: string;
   version?: number;
   uploadMode: UploadMode;
-  submitLabel: string;
+  /** "story", "department"… for the button wording. */
+  singular: string;
+  /** May this person publish in the section? Decides whether saving goes live or makes a draft/proposal. */
+  publisher: boolean;
+  /** Where the item is now (omit when creating). */
+  state?: WorkflowState;
 }) {
   const isEdit = Boolean(id);
+  const { buttons, hint } = saveButtons({ isEdit, publisher, state, singular });
   const watchedNames = new Set(fields.flatMap((f) => (f.showWhen ? [f.showWhen.field] : [])));
   const [watched, setWatched] = useState<Record<string, string>>(() => Object.fromEntries([...watchedNames].map((n) => [n, str(initial[n])])));
 
@@ -101,9 +110,16 @@ export function EntityForm({
           }
         })}
 
-        <div className="flex flex-wrap items-center gap-4">
-          <SubmitButton>{submitLabel}</SubmitButton>
-          <UnsavedNote />
+        <div className="flex flex-col gap-3">
+          <div className="flex flex-wrap items-center gap-3">
+            {buttons.map((b, i) => (
+              <SubmitButton key={b.label} variant={i === 0 ? "primary" : "secondary"} name={b.intent ? "intent" : undefined} value={b.intent}>
+                {b.label}
+              </SubmitButton>
+            ))}
+            <UnsavedNote />
+          </div>
+          {hint && <p className="max-w-2xl text-xs text-ink-muted">{hint}</p>}
         </div>
       </div>
     </ActionForm>

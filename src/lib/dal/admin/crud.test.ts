@@ -12,8 +12,8 @@ import { isAllowedLink, isAllowedMediaUrl } from "@/lib/storage/validate";
 import { archiveRow, createRow, getRow, listRows, reorderRows, restoreRow, updateRow } from "./crud";
 import { ConflictError, ContentError } from "./errors";
 
-const admin: SessionUser = { id: "00000000-0000-4000-8000-000000000001", email: "boss@example.gov.ng", name: "Boss", role: "super_admin", permissions: [] };
-const newsEditor: SessionUser = { ...admin, id: "00000000-0000-4000-8000-000000000002", email: "n@example.gov.ng", role: "staff", permissions: ["news"] };
+const admin: SessionUser = { id: "00000000-0000-4000-8000-000000000001", email: "boss@example.gov.ng", name: "Boss", role: "super_admin", permissions: [], publishPermissions: [] };
+const newsEditor: SessionUser = { ...admin, id: "00000000-0000-4000-8000-000000000002", email: "n@example.gov.ng", role: "staff", permissions: ["news"], publishPermissions: ["news"] };
 
 const hero = getEntity("hero")!;
 const news = getEntity("news")!;

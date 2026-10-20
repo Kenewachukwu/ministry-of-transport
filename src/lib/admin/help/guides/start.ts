@@ -80,8 +80,8 @@ export const startGuides: HelpGuide[] = [
       },
       { text: "Press “Dashboard” at any time to come back to the start page.", link: { label: "Open the dashboard", href: "/admin" } },
       {
-        text: "Open any section. Each one shows a list with two tabs, “Published” and “Archived”.",
-        detail: "Published items are on the website now. Archived items are hidden but never deleted.",
+        text: "Open any section. Each one shows a list with the tabs “Published” and “Archived”.",
+        detail: "Published items are on the website now. Archived items are hidden but never deleted. The tabs “Drafts” and “Waiting for approval” appear when something is in them.",
       },
       { text: "Press the green Add button at the top of a list to create something new, or “Edit” beside an item to change it." },
       {
@@ -93,6 +93,7 @@ export const startGuides: HelpGuide[] = [
     tips: [
       "To find an item in a long list, type a word in the search box above the list and press “Search”. It looks in titles and text. “Clear search” shows everything again.",
       "You only see the sections a super administrator has given you. If something is missing, ask them.",
+      "If you can publish in any section, “Approvals” appears in the menu with a number: the items waiting for your decision.",
       "A section you are not allowed to open takes you back to the dashboard with a short notice.",
     ],
     related: ["how-changes-reach-the-website", "archive-and-restore"],
@@ -118,25 +119,29 @@ export const startGuides: HelpGuide[] = [
   {
     slug: "how-changes-reach-the-website",
     title: "How changes reach the website",
-    summary: "When your changes go live, how to check them, and why nothing is ever lost.",
+    summary: "When your changes go live, when they wait for a publisher, how to check them, and why nothing is ever lost.",
     area: "start",
     audience: "everyone",
     steps: [
-      { text: "Make your change and press the save button (for example “Save changes”).", detail: "The change is live on the public website straight away." },
+      { text: "Make your change and press the save button (for example “Save changes”).", detail: "If you can publish in that section, the change is live on the public website straight away." },
+      {
+        text: "If you can edit but not publish, your work is kept as a draft, or as proposed changes to something already published. Press “Submit for approval” when it is ready.",
+        detail: "Nothing reaches the website until a publisher approves it. The buttons tell you which kind of person you are: “Save as draft” and “Submit for approval” mean your work is reviewed first.",
+      },
       {
         text: "To check it, press “View on website” on the item's page, or “View website” in the menu.",
         detail: "Both open the public site in a new tab. If you still see the old version, refresh the tab.",
       },
       {
-        text: "To take something off the website, press “Archive”.",
-        detail: "Archiving hides it immediately. It is not deleted, and you can bring it back with “Restore”.",
+        text: "To take something off the website, a publisher presses “Archive”.",
+        detail: "Archiving hides it immediately. It is not deleted, and it can be brought back with “Restore”.",
       },
     ],
     tips: [
       "Changing the order of a list only takes effect when you press “Save new order”.",
       "The “Activity log” (super administrators) records who changed what, and when.",
     ],
-    related: ["archive-and-restore", "rearrange-the-order"],
+    related: ["submit-work-for-approval", "approve-or-return-work", "archive-and-restore", "rearrange-the-order"],
     reviewed,
   },
 ];

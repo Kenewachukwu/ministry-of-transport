@@ -17,13 +17,16 @@ export const peopleGuides: HelpGuide[] = [
         text: "Choose their “Role”: “Content editor” or “Super administrator”.",
         detail: "A content editor can change only the sections you tick. A super administrator can change everything, including people.",
       },
-      { text: "Under “Sections this person can manage”, tick the parts of the website they should be able to change.", detail: "Required for content editors." },
+      {
+        text: "Under “Sections this person can manage”, tick “Edit” for the parts of the website they may write drafts in, and “Publish” for the parts they may approve and publish in.",
+        detail: "Required for content editors: at least one tick. Publishing includes editing. Someone who can only edit has their work reviewed by a publisher first.",
+      },
       { text: "Press “Send invitation”.", detail: "They receive an email with a link that works once and lasts 72 hours." },
     ],
     tips: [
       "If email is not set up yet, the page shows the invitation link once. Copy it and send it to the person yourself, by a channel you trust.",
       "You can change someone's sections at any time. It takes effect the next time they open a page.",
-      "Give people only the sections they need.",
+      "Give people only the sections they need, and “Publish” to people you trust to approve work. Make sure every section has at least one publisher.",
     ],
     problems: [{ q: "It says to choose at least one section.", a: "A content editor needs at least one ticked section. Tick one, or make them a super administrator if they should manage everything." }],
     related: ["change-someones-access", "resend-an-invitation", "change-someones-email"],
@@ -38,11 +41,11 @@ export const peopleGuides: HelpGuide[] = [
     time: "2 minutes",
     steps: [
       { text: "Press “Users & access”, then “Manage” beside the person.", link: { label: "Open Users & access", href: "/admin/users" } },
-      { text: "In the Access panel, change “Full name”, “Role” or the ticked sections." },
+      { text: "In the Access panel, change “Full name”, “Role” or the ticked sections.", detail: "“Edit” lets them write drafts and propose changes. “Publish” lets them approve work, archive and re-arrange." },
       { text: "Press “Save access”.", detail: "It takes effect the next time they load a page." },
     ],
     tips: ["The last active super administrator cannot be demoted or deactivated, so the admin can never be left without one."],
-    related: ["invite-someone", "deactivate-or-reactivate-someone"],
+    related: ["invite-someone", "deactivate-or-reactivate-someone", "approve-or-return-work"],
     reviewed,
   },
   {

@@ -1,7 +1,8 @@
 import type { Metadata } from "next";
 import { ActionForm, LoadedAt, SubmitButton, TextArea, UnsavedNote } from "@/components/admin/form";
 import { HelpLink } from "@/components/admin/help/HelpLink";
-import { PageTitle, Panel } from "@/components/admin/ui";
+import { PageTitle, Panel, PublishGate } from "@/components/admin/ui";
+import { canPublish } from "@/lib/auth/permissions";
 import { readSiteTextGroup } from "@/lib/admin/site-text";
 import { requireSectionPage } from "@/lib/auth/dal";
 import { mandate, mission, vision } from "@/content/mandate";
@@ -10,13 +11,14 @@ import { saveSiteTextAction } from "./actions";
 export const metadata: Metadata = { title: "Mandate, Mission & Vision" };
 
 export default async function SiteTextPage() {
-  await requireSectionPage("site_text");
+  const user = await requireSectionPage("site_text");
   const { values: map, loadedAt } = await readSiteTextGroup(["mandate", "vision", "mission"]);
   const save = saveSiteTextAction.bind(null, "core");
 
   return (
     <>
       <PageTitle title="Mandate, Mission & Vision" description="Shown on the home page and as the introduction to the About Us page." actions={<HelpLink slug="edit-mandate-mission-vision" />} />
+      <PublishGate allowed={canPublish(user, "site_text")}>
       <Panel>
         <ActionForm action={save} warnOnLeave>
           <LoadedAt initial={loadedAt} />
@@ -29,6 +31,7 @@ export default async function SiteTextPage() {
           </div>
         </ActionForm>
       </Panel>
+      </PublishGate>
     </>
   );
 }

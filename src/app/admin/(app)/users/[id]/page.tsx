@@ -50,7 +50,7 @@ export default async function ManageUserPage({ params }: { params: Promise<{ id:
               { value: "super_admin", label: "Super administrator" },
             ]}
           />
-          <PermissionGrid selected={user.permissions.filter(isSection)} />
+          <PermissionGrid editSelected={user.permissions.filter(isSection)} publishSelected={user.publishPermissions.filter(isSection)} />
           <div className="flex flex-wrap items-center gap-4">
             <SubmitButton>Save access</SubmitButton>
             <UnsavedNote />

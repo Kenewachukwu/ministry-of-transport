@@ -1,15 +1,16 @@
 import { ActionForm, Field, LoadedAt, SubmitButton, TextArea, UnsavedNote } from "@/components/admin/form";
-import { Panel } from "@/components/admin/ui";
+import { Panel, PublishGate } from "@/components/admin/ui";
 import { fcssipPage } from "@/content/fcssip";
 import { readSiteTextGroup } from "@/lib/admin/site-text";
 import { saveSiteTextAction } from "../site-text/actions";
 
 /** The FCSSIP page's heading strings, edited above its list of content blocks. */
-export async function FcssipHeader() {
+export async function FcssipHeader({ canPublish }: { canPublish: boolean }) {
   const { values: map, loadedAt } = await readSiteTextGroup(["fcssip.eyebrow", "fcssip.title", "fcssip.description"]);
   const save = saveSiteTextAction.bind(null, "fcssip");
   return (
     <Panel title="Page heading" className="mb-8">
+      <PublishGate allowed={canPublish}>
       <ActionForm action={save} warnOnLeave>
         <LoadedAt initial={loadedAt} />
         <div className="grid gap-5 sm:grid-cols-2">
@@ -22,6 +23,7 @@ export async function FcssipHeader() {
           <UnsavedNote />
         </div>
       </ActionForm>
+      </PublishGate>
     </Panel>
   );
 }

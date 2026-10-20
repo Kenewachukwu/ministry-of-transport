@@ -18,16 +18,18 @@ const accessSchema = z.object({
 });
 
 const permissionsFrom = (formData: FormData) => formData.getAll("permissions").map(String).filter(isSection);
+const publishFrom = (formData: FormData) => formData.getAll("publish").map(String).filter(isSection);
 
 export async function inviteUserAction(_prev: ActionState, formData: FormData): Promise<ActionState> {
   return guard(async () => {
     const actor = await authorize("super_admin");
     const input = accessSchema.extend({ email: emailSchema }).parse(Object.fromEntries(formData));
-    const permissions = permissionsFrom(formData);
+    const publishPermissions = publishFrom(formData);
+    const permissions = [...new Set([...permissionsFrom(formData), ...publishPermissions])];
     if (input.role === "staff" && permissions.length === 0) {
       return { error: "Choose at least one section for this person to manage (or make them a super administrator).", fieldErrors: { permissions: "Choose at least one section." } };
     }
-    const { user, token } = await createInvitedUser({ ...input, permissions }, { id: actor.id, label: actor.email });
+    const { user, token } = await createInvitedUser({ ...input, permissions, publishPermissions }, { id: actor.id, label: actor.email });
     const delivery = await sendInvite(user, token);
     revalidatePath("/admin/users");
     return delivery.sent
@@ -44,11 +46,12 @@ export async function updateUserAction(_prev: ActionState, formData: FormData): 
   return guard(async () => {
     const actor = await authorize("super_admin");
     const input = accessSchema.extend({ id: z.uuid() }).parse(Object.fromEntries(formData));
-    const permissions = permissionsFrom(formData);
+    const publishPermissions = publishFrom(formData);
+    const permissions = [...new Set([...permissionsFrom(formData), ...publishPermissions])];
     if (input.role === "staff" && permissions.length === 0) {
       return { error: "A content editor needs at least one section.", fieldErrors: { permissions: "Choose at least one section." } };
     }
-    await updateUserAccess(input.id, { name: input.name, role: input.role, permissions }, { id: actor.id, label: actor.email });
+    await updateUserAccess(input.id, { name: input.name, role: input.role, permissions, publishPermissions }, { id: actor.id, label: actor.email });
     revalidatePath("/admin/users");
     return { ok: true, message: "Access updated. It takes effect on their next page load." };
   });

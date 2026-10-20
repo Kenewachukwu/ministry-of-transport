@@ -8,6 +8,7 @@ import { guard, type ActionState } from "@/lib/admin/action";
 import { changedSince, readSiteTextGroup } from "@/lib/admin/site-text";
 import { audit } from "@/lib/auth/audit";
 import { authorize } from "@/lib/auth/dal";
+import { assertCanPublish } from "@/lib/auth/permissions";
 import { ConflictError } from "@/lib/dal/admin/errors";
 import { GROUPS, type SiteTextGroup } from "@/lib/admin/site-text-groups";
 
@@ -16,6 +17,8 @@ export async function saveSiteTextAction(group: SiteTextGroup, _prev: ActionStat
   return guard(async () => {
     const g = GROUPS[group];
     const user = await authorize(g.section);
+    // These texts go live the moment they are saved, so they need the publish grant (see DIRECT_SECTIONS).
+    assertCanPublish(user, g.section);
     const values = g.schema.parse(Object.fromEntries(formData)) as Record<string, string>;
     const keys = Object.keys(values);
     const loadedAt = String(formData.get("loadedAt") ?? "");

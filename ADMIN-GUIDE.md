@@ -23,9 +23,9 @@ Go to `https://<the-website>/admin` and sign in with your Ministry email address
 | | Can do |
 |---|---|
 | **Super administrator** | Everything: all content, **Users & access**, the **Activity log**, and **System status**. |
-| **Content editor** | Only the sections a super administrator has ticked for them (for example just *News*). Other sections don't appear for them, and typing the address takes them back to the dashboard. |
+| **Content editor** | Only the sections a super administrator has ticked for them (for example just *News*). Other sections don't appear for them, and typing the address takes them back to the dashboard. For each section they get **Edit** (write drafts, propose changes) and/or **Publish** (approve work, put changes on the website, archive, re-arrange). |
 
-A super administrator invites people from **Users & access**, chooses their role and ticks the sections they may manage, and can change that at any time (it takes effect on the person's next page load). People are **deactivated, never deleted**, and the last active super administrator can't be deactivated.
+A super administrator invites people from **Users & access**, chooses their role and ticks, per section, **Edit** and **Publish**, and can change that at any time (it takes effect on the person's next page load). People are **deactivated, never deleted**, and the last active super administrator can't be deactivated.
 
 ### What you can manage
 
@@ -45,9 +45,20 @@ A super administrator invites people from **Users & access**, chooses their role
 
 Nothing is ever deleted. **Archive** hides an item from the website straight away; it stays in the **Archived** tab, and **Restore** publishes it again (it rejoins at the **end** of the list, so re-arrange it afterwards if needed). A URL for an archived item shows "page not found" to the public. The home page hero always keeps at least one slide.
 
+### Drafts and approval
+
+Someone who can **Edit** but not **Publish** in a section never changes the website directly:
+
+- A new item starts as a **Draft** (not on the website). **Submit for approval** puts it in the publishers' queue.
+- Changes to something already published are saved as **proposed changes** beside it; the website keeps the published version until a publisher approves them.
+- A **publisher** (someone with **Publish** for the section, or a super administrator) finds the work under **Approvals** in the menu (the number is how many items wait), sees exactly what would change, and presses **Approve and publish** or **Send back** with a note the author sees.
+- **Archive**, **Restore** and re-arranging need **Publish**. So do the Mandate/Mission/Vision and Contact details pages, which have no drafts: a save is live at once.
+- When existing accounts were upgraded to this version every editor kept their old ability to publish in their sections, so nothing changed for them; a super administrator can tighten it under **Users & access**.
+- Every submission, approval and return is written to the **Activity log**.
+
 ### Editing and re-arranging
 
-- Open any section, then **Edit** an item or **Add** a new one. Press **Save changes** — **the change is live on the website immediately.**
+- Open any section, then **Edit** an item or **Add** a new one. Press **Save changes** — **for publishers the change is live on the website immediately** (editors: see *Drafts and approval*).
 - To re-arrange (hero, departments, leadership, road ahead, FCSSIP blocks, e-services, resources): use the **↑ / ↓** buttons, then **Save new order**. Nothing changes publicly until you save.
 - If a colleague saved the same item while you were editing it, your save is refused with a message (so nobody's work is overwritten silently). Reload the page and repeat your change.
 

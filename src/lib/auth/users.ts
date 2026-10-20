@@ -16,6 +16,18 @@ export class UserError extends Error {}
 
 export const normaliseEmail = (email: string) => email.trim().toLowerCase();
 
+/**
+ * What a person is granted, in one place: a super administrator holds nothing
+ * explicitly (they can do everything), and for everyone else publishing in a
+ * section always includes editing it.
+ */
+export function normaliseGrants(role: Role, edit: Section[], publish: Section[] = []): { permissions: Section[]; publishPermissions: Section[] } {
+  if (role === "super_admin") return { permissions: [], publishPermissions: [] };
+  const publishOnly = publish.filter(isSection);
+  const permissions = [...new Set([...edit.filter(isSection), ...publishOnly])];
+  return { permissions, publishPermissions: [...new Set(publishOnly)] };
+}
+
 export async function findUserByEmail(email: string, database?: Db): Promise<UserRow | undefined> {
   const db = database ?? (await getDb());
   const [row] = await db.select().from(users).where(sql`lower(${users.email}) = ${normaliseEmail(email)}`).limit(1);
@@ -38,7 +50,7 @@ async function activeSuperAdminCount(db: Db, excluding?: string): Promise<number
 
 /** Creates an invited account (no password yet) and returns the one-time token. */
 export async function createInvitedUser(
-  input: { email: string; name: string; role: Role; permissions: Section[] },
+  input: { email: string; name: string; role: Role; permissions: Section[]; publishPermissions?: Section[] },
   actor: AuditActor,
   database?: Db
 ): Promise<{ user: UserRow; token: string }> {
@@ -48,20 +60,20 @@ export async function createInvitedUser(
   if (existing && existing.status === "active") throw new UserError("That person already has an account.");
   if (existing && existing.status === "archived") throw new UserError("That account is deactivated. Restore it from the Users list instead.");
 
-  const permissions = input.role === "super_admin" ? [] : input.permissions.filter(isSection);
+  const { permissions, publishPermissions } = normaliseGrants(input.role, input.permissions, input.publishPermissions);
   let user = existing;
   if (!user) {
-    [user] = await db.insert(users).values({ email, name: input.name.trim(), role: input.role, permissions, status: "invited" }).returning();
+    [user] = await db.insert(users).values({ email, name: input.name.trim(), role: input.role, permissions, publishPermissions, status: "invited" }).returning();
   } else {
     // re-inviting someone whose invitation is still pending: refresh their details
     [user] = await db
       .update(users)
-      .set({ name: input.name.trim(), role: input.role, permissions, updatedAt: new Date() })
+      .set({ name: input.name.trim(), role: input.role, permissions, publishPermissions, updatedAt: new Date() })
       .where(eq(users.id, user.id))
       .returning();
   }
   const token = await issueToken(user.id, "invite", actor.id ?? undefined, db);
-  await audit(actor, "user.invite", { entity: "user", entityId: user.id, summary: `Invited ${email}`, meta: { role: input.role, permissions } }, db);
+  await audit(actor, "user.invite", { entity: "user", entityId: user.id, summary: `Invited ${email}`, meta: { role: input.role, permissions, publishPermissions } }, db);
   return { user, token };
 }
 
@@ -101,7 +113,7 @@ export async function setPassword(userId: string, password: string, database?: D
 
 export async function updateUserAccess(
   id: string,
-  input: { name: string; role: Role; permissions: Section[] },
+  input: { name: string; role: Role; permissions: Section[]; publishPermissions?: Section[] },
   actor: AuditActor
 ): Promise<void> {
   const db = await getDb();
@@ -110,9 +122,9 @@ export async function updateUserAccess(
   if (current.role === "super_admin" && input.role !== "super_admin" && current.status === "active") {
     if ((await activeSuperAdminCount(db, id)) === 0) throw new UserError("There must always be at least one active super administrator.");
   }
-  const permissions = input.role === "super_admin" ? [] : input.permissions.filter(isSection);
-  await db.update(users).set({ name: input.name.trim(), role: input.role, permissions, updatedAt: new Date() }).where(eq(users.id, id));
-  await audit(actor, "user.update", { entity: "user", entityId: id, summary: `Changed access for ${current.email}`, meta: { role: input.role, permissions } });
+  const { permissions, publishPermissions } = normaliseGrants(input.role, input.permissions, input.publishPermissions);
+  await db.update(users).set({ name: input.name.trim(), role: input.role, permissions, publishPermissions, updatedAt: new Date() }).where(eq(users.id, id));
+  await audit(actor, "user.update", { entity: "user", entityId: id, summary: `Changed access for ${current.email}`, meta: { role: input.role, permissions, publishPermissions } });
 }
 
 export interface EmailChangeResult {

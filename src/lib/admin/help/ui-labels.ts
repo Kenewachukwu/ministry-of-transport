@@ -13,6 +13,10 @@ export const UI_LABELS: string[] = [
   "Current password", "New password", "Confirm new password", "Change password", "My account", "Sign out", "Sign in again in a new tab",
   // Menu and navigation
   "Menu", "Dashboard", "Help", "View website", "View on website", "Users & access", "Activity log", "System status",
+  // Approval workflow
+  "Drafts", "Waiting for approval", "Approvals", "Approval", "Review", "Save as draft", "Save draft", "Save proposed changes", "Submit for approval",
+  "Save and resubmit for approval", "Publish now", "Publish", "Approve and publish", "Send back", "Note to the author", "Discard draft", "Discard proposed changes",
+  "On the website now", "Proposed", "Draft",
   // Lists
   "Published", "Archived", "All", "Search", "Clear search", "Edit", "Archive", "Restore", "Cancel", "Older →", "← Newer", "Up", "Down", "Remove", "Remove block", "Save new order",
   // Forms

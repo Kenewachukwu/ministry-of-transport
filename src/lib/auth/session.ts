@@ -73,6 +73,7 @@ export const getCurrentUser = cache(async (): Promise<SessionUser | null> => {
       name: users.name,
       role: users.role,
       permissions: users.permissions,
+      publishPermissions: users.publishPermissions,
       sessionExpiresAt: sessions.expiresAt,
     })
     .from(sessions)
@@ -88,5 +89,5 @@ export const getCurrentUser = cache(async (): Promise<SessionUser | null> => {
     .limit(1);
   if (!row) return null;
   const { sessionExpiresAt, ...person } = row;
-  return { ...person, permissions: person.permissions.filter(isSection), sessionExpiresAt: sessionExpiresAt.toISOString() };
+  return { ...person, permissions: person.permissions.filter(isSection), publishPermissions: person.publishPermissions.filter(isSection), sessionExpiresAt: sessionExpiresAt.toISOString() };
 });

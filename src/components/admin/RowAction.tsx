@@ -6,12 +6,16 @@ import { cn } from "@/lib/utils";
 import type { ActionState } from "@/lib/admin/action";
 
 type Action = (state: ActionState, formData: FormData) => Promise<ActionState>;
-type Tone = "neutral" | "danger";
+type Tone = "neutral" | "danger" | "primary";
 
 const buttonClasses = (tone: Tone) =>
   cn(
     "rounded-control border px-2.5 py-1.5 text-xs font-semibold transition-colors focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-cta disabled:opacity-50",
-    tone === "danger" ? "border-border text-ink hover:border-red-600 hover:text-red-700" : "border-border text-ink hover:border-cta hover:text-cta"
+    tone === "danger"
+      ? "border-border text-ink hover:border-red-600 hover:text-red-700"
+      : tone === "primary"
+        ? "border-cta bg-cta text-cta-ink hover:border-brand-600 hover:bg-brand-600"
+        : "border-border text-ink hover:border-cta hover:text-cta"
   );
 
 function SubmitButton({ children, tone, className }: { children: React.ReactNode; tone: Tone; className?: string }) {

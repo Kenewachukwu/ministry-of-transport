@@ -1,7 +1,8 @@
 import type { Metadata } from "next";
 import { ActionForm, Field, LoadedAt, SubmitButton, TextArea, UnsavedNote } from "@/components/admin/form";
 import { HelpLink } from "@/components/admin/help/HelpLink";
-import { PageTitle, Panel } from "@/components/admin/ui";
+import { PageTitle, Panel, PublishGate } from "@/components/admin/ui";
+import { canPublish } from "@/lib/auth/permissions";
 import { siteMeta as defaults } from "@/content/siteMeta";
 import { readSiteTextGroup } from "@/lib/admin/site-text";
 import { requireSectionPage } from "@/lib/auth/dal";
@@ -11,7 +12,7 @@ import { saveSiteTextAction } from "../site-text/actions";
 export const metadata: Metadata = { title: "Contact details & links" };
 
 export default async function ContactDetailsPage() {
-  await requireSectionPage("contact");
+  const user = await requireSectionPage("contact");
   const { values, loadedAt } = await readSiteTextGroup(groupKeys("contact"));
   // What is saved wins; otherwise the website's built-in default. An empty saved value stays empty (it hides the item).
   const v = (key: string, fallback: string) => (values.has(key) ? (values.get(key) as string) : fallback);
@@ -24,6 +25,7 @@ export default async function ContactDetailsPage() {
         description="Shown in the footer of every page, on the Contact page, and wherever the website asks people to email the Ministry."
         actions={<HelpLink slug="edit-contact-details" />}
       />
+      <PublishGate allowed={canPublish(user, "contact")}>
       <ActionForm action={save} warnOnLeave>
         <LoadedAt initial={loadedAt} />
         <Panel title="How people reach the Ministry">
@@ -50,6 +52,7 @@ export default async function ContactDetailsPage() {
           <UnsavedNote />
         </div>
       </ActionForm>
+      </PublishGate>
     </>
   );
 }

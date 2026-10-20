@@ -1,5 +1,6 @@
 import type { ReactNode } from "react";
 import { cn } from "@/lib/utils";
+import { STATE_LABEL, type WorkflowState } from "@/lib/admin/workflow";
 
 export function PageTitle({ title, description, actions }: { title: string; description?: string; actions?: ReactNode }) {
   return (
@@ -43,4 +44,36 @@ export function StatusBadge({ status }: { status: "published" | "archived" | "ac
     invited: "bg-amber-100 text-amber-800",
   } as const;
   return <span className={cn("inline-block rounded-full px-2.5 py-0.5 text-xs font-semibold capitalize", styles[status])}>{status}</span>;
+}
+
+const WORKFLOW_STYLE: Record<WorkflowState, string> = {
+  live: "bg-brand-50 text-brand-800",
+  draft: "bg-stone-100 text-stone-800 ring-1 ring-inset ring-stone-300",
+  waiting: "bg-amber-100 text-amber-900",
+  "changes-draft": "bg-brand-50 text-brand-800 ring-1 ring-inset ring-stone-300",
+  "changes-waiting": "bg-amber-100 text-amber-900",
+  archived: "bg-stone-200 text-stone-700",
+};
+
+/** Where an item is in the approval workflow, in words (never by colour alone). */
+export function WorkflowBadge({ state }: { state: WorkflowState }) {
+  return <span className={cn("inline-block rounded-full px-2.5 py-0.5 text-xs font-semibold", WORKFLOW_STYLE[state])}>{STATE_LABEL[state]}</span>;
+}
+
+/**
+ * For text that goes live the moment it is saved: someone who may only edit sees it
+ * (so they know what is there) but cannot change it, with the reason.
+ */
+export function PublishGate({ allowed, children }: { allowed: boolean; children: ReactNode }) {
+  if (allowed) return <>{children}</>;
+  return (
+    <>
+      <Notice tone="warn">
+        This text goes live on the website as soon as it is saved, so only someone who can publish in this section can change it. You can read it here. Ask a super administrator if you need that permission.
+      </Notice>
+      <fieldset disabled className="m-0 min-w-0 border-0 p-0">
+        {children}
+      </fieldset>
+    </>
+  );
 }

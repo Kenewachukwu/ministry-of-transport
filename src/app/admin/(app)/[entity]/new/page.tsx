@@ -5,6 +5,7 @@ import { EntityForm } from "@/components/admin/EntityForm";
 import { HelpLink } from "@/components/admin/help/HelpLink";
 import { PageTitle, Panel } from "@/components/admin/ui";
 import { requireSectionPage } from "@/lib/auth/dal";
+import { canPublish } from "@/lib/auth/permissions";
 import { ENTITY_GUIDE } from "@/lib/admin/help";
 import { getEntity } from "@/lib/admin/registry";
 import { storageMode } from "@/lib/storage/mode";
@@ -18,7 +19,7 @@ export async function generateMetadata({ params }: { params: Promise<{ entity: s
 export default async function NewEntityPage({ params }: { params: Promise<{ entity: string }> }) {
   const def = getEntity((await params).entity);
   if (!def) notFound();
-  await requireSectionPage(def.section);
+  const user = await requireSectionPage(def.section);
 
   // Sensible starting values: a date field starts as today.
   const today = new Date().toISOString().slice(0, 10);
@@ -37,7 +38,7 @@ export default async function NewEntityPage({ params }: { params: Promise<{ enti
         }
       />
       <Panel>
-        <EntityForm action={saveEntityAction.bind(null, def.key)} fields={def.fields} initial={initial} uploadMode={storageMode()} submitLabel={`Create ${def.singular}`} />
+        <EntityForm action={saveEntityAction.bind(null, def.key)} fields={def.fields} initial={initial} uploadMode={storageMode()} singular={def.singular} publisher={canPublish(user, def.section)} />
       </Panel>
     </>
   );

@@ -79,5 +79,6 @@ export const PAGE_GUIDE: Record<string, string> = {
   "/admin/users": "invite-someone",
   "/admin/audit": "read-the-activity-log",
   "/admin/status": "check-system-status",
+  "/admin/review": "approve-or-return-work",
   "/admin/account": "change-your-password",
 };

@@ -4,12 +4,13 @@ import { CONTENT_NAV, SYSTEM_NAV } from "../nav";
 import { SECTIONS, SECTION_LABELS, type SessionUser } from "@/lib/auth/permissions";
 import { ENTITY_GUIDE, GLOSSARY, GUIDES, PAGE_GUIDE, getGuide, guideText, isForPerson, searchEntries, splitGuides, toIndexEntry } from "./index";
 import { UI_LABELS } from "./ui-labels";
+import { STATE_LABEL } from "../workflow";
 
 /* ---------- what the guides may quote ------------------------------------------------------------ */
 
 /** Everything a guide may put in “curly quotes”: real labels from the admin, never invented ones. */
 function knownLabels(): Set<string> {
-  const known = new Set<string>(UI_LABELS);
+  const known = new Set<string>([...UI_LABELS, ...Object.values(STATE_LABEL)]);
   for (const e of [...CONTENT_NAV, ...SYSTEM_NAV]) known.add(e.label);
   for (const label of Object.values(SECTION_LABELS)) known.add(label);
   for (const def of ENTITIES) {
@@ -39,7 +40,7 @@ function textsOf(guide: (typeof GUIDES)[number]): string[] {
 }
 
 function isKnownAdminPath(href: string): boolean {
-  const staticPaths = ["/admin", "/admin/site-text", "/admin/contact", "/admin/users", "/admin/audit", "/admin/status", "/admin/account"];
+  const staticPaths = ["/admin", "/admin/review", "/admin/site-text", "/admin/contact", "/admin/users", "/admin/audit", "/admin/status", "/admin/account"];
   if (staticPaths.includes(href) || href.startsWith("/admin/help")) return true;
   const m = href.match(/^\/admin\/([a-z-]+)(\/new)?$/);
   return Boolean(m && ENTITIES.some((e) => e.key === m[1]));

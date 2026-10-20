@@ -28,6 +28,8 @@ export const users = pgTable(
     role: userRole("role").notNull().default("staff"),
     /** Section keys a `staff` user may manage (see src/lib/auth/permissions.ts). */
     permissions: text("permissions").array().notNull().default(sql`'{}'::text[]`),
+    /** Sections where this person may PUBLISH: approve other people's work, archive and re-order. Always a subset of `permissions`. */
+    publishPermissions: text("publish_permissions").array().notNull().default(sql`'{}'::text[]`),
     status: userStatus("status").notNull().default("invited"),
     lastLoginAt: timestamp("last_login_at", { withTimezone: true }),
     createdAt: timestamp("created_at", { withTimezone: true }).notNull().defaultNow(),

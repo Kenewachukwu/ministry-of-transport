@@ -64,7 +64,12 @@ export default async function UsersPage() {
                     <p className="text-xs text-ink-muted">{u.email}</p>
                   </td>
                   <td className="py-3 pr-4 text-ink-muted">
-                    {u.role === "super_admin" ? "Super administrator" : u.permissions.filter(isSection).map((s) => SECTION_LABELS[s]).join(", ") || "No sections"}
+                    {u.role === "super_admin"
+                      ? "Super administrator"
+                      : u.permissions
+                          .filter(isSection)
+                          .map((s) => `${SECTION_LABELS[s]} (${u.publishPermissions.includes(s) ? "publishes" : "edits"})`)
+                          .join(", ") || "No sections"}
                   </td>
                   <td className="py-3 pr-4"><StatusBadge status={u.status} /></td>
                   <td className="py-3 pr-4 text-ink-muted">{u.lastLoginAt ? dateFmt.format(u.lastLoginAt) : "Never"}</td>
