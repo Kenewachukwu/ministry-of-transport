@@ -57,6 +57,13 @@ const nextConfig: NextConfig = {
       },
     ],
   },
+  // The public pages used to live under /direction-a. Keep every old address working, permanently.
+  async redirects() {
+    return [
+      { source: "/direction-a", destination: "/", permanent: true },
+      { source: "/direction-a/:path*", destination: "/:path*", permanent: true },
+    ];
+  },
   async headers() {
     return [
       // Every page (listed first, so the admin's stricter rules below win where they overlap).

@@ -4,7 +4,7 @@ import { cn } from "@/lib/utils";
 
 export function Logo({ basePath, inverse = false }: { basePath: string; inverse?: boolean }) {
   return (
-    <Link href={basePath} className="group flex items-center gap-3">
+    <Link href={basePath || "/"} className="group flex items-center gap-3">
       <span
         className={cn(
           "flex h-11 w-11 shrink-0 items-center justify-center rounded-full bg-white p-1.5 ring-1",

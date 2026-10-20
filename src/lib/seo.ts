@@ -4,11 +4,15 @@ import { getNewsImage } from "@/lib/newsImage";
 import { siteUrl } from "@/lib/env";
 
 /**
- * Where the public pages live. Canonical links, the sitemap and the structured
- * data all derive from this, so moving the site to the domain root later is a
- * change here plus the route folder.
+ * Where the public pages live: the root of the domain, so this is empty and a page
+ * at /about is `${SITE_BASE_PATH}/about`. (The site used to live under /direction-a;
+ * next.config.ts redirects the old addresses.) Canonical links, the sitemap and the
+ * structured data all derive from this.
  */
-export const SITE_BASE_PATH = "/direction-a";
+export const SITE_BASE_PATH = "";
+
+/** The link to the home page ("" would mean "this page"). */
+export const HOME_PATH = SITE_BASE_PATH || "/";
 
 export const SITE_NAME = "Federal Ministry of Transportation";
 const TITLE_SUFFIX = ` | ${SITE_NAME}`;

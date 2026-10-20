@@ -22,7 +22,7 @@ export function NotFoundTemplate({ basePath }: { basePath: string }) {
           instead.
         </p>
         <div className="mt-8 flex flex-wrap gap-3">
-          <ButtonLink href={basePath}>Go to the home page</ButtonLink>
+          <ButtonLink href={basePath || "/"}>Go to the home page</ButtonLink>
           <ButtonLink href={`${basePath}/news`} variant="outline-brand">
             Newsroom
           </ButtonLink>

@@ -1,5 +1,6 @@
 import { Logo } from "@/components/layout/Header/Logo";
 import { adminAvailability } from "@/lib/admin/availability";
+import { SITE_BASE_PATH } from "@/lib/seo";
 
 export default function AuthLayout({ children }: { children: React.ReactNode }) {
   const availability = adminAvailability();
@@ -7,7 +8,7 @@ export default function AuthLayout({ children }: { children: React.ReactNode }) 
     <div className="flex min-h-screen flex-1 items-center justify-center bg-surface px-4 py-12">
       <div className="w-full max-w-md">
         <div className="mb-6 flex justify-center">
-          <Logo basePath="/direction-a" />
+          <Logo basePath={SITE_BASE_PATH} />
         </div>
         <div className="rounded-card border border-border bg-surface-raised p-8 shadow-card">
           {availability.available ? (

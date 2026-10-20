@@ -24,7 +24,7 @@ export default function Error({ error, retry }: { error: Error & { digest?: stri
         </p>
         <div className="mt-8 flex flex-wrap gap-3">
           <Button onClick={() => retry()}>Try again</Button>
-          <ButtonLink href="/direction-a" variant="outline-brand">
+          <ButtonLink href="/" variant="outline-brand">
             Go to the home page
           </ButtonLink>
         </div>

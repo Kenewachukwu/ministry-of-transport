@@ -7,6 +7,7 @@ import type { CacheTag } from "@/lib/cms/cache";
 import { TAG } from "@/lib/cms/cache";
 import type { Section } from "@/lib/auth/permissions";
 import { isAllowedLink, isAllowedMediaUrl } from "@/lib/storage/validate";
+import { HOME_PATH, SITE_BASE_PATH } from "@/lib/seo";
 import type { FieldDef, FieldValues } from "./fields";
 
 export type Row = Record<string, unknown>;
@@ -182,7 +183,7 @@ const newsDef: EntityDef = {
     featured: v.kind === "event" ? false : v.featured,
     gallery: v.kind === "event" ? [] : v.gallery,
   }),
-  publicPath: (r) => (r.kind === "event" ? "/direction-a/news/events" : `/direction-a/news/${String(r.slug)}`),
+  publicPath: (r) => (r.kind === "event" ? `${SITE_BASE_PATH}/news/events` : `${SITE_BASE_PATH}/news/${String(r.slug)}`),
 };
 
 const departmentsDef: EntityDef = {
@@ -228,7 +229,7 @@ const departmentsDef: EntityDef = {
     const { slugify, uniqueSlug } = await import("./slug");
     return { ...values, slug: await uniqueSlug(slugify(String(values.name)), slugExists) };
   },
-  publicPath: (r) => `/direction-a/about/departments/${String(r.slug)}`,
+  publicPath: (r) => `${SITE_BASE_PATH}/about/departments/${String(r.slug)}`,
 };
 
 const leadershipDef: EntityDef = {
@@ -277,7 +278,7 @@ const leadershipDef: EntityDef = {
     const { slugify, uniqueSlug } = await import("./slug");
     return { ...values, slug: await uniqueSlug(slugify(String(values.title)), slugExists) };
   },
-  publicPath: (r) => `/direction-a/about/leadership/${String(r.slug)}`,
+  publicPath: (r) => `${SITE_BASE_PATH}/about/leadership/${String(r.slug)}`,
 };
 
 const roadAheadDef: EntityDef = {
@@ -302,7 +303,7 @@ const roadAheadDef: EntityDef = {
     description: required(600),
     kpis: z.array(z.object({ label: required(200), targetYear: required(20) })).max(20),
   }),
-  publicPath: () => "/direction-a",
+  publicPath: () => HOME_PATH,
 };
 
 const eServicesDef: EntityDef = {
@@ -323,7 +324,7 @@ const eServicesDef: EntityDef = {
     { kind: "text", name: "href", label: "Link", required: true, inputType: "text", help: "A full https:// link to the service." },
   ],
   schema: z.object({ name: required(120), description: required(400), href: link }),
-  publicPath: () => "/direction-a/e-services",
+  publicPath: () => `${SITE_BASE_PATH}/e-services`,
 };
 
 const RESOURCE_KINDS = [
@@ -358,7 +359,7 @@ const resourcesDef: EntityDef = {
     href: z.union([z.literal(""), link]).transform((v) => (v === "" ? "#" : v)),
   }),
   fromRow: (row) => ({ ...row, href: row.href === "#" ? "" : row.href }),
-  publicPath: (r) => (r.kind === "nct_communique" ? "/direction-a/resources/nct-communique" : "/direction-a/resources"),
+  publicPath: (r) => (r.kind === "nct_communique" ? `${SITE_BASE_PATH}/resources/nct-communique` : `${SITE_BASE_PATH}/resources`),
 };
 
 /* ---------- FCSSIP 25 page blocks ------------------------------------------------------------------ */
@@ -444,7 +445,7 @@ const fcssipBlocksDef: EntityDef = {
     return { type, data };
   },
   fromRow: (row) => ({ type: row.type, ...(row.data as Row) }),
-  publicPath: () => "/direction-a/fcssip-25",
+  publicPath: () => `${SITE_BASE_PATH}/fcssip-25`,
 };
 
 export const ENTITIES: EntityDef[] = [heroDef, newsDef, departmentsDef, leadershipDef, roadAheadDef, fcssipBlocksDef, eServicesDef, resourcesDef];

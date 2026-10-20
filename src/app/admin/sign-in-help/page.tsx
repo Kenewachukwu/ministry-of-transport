@@ -4,6 +4,7 @@ import { ArrowLeft } from "lucide-react";
 import { Logo } from "@/components/layout/Header/Logo";
 import { GuideView } from "@/components/admin/help/GuideView";
 import { getGuide } from "@/lib/admin/help";
+import { SITE_BASE_PATH } from "@/lib/seo";
 
 export const metadata: Metadata = { title: "Trouble signing in?" };
 
@@ -17,7 +18,7 @@ export default function SignInHelpPage() {
     <div className="flex min-h-screen flex-1 justify-center bg-surface px-4 py-10">
       <div className="w-full max-w-2xl">
         <div className="mb-6 flex justify-center">
-          <Logo basePath="/direction-a" />
+          <Logo basePath={SITE_BASE_PATH} />
         </div>
         <div className="rounded-card border border-border bg-surface-raised p-8 shadow-card">
           <Link href="/admin/login" className="inline-flex items-center gap-1.5 text-sm font-semibold text-cta hover:underline focus-visible:underline">

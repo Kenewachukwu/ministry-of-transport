@@ -2,10 +2,11 @@ import type { Metadata } from "next";
 import { pageMetadata } from "@/lib/seo";
 import { DirectoryTemplate } from "@/components/templates/DirectoryTemplate";
 import { getDepartments } from "@/lib/cms";
+import { SITE_BASE_PATH } from "@/lib/seo";
 
 export const metadata: Metadata = pageMetadata("Departments", "The departments of the Federal Ministry of Transportation and what each one is responsible for.", "/about/departments");
 
-const basePath = "/direction-a";
+const basePath = SITE_BASE_PATH;
 
 export default async function Page() {
   const departments = await getDepartments();

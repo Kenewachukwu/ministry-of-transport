@@ -5,6 +5,7 @@ import { CONTENT_NAV, SYSTEM_NAV, type NavEntry } from "@/lib/admin/nav";
 import { can, type SessionUser } from "@/lib/auth/permissions";
 import { logoutAction } from "@/app/admin/(auth)/actions";
 import { SessionWatcher } from "./SessionWatcher";
+import { SITE_BASE_PATH } from "@/lib/seo";
 
 function visible(user: SessionUser, entry: NavEntry) {
   if (entry.superAdminOnly) return user.role === "super_admin";
@@ -95,7 +96,7 @@ export function AdminShell({
         <CircleHelp size={14} aria-hidden /> Help
       </Link>
       <Link href="/admin/account" className={linkClasses}>My account</Link>
-      <Link href="/direction-a" target="_blank" className={`${linkClasses} inline-flex items-center gap-1.5`}>
+      <Link href="/" target="_blank" className={`${linkClasses} inline-flex items-center gap-1.5`}>
         View website <ExternalLink size={13} aria-hidden />
       </Link>
       <form action={logoutAction}>
@@ -112,7 +113,7 @@ export function AdminShell({
       <header className="border-b border-border bg-surface-raised lg:hidden print:hidden">
         <details className="group">
           <summary className="flex cursor-pointer list-none items-center justify-between px-4 py-3">
-            <Logo basePath="/direction-a" />
+            <Logo basePath={SITE_BASE_PATH} />
             <span className="rounded-control border border-border px-3 py-1.5 text-sm font-semibold text-ink group-open:bg-brand-50">Menu</span>
           </summary>
           <div className="flex flex-col gap-6 border-t border-border px-4 py-4">
@@ -123,7 +124,7 @@ export function AdminShell({
       </header>
 
       <aside className="hidden w-72 shrink-0 flex-col gap-6 border-r border-border bg-surface-raised p-5 lg:flex print:!hidden">
-        <Logo basePath="/direction-a" />
+        <Logo basePath={SITE_BASE_PATH} />
         <div className="flex flex-1 flex-col justify-between gap-8">
           <NavList user={user} waiting={waiting} badges={badges} />
           {account}

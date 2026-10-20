@@ -7,7 +7,7 @@ import { SocialLinks } from "@/components/layout/Footer/SocialLinks";
 import { getSiteMeta } from "@/lib/cms";
 import { ECMS_URL } from "@/content/nav.config";
 import { EnquiryForm } from "@/components/forms/EnquiryForm";
-import { submitEnquiryAction } from "@/app/direction-a/contact/actions";
+import { submitEnquiryAction } from "@/app/(site)/contact/actions";
 import { enquiryFormAvailable } from "@/lib/enquiries-public";
 import { SITE_BASE_PATH } from "@/lib/seo";
 

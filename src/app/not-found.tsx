@@ -4,7 +4,7 @@ import { NotFoundTemplate } from "@/components/templates/NotFoundTemplate";
 
 export const metadata: Metadata = { title: "Page not found" };
 
-/** Addresses that match no route at all. Next.js renders this outside the /direction-a layout, so it brings its own frame. */
+/** Addresses that match no route at all. Next.js renders this outside the (site) layout, so it brings its own frame. */
 export default function NotFound() {
   return (
     <SiteFrame>

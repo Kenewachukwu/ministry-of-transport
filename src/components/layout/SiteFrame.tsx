@@ -12,7 +12,7 @@ export { SITE_BASE_PATH };
 
 /**
  * The public site's header, footer and themed page area. Shared by the
- * `/direction-a` layout and by the root "page not found" screen, which Next.js
+ * site layout and by the root "page not found" screen, which Next.js
  * renders outside that layout when a URL matches no route at all.
  */
 export function SiteFrame({ children }: { children: ReactNode }) {

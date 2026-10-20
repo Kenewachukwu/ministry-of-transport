@@ -2,6 +2,7 @@ import type { Metadata } from "next";
 import { pageMetadata } from "@/lib/seo";
 import { HubPageTemplate } from "@/components/templates/HubPageTemplate";
 import { getDepartments } from "@/lib/cms";
+import { SITE_BASE_PATH } from "@/lib/seo";
 
 export const metadata: Metadata = pageMetadata("About Us", "The mandate, mission and vision of the Federal Ministry of Transportation, and how it is organised.", "/about");
 
@@ -16,5 +17,5 @@ const buildLinks = (departmentCount: number) => [
 
 export default async function Page() {
   const departments = await getDepartments();
-  return <HubPageTemplate basePath="/direction-a" links={buildLinks(departments.length)} />;
+  return <HubPageTemplate basePath={SITE_BASE_PATH} links={buildLinks(departments.length)} />;
 }

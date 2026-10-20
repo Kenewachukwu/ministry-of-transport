@@ -14,8 +14,9 @@ import type { Metadata } from "next";
 import { JsonLd } from "@/components/seo/JsonLd";
 import { homeMetadata, organizationJsonLd } from "@/lib/seo";
 import { getSiteMeta, getPillars, getDepartments, getAgencies, getNewsSummaries, getEvents, getLeadership, getSiteText, getStats } from "@/lib/cms";
+import { SITE_BASE_PATH } from "@/lib/seo";
 
-const basePath = "/direction-a";
+const basePath = SITE_BASE_PATH;
 
 export const metadata: Metadata = homeMetadata("Official website of the Federal Ministry of Transportation, Federal Republic of Nigeria: news, departments, policies, documents and online services.");
 

@@ -3,7 +3,7 @@ import type { NavItem } from "./types";
 /**
  * Single source of nav truth, consumed by the header, mobile drawer, sitemap
  * and the home page's topic directory. Internal paths are relative to the
- * site root (`/direction-a`) — consumers prefix them; `external: true` links
+ * site root — consumers prefix them; `external: true` links
  * are absolute URLs and must NOT be prefixed.
  * Mirrors the current site's full nav 1:1 so nothing is silently dropped.
  */

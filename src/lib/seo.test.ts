@@ -13,8 +13,8 @@ describe("page metadata", () => {
   it("gives a page one address everywhere: canonical, social preview and sitemap agree", () => {
     vi.stubEnv("SITE_URL", "https://www.example.gov.ng");
     const m = pageMetadata("Contact Us", "How to reach us.", "/contact");
-    expect(m.alternates?.canonical).toBe("https://www.example.gov.ng/direction-a/contact");
-    expect(m.openGraph?.url).toBe("https://www.example.gov.ng/direction-a/contact");
+    expect(m.alternates?.canonical).toBe("https://www.example.gov.ng/contact");
+    expect(m.openGraph?.url).toBe("https://www.example.gov.ng/contact");
     expect(m.openGraph?.title).toBe("Contact Us | Federal Ministry of Transportation");
     expect(m.description).toBe("How to reach us.");
   });
@@ -80,8 +80,8 @@ describe("sitemap.xml", () => {
     vi.stubEnv("SITE_URL", "https://www.example.gov.ng");
     const urls = (await sitemap()).map((e) => e.url);
     expect(new Set(urls).size).toBe(urls.length);
-    expect(urls).toContain("https://www.example.gov.ng/direction-a");
-    for (const item of news) expect(urls).toContain(`https://www.example.gov.ng/direction-a/news/${item.slug}`);
+    expect(urls).toContain("https://www.example.gov.ng");
+    for (const item of news) expect(urls).toContain(`https://www.example.gov.ng/news/${item.slug}`);
     expect(urls.some((u) => u.includes("/about/departments/"))).toBe(true);
     expect(urls.some((u) => u.includes("/about/leadership/"))).toBe(true);
     expect(urls.every((u) => !u.includes("/admin"))).toBe(true);
@@ -105,7 +105,7 @@ describe("sitemap coverage", () => {
     vi.stubEnv("SITE_URL", "https://www.example.gov.ng");
     const urls = new Set((await sitemap()).map((e) => e.url));
     // Search results are for people, not search engines (the page is marked noindex), so it is not listed.
-    const missing = staticPagePaths(path.resolve(import.meta.dirname, "../app/direction-a")).filter((p) => p !== "/search" && !urls.has(pageUrl(p)));
+    const missing = staticPagePaths(path.resolve(import.meta.dirname, "../app/(site)")).filter((p) => p !== "/search" && !urls.has(pageUrl(p)));
     expect(missing, "Add these pages to STATIC_PATHS in src/app/sitemap.ts").toEqual([]);
   });
 });
