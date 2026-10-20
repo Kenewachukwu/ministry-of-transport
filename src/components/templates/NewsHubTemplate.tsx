@@ -22,10 +22,12 @@ export function NewsHubTemplate({ news, basePath }: { news: NewsSummary[]; baseP
       />
       <section className="py-16">
         <Container>
-          <div className="flex flex-wrap gap-2">
+          <div className="flex flex-wrap gap-2" role="group" aria-label="Show news by category">
             {categories.map((cat) => (
               <button
                 key={cat}
+                type="button"
+                aria-pressed={category === cat}
                 onClick={() => setCategory(cat)}
                 className={cn(
                   "rounded-control border px-4 py-2 text-sm font-semibold transition-colors",

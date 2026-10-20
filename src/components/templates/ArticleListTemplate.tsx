@@ -12,6 +12,7 @@ export function ArticleListTemplate({ items, basePath }: { items: NewsSummary[];
       <PageHeader eyebrow="News & Events" title="Online News Sector" description="A running log of the Ministry's online news coverage." />
       <section className="py-16">
         <Container size="narrow">
+          {items.length === 0 && <p className="text-ink-muted">No online news reports have been published yet.</p>}
           <ul className="flex flex-col divide-y divide-border rounded-card border border-border bg-surface-raised shadow-card">
             {items.map((item) => (
               <li key={item.id}>

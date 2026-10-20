@@ -24,7 +24,7 @@ export function DirectoryTemplate({
       <PageHeader eyebrow={eyebrow} title={title} description={description} />
       <section className="py-16">
         <Container>
-          <CardGrid items={items} columns={columns} />
+          <CardGrid items={items} columns={columns} headingLevel="h2" />
         </Container>
       </section>
     </>

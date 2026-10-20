@@ -98,7 +98,7 @@ export async function Footer({ basePath }: { basePath: string }) {
       </Container>
 
       <Container className="py-2">
-        <p className="text-xs text-white/40">
+        <p className="text-xs text-white/60">
           © {new Date().getFullYear()} {siteMeta.name}. All rights reserved.
         </p>
       </Container>

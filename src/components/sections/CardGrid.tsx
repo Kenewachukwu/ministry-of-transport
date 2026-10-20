@@ -29,10 +29,13 @@ export function CardGrid({
   items,
   columns = 3,
   className,
+  headingLevel: Heading = "h3",
 }: {
   items: CardGridItem[];
   columns?: 2 | 3 | 4;
   className?: string;
+  /** h3 when the grid sits under a section heading (the home page); h2 on pages where it follows the page title directly. */
+  headingLevel?: "h2" | "h3";
 }) {
   const Wrapper = ({ href, external, children }: { href?: string; external?: boolean; children: ReactNode }) => {
     if (!href) return <div className="h-full">{children}</div>;
@@ -91,7 +94,7 @@ export function CardGrid({
                       {item.badge}
                     </span>
                   )}
-                  <h3 className="font-display text-lg font-semibold text-ink">{item.title}</h3>
+                  <Heading className="font-display text-lg font-semibold text-ink">{item.title}</Heading>
                   <p className="mt-2 text-sm text-ink-muted">{item.description}</p>
                   {item.href && (
                     <span className="mt-4 inline-flex items-center gap-1 text-sm font-semibold text-cta">

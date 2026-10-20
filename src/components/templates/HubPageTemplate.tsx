@@ -19,6 +19,7 @@ export async function HubPageTemplate({
           <CardGrid
             items={links.map((l) => ({ ...l, href: l.href ? `${basePath}${l.href}` : undefined }))}
             columns={3}
+            headingLevel="h2"
           />
         </Container>
       </section>

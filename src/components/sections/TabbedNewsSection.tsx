@@ -1,6 +1,6 @@
 "use client";
 
-import { useState } from "react";
+import { useId, useRef, useState, type KeyboardEvent } from "react";
 import { motion, AnimatePresence } from "motion/react";
 import Link from "next/link";
 import { MapPin, Clock } from "lucide-react";
@@ -85,6 +85,20 @@ export function TabbedNewsSection({
   basePath: string;
 }) {
   const [active, setActive] = useState<Tab>("News");
+  const uid = useId();
+  const tabRefs = useRef<Record<string, HTMLButtonElement | null>>({});
+  const tabId = (tab: Tab) => `${uid}-tab-${TABS.indexOf(tab)}`;
+  const panelId = `${uid}-panel`;
+
+  /** Arrow keys, Home and End move between tabs (the pattern screen-reader and keyboard users expect). */
+  function onKeyDown(event: KeyboardEvent<HTMLDivElement>) {
+    const i = TABS.indexOf(active);
+    const next = event.key === "ArrowRight" ? (i + 1) % TABS.length : event.key === "ArrowLeft" ? (i + TABS.length - 1) % TABS.length : event.key === "Home" ? 0 : event.key === "End" ? TABS.length - 1 : null;
+    if (next === null) return;
+    event.preventDefault();
+    setActive(TABS[next]);
+    tabRefs.current[TABS[next]]?.focus();
+  }
 
   const items = {
     News: news.slice(0, 3),
@@ -95,12 +109,19 @@ export function TabbedNewsSection({
   return (
     <div>
       {/* Tab bar */}
-      <div className="flex gap-8 border-b border-border" role="tablist">
+      <div className="flex gap-8 border-b border-border" role="tablist" aria-label="News, press releases and events" onKeyDown={onKeyDown}>
         {TABS.map((tab) => (
           <button
             key={tab}
+            ref={(el) => {
+              tabRefs.current[tab] = el;
+            }}
+            id={tabId(tab)}
+            type="button"
             role="tab"
             aria-selected={active === tab}
+            aria-controls={panelId}
+            tabIndex={active === tab ? 0 : -1}
             onClick={() => setActive(tab)}
             className={cn(
               "relative pb-3 text-sm font-semibold transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-cta focus-visible:ring-offset-2",
@@ -120,7 +141,7 @@ export function TabbedNewsSection({
       </div>
 
       {/* Tab panels */}
-      <div className="mt-8" role="tabpanel">
+      <div className="mt-8" role="tabpanel" id={panelId} aria-labelledby={tabId(active)} tabIndex={0}>
         <AnimatePresence mode="wait">
           <motion.div
             key={active}

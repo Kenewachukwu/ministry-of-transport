@@ -28,9 +28,9 @@ export function FeaturedNews({ items, basePath }: { items: NewsSummary[]; basePa
                 <span className="text-xs font-semibold uppercase tracking-[0.08em] text-cta">
                   {item.category}
                 </span>
-                <h3 className="mt-2 font-display text-base font-semibold leading-snug text-ink">
+                <h2 className="mt-2 font-display text-base font-semibold leading-snug text-ink">
                   {item.title}
-                </h3>
+                </h2>
                 <p className="mt-2 flex-1 text-sm text-ink-muted">{item.excerpt}</p>
                 <div className="mt-4 flex items-center justify-between text-xs text-ink-muted">
                   <span>{dateFormatter.format(new Date(item.date))}</span>

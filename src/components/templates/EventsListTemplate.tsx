@@ -1,3 +1,5 @@
+import Link from "next/link";
+import { SITE_BASE_PATH } from "@/lib/seo";
 import { CalendarDays, MapPin } from "lucide-react";
 import { Container } from "@/design-system/primitives/Container";
 import { PageHeader } from "./PageHeader";
@@ -12,11 +14,12 @@ export function EventsListTemplate({ events }: { events: EventItem[] }) {
       <PageHeader eyebrow="News & Events" title="Events" description="Council sessions, commissionings, and other Ministry events." />
       <section className="py-16">
         <Container size="narrow">
+          {events.length === 0 && <p className="text-ink-muted">No events are listed at the moment. Check back soon, or read the latest <Link href={`${SITE_BASE_PATH}/news`} className="font-semibold text-cta underline underline-offset-2">news</Link>.</p>}
           <ScrollRevealGroup className="flex flex-col gap-4">
             {events.map((event) => (
               <ScrollRevealItem key={event.id}>
                 <div className="rounded-card border border-border bg-surface-raised p-6 shadow-card">
-                  <h3 className="font-display text-lg font-semibold text-ink">{event.title}</h3>
+                  <h2 className="font-display text-lg font-semibold text-ink">{event.title}</h2>
                   <div className="mt-2 flex flex-wrap gap-4 text-sm text-ink-muted">
                     <span className="flex items-center gap-1.5">
                       <CalendarDays size={14} aria-hidden /> {dateFormatter.format(new Date(event.date))}

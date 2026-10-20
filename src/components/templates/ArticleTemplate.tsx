@@ -1,4 +1,5 @@
 import Image from "next/image";
+import { NewsImageFrame } from "@/components/sections/NewsImageFrame";
 import { Container } from "@/design-system/primitives/Container";
 import { Heading } from "@/design-system/primitives/Heading";
 import { InlineLink } from "@/design-system/primitives/Link";
@@ -70,9 +71,7 @@ export function ArticleTemplate({ item, basePath }: { item: NewsItem; basePath: 
       </section>
       <section className="py-14">
         <Container size="narrow">
-          <div className="aspect-[16/9] overflow-hidden rounded-card">
-            <Image src={getNewsImage(item)} alt={item.imageAlt ?? ""} width={800} height={450} className="h-full w-full object-cover" />
-          </div>
+          <NewsImageFrame src={getNewsImage(item)} alt={item.imageAlt ?? ""} aspect="aspect-[16/9]" sizes="(min-width: 768px) 768px, 100vw" priority className="rounded-card" />
           <div className="mt-8 flex flex-col gap-5 text-lg leading-relaxed text-ink">
             {item.body.map((paragraph, i) => (
               <p key={i}>{paragraph}</p>
