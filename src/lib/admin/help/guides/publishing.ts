@@ -83,6 +83,7 @@ export const publishingGuides: HelpGuide[] = [
         link: { label: "Open Approvals", href: "/admin/review" },
       },
       { text: "Press “Review” beside an item." },
+      { text: "Press “Preview” to see how it will look on the website.", detail: "It opens in a new tab and shows the version waiting for your decision. News stories, departments and leaders have one." },
       {
         text: "Read the Approval panel.",
         detail: "For a new item it lists everything that would be published. For a change to something already published it shows each field that differs, with “On the website now” beside “Proposed”.",
@@ -99,7 +100,27 @@ export const publishingGuides: HelpGuide[] = [
       "You may approve your own work. The “Activity log” records who submitted, approved and sent back each item.",
     ],
     problems: [{ q: "A colleague says they submitted something, but I do not see it.", a: "You only see sections you can publish in. Check they pressed “Submit for approval” (a draft is not submitted yet), or ask a super administrator to check your permissions." }],
-    related: ["submit-work-for-approval", "change-something-already-published", "read-the-activity-log"],
+    related: ["submit-work-for-approval", "change-something-already-published", "preview-before-publishing", "read-the-activity-log"],
+    reviewed,
+  },
+  {
+    slug: "preview-before-publishing",
+    title: "Preview how something will look on the website",
+    summary: "See a draft, or proposed changes, exactly as visitors will see them, before anything is published.",
+    area: "publishing",
+    audience: "everyone",
+    time: "1 minute",
+    steps: [
+      { text: "Open the item (for example from the “Drafts” tab) and press “Preview” at the top of the page.", detail: "It opens in a new tab." },
+      { text: "Look at it as a visitor would, including the pictures and the layout on a narrow screen if you resize the window." },
+      { text: "An amber bar at the bottom says Preview. Press “Back to editing” when you are done." },
+    ],
+    tips: [
+      "The preview shows your unpublished words laid over what is live, so it is the version a publisher would approve.",
+      "Only news stories, departments and leaders have a preview, because they are pages of their own. Other content appears inside pages you can already see with “View on website”.",
+      "Nobody can open a preview without signing in, so sending someone the address will not show them anything. Ask a publisher to review it in “Approvals” instead.",
+    ],
+    related: ["submit-work-for-approval", "approve-or-return-work"],
     reviewed,
   },
   {

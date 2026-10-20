@@ -2,7 +2,7 @@ import "server-only";
 import { and, asc, desc, eq, inArray } from "drizzle-orm";
 import { getDb } from "@/db/client";
 import { appMeta, departments, eServices, heroSlides, leadership, newsItems, pageBlocks, pillars, resources, siteText } from "@/db/schema";
-import type { DocumentCategory, FcssipBlock, NewsItem } from "@/content/types";
+import type { Department, DocumentCategory, FcssipBlock, LeadershipPerson, NewsItem } from "@/content/types";
 import { mandate as fallbackMandate, vision as fallbackVision, mission as fallbackMission } from "@/content/mandate";
 import { siteMeta as fallbackSiteMeta } from "@/content/siteMeta";
 import { isBuildPhase } from "@/lib/env";
@@ -13,7 +13,8 @@ type NewsRow = typeof newsItems.$inferSelect;
 
 const WORDS_PER_MINUTE = 200;
 
-function toNewsItem(row: NewsRow): NewsItem {
+/** Also used by the admin's "Preview", so a draft is shown through exactly the code the public site uses. */
+export function toNewsItem(row: NewsRow): NewsItem {
   const body = row.body
     .split(/\n{2,}/)
     .map((paragraph) => paragraph.trim())
@@ -109,23 +110,19 @@ const readEvents = cachedRead("events", TAG.news, async () => {
   return rows.map((r) => ({ id: r.slug, title: r.title, date: r.itemDate, location: r.location ?? "", summary: r.excerpt }));
 });
 
-const readDepartments = cachedRead("departments", TAG.departments, async () => {
-  const db = await getDb();
-  const rows = await db.select().from(departments).where(eq(departments.status, "published")).orderBy(asc(departments.sortOrder));
-  return rows.map((r) => ({
+export function toDepartment(r: typeof departments.$inferSelect): Department {
+  return {
     id: r.slug,
     name: r.name,
     summary: r.summary,
     description: r.description,
     sections: r.sections,
     photoUrl: r.photoUrl ?? undefined,
-  }));
-});
+  };
+}
 
-const readLeadership = cachedRead("leadership", TAG.leadership, async () => {
-  const db = await getDb();
-  const rows = await db.select().from(leadership).where(eq(leadership.status, "published")).orderBy(asc(leadership.sortOrder));
-  return rows.map((r) => ({
+export function toLeader(r: typeof leadership.$inferSelect): LeadershipPerson {
+  return {
     id: r.slug,
     role: r.tier,
     name: r.name,
@@ -136,7 +133,19 @@ const readLeadership = cachedRead("leadership", TAG.leadership, async () => {
     isPlaceholder: r.name === null,
     lastVerifiedDate: r.lastVerifiedDate ?? undefined,
     sourceNote: r.internalNote ?? undefined,
-  }));
+  };
+}
+
+const readDepartments = cachedRead("departments", TAG.departments, async () => {
+  const db = await getDb();
+  const rows = await db.select().from(departments).where(eq(departments.status, "published")).orderBy(asc(departments.sortOrder));
+  return rows.map(toDepartment);
+});
+
+const readLeadership = cachedRead("leadership", TAG.leadership, async () => {
+  const db = await getDb();
+  const rows = await db.select().from(leadership).where(eq(leadership.status, "published")).orderBy(asc(leadership.sortOrder));
+  return rows.map(toLeader);
 });
 
 const readEServices = cachedRead("eServices", TAG.eServices, async () => {

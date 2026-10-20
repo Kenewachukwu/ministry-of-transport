@@ -12,6 +12,7 @@ import { requireSectionPage } from "@/lib/auth/dal";
 import { canPublish } from "@/lib/auth/permissions";
 import { getRow, personNames, rowTitle } from "@/lib/dal/admin/crud";
 import { describeChanges } from "@/lib/admin/diff";
+import { previewModel } from "@/lib/admin/preview";
 import { effectiveRow, isOnWebsite, workflowState } from "@/lib/admin/workflow";
 import { ENTITY_GUIDE } from "@/lib/admin/help";
 import { getEntity } from "@/lib/admin/registry";
@@ -43,6 +44,7 @@ export default async function EditEntityPage({ params, searchParams }: { params:
   const names = await personNames([row.pendingBy as string | null, row.createdBy as string | null, row.reviewedBy as string | null]);
   const { isNew, changes } = describeChanges(def, row);
   const authorId = (row.pendingBy ?? row.createdBy) as string | null;
+  const canPreview = previewModel(def, row) !== null;
 
   return (
     <>
@@ -53,6 +55,11 @@ export default async function EditEntityPage({ params, searchParams }: { params:
           <>
             <HelpLink slug={ENTITY_GUIDE[def.key]} />
             <Link href={`/admin/${def.key}`} className="rounded-control border border-border px-3 py-2 text-sm font-semibold text-ink hover:border-cta hover:text-cta">← Back to the list</Link>
+            {canPreview && (
+              <Link href={`/admin/preview/${def.key}/${id}`} target="_blank" className="inline-flex items-center gap-1.5 rounded-control border border-border px-3 py-2 text-sm font-semibold text-ink hover:border-cta hover:text-cta">
+                Preview <ExternalLink size={13} aria-hidden />
+              </Link>
+            )}
             {viewHref && !archived && (
               <Link href={viewHref} target="_blank" className="inline-flex items-center gap-1.5 rounded-control border border-border px-3 py-2 text-sm font-semibold text-ink hover:border-cta hover:text-cta">
                 View on website <ExternalLink size={13} aria-hidden />

@@ -16,7 +16,7 @@ export const UI_LABELS: string[] = [
   // Approval workflow
   "Drafts", "Waiting for approval", "Approvals", "Approval", "Review", "Save as draft", "Save draft", "Save proposed changes", "Submit for approval",
   "Save and resubmit for approval", "Publish now", "Publish", "Approve and publish", "Send back", "Note to the author", "Discard draft", "Discard proposed changes",
-  "On the website now", "Proposed", "Draft",
+  "On the website now", "Proposed", "Draft", "Preview", "Back to editing",
   // Enquiries
   "Where enquiries go", "Mark as handled", "Mark as spam", "Reopen", "Reply by email", "Note (optional)", "New", "Handled", "Spam",
   // Lists
