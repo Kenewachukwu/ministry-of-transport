@@ -40,6 +40,8 @@ A super administrator invites people from **Users & access**, chooses their role
 | **FCSSIP 25 page** | The page's heading and its content, block by block (paragraph, heading, link, picture). Links next to each other appear together as one list. |
 | **E-Services** | The online-services cards and the footer links. |
 | **Resources & documents** | Documents for download, and NCT Communiques. Upload a PDF/Word/Excel file or paste a link. |
+| **Contact details & links** | The address, hours, email, telephone number and social links in the footer and on the Contact page. Goes live when saved, so it needs the Publish permission. |
+| **Enquiries** | Messages sent through the website's contact form. Each is stored here and also emailed to the team for its topic; mark them handled or spam, and reply from your own email. A super administrator chooses which email address each topic goes to (**Enquiries → Where enquiries go**). The form only appears on the website once a database is connected. Nothing is deleted; how long messages are kept is for the Ministry to decide. |
 
 ### Archiving instead of deleting
 
