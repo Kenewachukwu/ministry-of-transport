@@ -97,10 +97,18 @@ export async function Footer({ basePath }: { basePath: string }) {
         </div>
       </Container>
 
-      <Container className="py-2">
+      <Container className="flex flex-wrap items-center justify-between gap-x-6 gap-y-1 py-2">
         <p className="text-xs text-white/40">
           © {new Date().getFullYear()} {siteMeta.name}. All rights reserved.
         </p>
+        <Link
+          href="/admin"
+          prefetch={false}
+          rel="nofollow"
+          className="text-xs text-white/40 hover:text-white focus-visible:text-white"
+        >
+          Staff sign-in
+        </Link>
       </Container>
 
       <Container>
