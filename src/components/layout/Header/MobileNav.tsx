@@ -6,7 +6,7 @@ import { Menu, X, ChevronDown } from "lucide-react";
 import { motion, AnimatePresence } from "motion/react";
 import { cn } from "@/lib/utils";
 import type { NavItem } from "@/content/types";
-import { extCorresNav, pebecNav } from "@/content/nav.config";
+import { extCorresNav, pebecNav, staffPortalNav } from "@/content/nav.config";
 import { ButtonLink } from "@/design-system/primitives/Button";
 
 const childLinkClasses =
@@ -134,6 +134,16 @@ export function MobileNav({
                     )}
                   </div>
                 ))}
+                {/* The top utility bar (with this link) is hidden on small screens. */}
+                <div className="border-b border-border">
+                  <Link
+                    href={`${basePath}${staffPortalNav.href}`}
+                    onClick={() => setOpen(false)}
+                    className="block py-3 text-base font-semibold text-ink transition-colors hover:text-cta focus-visible:text-cta focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-cta"
+                  >
+                    {staffPortalNav.label}
+                  </Link>
+                </div>
               </nav>
               <div className="mt-6 flex flex-col gap-3">
                 <ButtonLink
