@@ -1,4 +1,4 @@
-import { requireDatabaseUrl } from "./_env";
+import { requireDatabaseUrl } from "./_env.mjs";
 import { createPostgresDb } from "../src/db/drivers/postgres";
 import { seedIfEmpty } from "../src/db/seed";
 import type { Db } from "../src/db/client";

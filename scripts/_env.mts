@@ -1,4 +1,5 @@
-import { loadEnvConfig } from "@next/env";
+import nextEnv from "@next/env";
+const { loadEnvConfig } = nextEnv;
 
 /** Loads .env*.local etc. exactly as Next does, so scripts see the same variables. */
 loadEnvConfig(process.cwd());
