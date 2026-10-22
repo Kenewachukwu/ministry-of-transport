@@ -2,7 +2,7 @@
 
 import { createContext, startTransition, useActionState, useCallback, useContext, useEffect, useRef, useState, type FormEvent, type RefObject, type ReactNode } from "react";
 import { useFormStatus } from "react-dom";
-import { Copy, Check } from "lucide-react";
+import { Copy, Check, Eye, EyeOff } from "lucide-react";
 import { Button } from "@/design-system/primitives/Button";
 import { cn } from "@/lib/utils";
 import type { ActionState } from "@/lib/admin/action";
@@ -330,22 +330,46 @@ export function Field({
 }) {
   const error = useFieldError(name);
   const id = `f-${name}`;
+  /* A password box gets an eye button that shows or hides what was typed, so a mistyped
+     password can be seen before it is sent. */
+  const [revealed, setRevealed] = useState(false);
+  const isPassword = type === "password";
+  const input = (
+    <input
+      id={id}
+      name={name}
+      type={isPassword && revealed ? "text" : type}
+      defaultValue={defaultValue ?? ""}
+      required={required}
+      placeholder={placeholder}
+      autoComplete={autoComplete}
+      maxLength={maxLength}
+      readOnly={readOnly}
+      aria-invalid={error ? true : undefined}
+      aria-describedby={describe(id, help, error)}
+      className={cn(inputClasses, isPassword && "pr-12")}
+    />
+  );
   return (
     <FieldShell id={id} label={label} help={help} error={error} required={required} className={className}>
-      <input
-        id={id}
-        name={name}
-        type={type}
-        defaultValue={defaultValue ?? ""}
-        required={required}
-        placeholder={placeholder}
-        autoComplete={autoComplete}
-        maxLength={maxLength}
-        readOnly={readOnly}
-        aria-invalid={error ? true : undefined}
-        aria-describedby={describe(id, help, error)}
-        className={inputClasses}
-      />
+      {isPassword ? (
+        <div className="relative">
+          {input}
+          <button
+            type="button"
+            aria-label={revealed ? "Hide password" : "Show password"}
+            aria-pressed={revealed}
+            /* Keeps the cursor in the box when the button is pressed. */
+            onMouseDown={(event) => event.preventDefault()}
+            onClick={() => setRevealed((was) => !was)}
+            className="absolute right-1.5 top-1/2 inline-flex size-9 -translate-y-1/2 items-center justify-center rounded-md text-ink-muted transition-colors hover:text-ink focus-visible:outline-2 focus-visible:outline-offset-1 focus-visible:outline-cta"
+          >
+            {revealed ? <EyeOff aria-hidden="true" size={20} /> : <Eye aria-hidden="true" size={20} />}
+          </button>
+        </div>
+      ) : (
+        input
+      )}
     </FieldShell>
   );
 }
